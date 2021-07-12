@@ -4,6 +4,7 @@ defmodule Test.DataSpec do
   alias DataSpec.{Error, Types}
 
   @types_module Test.DataSpec.SampleType
+  @types_struct_module Test.DataSpec.SampleStructType
 
   setup do
     Code.ensure_compiled!(@types_module)
@@ -127,5 +128,16 @@ defmodule Test.DataSpec do
     integer = &Types.integer/2
     assert {:ok, {0, 1, 2}} == DataSpec.load({0, 1, 2}, {@types_module, :t_user_type_param_1}, [integer, integer])
     assert {:ok, {0, 1, 2}} == DataSpec.load({0, 1, 2}, {@types_module, :t_user_type_param_0})
+  end
+
+  test "struct" do
+    assert {:ok, %@types_struct_module{f_1: :a, f_2: 1}} ==
+             DataSpec.load(%{f_1: :a, f_2: 1}, {@types_struct_module, :t})
+
+    assert {:ok, %@types_struct_module{f_1: :a, f_2: nil}} ==
+             DataSpec.load(%{f_1: :a}, {@types_struct_module, :t})
+
+    error_message = "the following keys must also be given when building struct Test.DataSpec.SampleStructType: [:f_1]"
+    assert {:error, %DataSpec.Error{message: ^error_message}} = DataSpec.load(%{}, {@types_struct_module, :t})
   end
 end

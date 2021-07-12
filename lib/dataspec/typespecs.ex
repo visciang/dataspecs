@@ -13,7 +13,6 @@ defmodule DataSpec.Typespecs do
     module
     |> Code.Typespec.fetch_types()
     |> then(fn {:ok, eaf_types} -> eaf_types end)
-    # |> IO.inspect()
     |> Enum.map(&type_processor(module, &1))
     |> Map.new()
   end
@@ -156,6 +155,46 @@ defmodule DataSpec.Typespecs do
         type_params_var_expansion(module, type_id, type_params, type_params_processors, type_vars)
 
       Types.tuple(value, type_params_processors)
+    end
+  end
+
+  defp eatf_processor(
+         module,
+         type_id,
+         {:type, lineno, :map,
+          [{:type, _, :map_field_exact, [{:atom, 0, :__struct__}, {:atom, 0, struct_module}]} | kv_type_params]},
+         type_vars
+       ) do
+    # Example:
+    #   @type t :: %__MODULE__{
+    #     f_1: atom(),
+    #     f_2: integer()
+    #   }
+    #
+    #   erlang abstract type format:
+    #     {:type, 48, :map,
+    #       [
+    #         {:type, 48, :map_field_exact, [{:atom, 0, :__struct__}, {:atom, 0, Test.DataSpec.SampleStructType}]},
+    #         {:type, 48, :map_field_exact, [{:atom, 0, :f_1}, {:type, 49, :atom, []}]},
+    #         {:type, 48, :map_field_exact, [{:atom, 0, :f_2}, {:type, 50, :integer, []}]}
+    #       ]
+    #     }
+
+    fn value, type_params_processors ->
+      kv_type_params =
+        Enum.map(kv_type_params, fn {:type, lineno, :map_field_exact, type_params} ->
+          {:type, lineno, :map_field_assoc, type_params}
+        end)
+
+      map_processor = eatf_processor(module, type_id, {:type, lineno, :map, kv_type_params}, type_vars)
+      map = map_processor.(value, type_params_processors)
+
+      try do
+        struct!(struct_module, map)
+      rescue
+        err in [ArgumentError] ->
+          raise Error, err.message
+      end
     end
   end
 

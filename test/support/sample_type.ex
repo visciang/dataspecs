@@ -41,3 +41,13 @@ defmodule Test.DataSpec.SampleType do
   @type t_user_type_param_0 :: t_user_type_param_1(integer(), integer())
   @type t_user_type_param_1(x, y) :: {integer(), x, y}
 end
+
+defmodule Test.DataSpec.SampleStructType do
+  @enforce_keys [:f_1]
+  defstruct [:f_1, :f_2]
+
+  @type t :: %__MODULE__{
+          f_1: atom(),
+          f_2: integer()
+        }
+end
