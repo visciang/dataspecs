@@ -1,0 +1,48 @@
+name: CI
+
+on: ["push", "pull_request"]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    container:
+      image: elixir:1.12.1
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Retrieve Cached Dependencies
+        uses: actions/cache@v2
+        id: mix-cache
+        with:
+          path: |
+            ~/.mix
+            deps
+            _build
+          key: ${{ runner.os }}-${{ hashFiles('mix.lock') }}
+
+      - name: Install Dependencies
+        if: steps.mix-cache.outputs.cache-hit != 'true'
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+          mix deps.compile
+          mix dialyzer --plt
+
+      - name: Compile
+        env:
+          MIX_ENV: test
+        run: mix compile --warnings-as-errors
+
+      - name: Lint format
+        run: mix format --check-formatted
+      
+      - name: Lint dialyzer
+        run: mix dialyzer --no-check
+
+      - name: Test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: mix coveralls.github
