@@ -19,6 +19,20 @@ defmodule DataSpec.Types do
     end
   end
 
+  def boolean(value, _) do
+    case value do
+      value when is_boolean(value) -> value
+      _ -> raise Error, "can't convert #{inspect(value)} to a boolean"
+    end
+  end
+
+  def binary(value, _) do
+    case value do
+      value when is_binary(value) -> value
+      _ -> raise Error, "can't convert #{inspect(value)} to a binary"
+    end
+  end
+
   def pid(value, _) do
     case value do
       value when is_pid(value) -> value
@@ -30,6 +44,13 @@ defmodule DataSpec.Types do
     case value do
       value when is_reference(value) -> value
       _ -> raise Error, "can't convert #{inspect(value)} to a reference"
+    end
+  end
+
+  def number(value, _) do
+    case value do
+      value when is_number(value) -> value
+      _ -> raise Error, "can't convert #{inspect(value)} to a number"
     end
   end
 

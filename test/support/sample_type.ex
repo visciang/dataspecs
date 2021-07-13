@@ -7,11 +7,12 @@ defmodule Test.DataSpec.SampleType do
   @type t_any :: any()
   @type t_pid :: pid()
   @type t_reference :: reference()
-
   @type t_atom :: atom()
+  @type t_boolean :: boolean()
+  @type t_binary :: binary()
 
+  @type t_number :: number()
   @type t_float :: float()
-
   @type t_integer :: integer()
   @type t_neg_integer :: neg_integer()
   @type t_non_neg_integer :: non_neg_integer()
@@ -40,6 +41,20 @@ defmodule Test.DataSpec.SampleType do
 
   @type t_user_type_param_0 :: t_user_type_param_1(integer(), integer())
   @type t_user_type_param_1(x, y) :: {integer(), x, y}
+  @type t_user_type_param_2(x) :: x
+
+  @type t_arity :: atom()
+  @type t_arity(x) :: x
+
+  @type t_remote_type(x) :: Test.DataSpec.SampleRemoteModuleType.t_remote(x)
+  @type t_remote_type_string :: String.t()
+  @type t_mapset :: MapSet.t(integer())
+
+  @opaque t_opaque(x) :: {x, float()}
+end
+
+defmodule Test.DataSpec.SampleRemoteModuleType do
+  @type t_remote(x) :: x | atom()
 end
 
 defmodule Test.DataSpec.SampleStructType do

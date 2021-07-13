@@ -1,10 +1,15 @@
 defmodule DataSpec.Typespecs do
   alias DataSpec.{Error, Types}
 
-  def parser(module, type) do
-    module
-    |> compile()
-    |> Map.fetch!(type)
+  def loader(module, type_id, type_arity) do
+    type = {type_id, type_arity}
+    type_loaders_map = compile(module)
+
+    if Map.has_key?(type_loaders_map, type) do
+      type_loaders_map[type]
+    else
+      raise Error, "Unknown type #{inspect(module)}.#{type_id}/#{type_arity}"
+    end
   end
 
   defp compile(module) do
@@ -18,11 +23,22 @@ defmodule DataSpec.Typespecs do
   end
 
   defp type_processor(module, {type, {type_id, eatf, type_params}}) do
-    case type do
-      :type -> {type_id, eatf_processor(module, type_id, eatf, type_params)}
-      :typep -> raise "TODO"
-      :opaque -> raise "TODO"
-    end
+    type_arity = length(type_params)
+
+    processor =
+      case type do
+        :type ->
+          eatf_processor(module, type_id, eatf, type_params)
+
+        :typep ->
+          raise "TODO"
+
+        :opaque ->
+          # TODO use optional custom user defined loader
+          eatf_processor(module, type_id, {:type, 0, :any, []}, [])
+      end
+
+    {{type_id, type_arity}, processor}
   end
 
   @literal_types [:atom, :integer]
@@ -31,6 +47,10 @@ defmodule DataSpec.Typespecs do
   end
 
   defp eatf_processor(_module, _type_id, {:type, _lineno, :any, []}, []) do
+    &Types.any/2
+  end
+
+  defp eatf_processor(_module, _type_id, {:type, _lineno, :term, []}, []) do
     &Types.any/2
   end
 
@@ -44,6 +64,18 @@ defmodule DataSpec.Typespecs do
 
   defp eatf_processor(_module, _type_id, {:type, _lineno, :atom, []}, []) do
     &Types.atom/2
+  end
+
+  defp eatf_processor(_module, _type_id, {:type, _lineno, :boolean, []}, []) do
+    &Types.boolean/2
+  end
+
+  defp eatf_processor(_module, _type_id, {:type, _lineno, :binary, []}, []) do
+    &Types.binary/2
+  end
+
+  defp eatf_processor(_module, _type_id, {:type, _lineno, :number, []}, []) do
+    &Types.number/2
   end
 
   defp eatf_processor(_module, _type_id, {:type, _lineno, :float, []}, []) do
@@ -68,6 +100,25 @@ defmodule DataSpec.Typespecs do
 
   defp eatf_processor(_module, _type_id, {:type, _lineno, :range, [{:integer, 0, lower}, {:integer, 0, upper}]}, []) do
     &Types.range(lower, upper, &1, &2)
+  end
+
+  defp eatf_processor(module, type_id, {:var, _lineno, _id} = var, [var] = type_vars) do
+    # Example:
+    #   @type t(x) :: x
+    #
+    #   erlang abstract type format:
+    #     {:var, 45, :x}
+    #
+    #   type_vars:
+    #     [{:var, 45, :x}]
+
+    type_params = [var]
+
+    fn value, [_type_params_processor] = type_params_processors ->
+      [type_processors] = type_params_var_expansion(module, type_id, type_params, type_params_processors, type_vars)
+
+      type_processors.(value, [type_processors])
+    end
   end
 
   defp eatf_processor(module, type_id, {:type, _lineno, :union, type_params}, type_vars) do
@@ -257,8 +308,29 @@ defmodule DataSpec.Typespecs do
       type_params_processors =
         type_params_var_expansion(module, type_id, type_params, type_params_processors, type_vars)
 
-      type_parser = parser(module, type_id)
-      type_parser.(value, type_params_processors)
+      type_loader = loader(module, type_id, length(type_params))
+      type_loader.(value, type_params_processors)
+    end
+  end
+
+  defp eatf_processor(
+         _module,
+         _type_id,
+         {:remote_type, _lineno, [{:atom, _, remote_module}, {:atom, _, remote_type}, remote_type_params]},
+         type_vars
+       ) do
+    # Example:
+    #   @type t_mapset :: MapSet.t(integer())
+    #
+    #   erlang abstract type format:
+    #     {:remote_type, 46, [{:atom, 0, MapSet}, {:atom, 0, :t}, [{:type, 46, :integer, []}]]}
+
+    fn value, type_params_processors ->
+      type_params_processors =
+        type_params_var_expansion(remote_module, remote_type, remote_type_params, type_params_processors, type_vars)
+
+      type_loader = loader(remote_module, remote_type, length(remote_type_params))
+      type_loader.(value, type_params_processors)
     end
   end
 
