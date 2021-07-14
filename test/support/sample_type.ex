@@ -49,6 +49,7 @@ defmodule Test.DataSpec.SampleType do
   @type t_remote_type(x) :: Test.DataSpec.SampleRemoteModuleType.t_remote(x)
   @type t_remote_type_string :: String.t()
   @type t_mapset :: MapSet.t(integer())
+  @type t_datetime :: DateTime.t()
 
   @type t_recursive :: atom() | %{recursive: t_recursive()}
 
