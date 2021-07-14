@@ -1,4 +1,5 @@
 defmodule DataSpec do
+  use Application
   alias DataSpec.{Error, Typespecs}
 
   @type data() :: any()
@@ -19,5 +20,9 @@ defmodule DataSpec do
   def load!(data, {module, type_id}, custom_type_loaders \\ %{}, type_params_loaders \\ []) do
     loader = Typespecs.loader(module, type_id, length(type_params_loaders))
     loader.(data, custom_type_loaders, type_params_loaders)
+  end
+
+  def start(_type, _args) do
+    Supervisor.start_link([DataSpec.Cache], strategy: :one_for_one)
   end
 end

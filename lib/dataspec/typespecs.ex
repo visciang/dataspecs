@@ -1,20 +1,26 @@
 defmodule DataSpec.Typespecs do
-  alias DataSpec.{Error, Loaders}
+  alias DataSpec.{Cache, Error, Loaders}
 
   require Logger
 
   def loader(module, type_id, type_arity) do
-    type_loaders_map = compile(module)
-    type_loaders_map[{type_id, type_arity}] || raise Error, "Unknown type #{inspect(module)}.#{type_id}/#{type_arity}"
+    case Cache.get(module, type_id, type_arity) do
+      nil ->
+        type_loaders = compile(module)
+        Cache.set(type_loaders)
+
+        Cache.get(module, type_id, type_arity) ||
+          raise Error, "Unknown type #{inspect(module)}.#{type_id}/#{type_arity}"
+
+      type_loader ->
+        type_loader
+    end
   end
 
   defp compile(module) do
-    # TODO cache in ETS
-
     module
     |> code_typespec_fetch_types()
     |> Enum.map(&type_loader(module, &1))
-    |> Map.new()
   end
 
   defp code_typespec_fetch_types(module) do
@@ -37,7 +43,7 @@ defmodule DataSpec.Typespecs do
           eatf_loader(module, type_id, :opaque, type_params)
       end
 
-    {{type_id, type_arity}, loader}
+    {{module, type_id, type_arity}, loader}
   end
 
   defp eatf_loader(module, type_id, :opaque, type_vars) do
