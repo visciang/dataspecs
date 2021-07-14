@@ -1,13 +1,12 @@
 defmodule Test.DataSpec do
   use ExUnit.Case
 
-  alias DataSpec.{Error, Types}
+  alias DataSpec.{Error, Loaders}
 
   @types_module Test.DataSpec.SampleType
   @types_struct_module Test.DataSpec.SampleStructType
 
   setup do
-    Code.ensure_compiled!(@types_module)
     :ok
   end
 
@@ -81,7 +80,7 @@ defmodule Test.DataSpec do
   end
 
   test "union" do
-    float = &Types.float/2
+    float = &Loaders.float/2
     assert {:ok, :test} == DataSpec.load(:test, {@types_module, :t_union_0}, [float])
     assert {:ok, 1} == DataSpec.load(1, {@types_module, :t_union_0}, [float])
     assert {:ok, 1.1} == DataSpec.load(1.1, {@types_module, :t_union_0}, [float])
@@ -92,7 +91,7 @@ defmodule Test.DataSpec do
   end
 
   test "list" do
-    integer = &Types.integer/2
+    integer = &Loaders.integer/2
     assert {:ok, []} == DataSpec.load([], {@types_module, :t_empty_list})
     assert {:ok, [:a, :b]} == DataSpec.load([:a, :b], {@types_module, :t_list})
     assert {:ok, [1, 2]} == DataSpec.load([1, 2], {@types_module, :t_list_param}, [integer])
@@ -116,7 +115,7 @@ defmodule Test.DataSpec do
   end
 
   test "map" do
-    integer = &Types.integer/2
+    integer = &Loaders.integer/2
     assert {:ok, %{}} == DataSpec.load(%{}, {@types_module, :t_empty_map})
     assert {:ok, %{required_key: 1}} == DataSpec.load(%{required_key: 1}, {@types_module, :t_map_0})
     assert {:ok, %{0 => :a}} == DataSpec.load(%{0 => :a}, {@types_module, :t_map_1})
@@ -130,14 +129,14 @@ defmodule Test.DataSpec do
   end
 
   test "user type parametrized" do
-    integer = &Types.integer/2
+    integer = &Loaders.integer/2
     assert {:ok, {0, 1, 2}} == DataSpec.load({0, 1, 2}, {@types_module, :t_user_type_param_0})
     assert {:ok, {0, 1, 2}} == DataSpec.load({0, 1, 2}, {@types_module, :t_user_type_param_1}, [integer, integer])
     assert {:ok, 1} == DataSpec.load(1, {@types_module, :t_user_type_param_2}, [integer])
   end
 
   test "same type name with differnt arities" do
-    atom = &Types.atom/2
+    atom = &Loaders.atom/2
     assert {:ok, :test} == DataSpec.load(:test, {@types_module, :t_arity})
     assert {:ok, :test} == DataSpec.load(:test, {@types_module, :t_arity}, [atom])
   end
@@ -153,17 +152,25 @@ defmodule Test.DataSpec do
     assert {:error, %DataSpec.Error{message: ^error_message}} = DataSpec.load(%{}, {@types_struct_module, :t})
   end
 
-  test "opaque type" do
-    integer = &Types.integer/2
-    assert {:ok, :opaque} == DataSpec.load(:opaque, {@types_module, :t_opaque}, [integer])
-  end
-
   test "remote type" do
-    integer = &Types.integer/2
+    integer = &Loaders.integer/2
     assert {:ok, 1} == DataSpec.load(1, {@types_module, :t_remote_type}, [integer])
     assert {:ok, :test} == DataSpec.load(:test, {@types_module, :t_remote_type}, [integer])
     assert {:ok, "string"} == DataSpec.load("string", {@types_module, :t_remote_type_string})
 
     assert {:ok, "string"} == DataSpec.load("string", {@types_module, :t_mapset})
+  end
+
+  test "recursive type" do
+    assert {:ok, :test} == DataSpec.load(:test, {@types_module, :t_recursive})
+    assert {:ok, %{recursive: :test}} == DataSpec.load(%{recursive: :test}, {@types_module, :t_recursive})
+
+    assert {:ok, %{recursive: %{recursive: :test}}} ==
+             DataSpec.load(%{recursive: %{recursive: :test}}, {@types_module, :t_recursive})
+  end
+
+  test "opaque type" do
+    integer = &Loaders.integer/2
+    assert {:ok, :opaque} == DataSpec.load(:opaque, {@types_module, :t_opaque}, [integer])
   end
 end

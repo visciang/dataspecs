@@ -50,7 +50,29 @@ defmodule Test.DataSpec.SampleType do
   @type t_remote_type_string :: String.t()
   @type t_mapset :: MapSet.t(integer())
 
+  @type t_recursive :: atom() | %{recursive: t_recursive()}
+
   @opaque t_opaque(x) :: {x, float()}
+
+  # CURRENTLY NOT IMPLEMENTED TYPES
+  # @type t_fun :: (integer() -> integer())
+  # @type t_empty_bitstring :: <<>>
+  # @type t_bitstring :: bitstring()
+  # @type t_bitstring_0 :: <<_::4>>
+  # @type t_bitstring_1 :: <<_::_*4>>
+  # @type t_bitstring_2 :: <<_::8, _::_*4>>
+  # @type t_arity_1 :: arity()
+  # @type t_byte :: byte()
+  # @type t_char :: char()
+  # @type t_identifier :: identifier()
+  # @type t_iodata :: iodata()
+  # @type t_iolist :: iolist()
+  # @type t_maybe_improper_list :: maybe_improper_list()
+  # @type t_nonempty_maybe_improper_list :: nonempty_maybe_improper_list()
+  # @type t_mfa :: mfa()
+  # @type t_module :: module()
+  # @type t_node :: node()
+  # @type t_timeout :: timeout()
 end
 
 defmodule Test.DataSpec.SampleRemoteModuleType do

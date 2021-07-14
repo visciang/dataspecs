@@ -1,14 +1,20 @@
 defmodule DataSpec do
   alias DataSpec.{Error, Typespecs}
 
-  def load(data, {module, type}, type_params \\ []) do
-    {:ok, load!(data, {module, type}, type_params)}
+  @type data() :: any()
+  @type type_ref :: {module(), atom()}
+  @type type_params_loader :: (data(), [type_params_loader()] -> data())
+
+  @spec load(data(), type_ref(), [type_params_loader()]) :: {:error, any()} | {:ok, data()}
+  def load(data, {module, type}, type_params_loaders \\ []) do
+    {:ok, load!(data, {module, type}, type_params_loaders)}
   rescue
     err in Error -> {:error, err}
   end
 
-  def load!(data, {module, type}, type_params \\ []) do
-    parser = Typespecs.loader(module, type, length(type_params))
-    parser.(data, type_params)
+  @spec load!(data(), type_ref(), [type_params_loader()]) :: data()
+  def load!(data, {module, type}, type_params_loaders \\ []) do
+    loader = Typespecs.loader(module, type, length(type_params_loaders))
+    loader.(data, type_params_loaders)
   end
 end

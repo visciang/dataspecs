@@ -1,95 +1,95 @@
-defmodule DataSpec.Types do
+defmodule DataSpec.Loaders do
   alias DataSpec.Error
 
-  def literal(literal, value, _) do
+  def literal(literal, value, __type_params_processors) do
     case value do
       ^literal -> value
       _ -> raise Error, "can't convert #{inspect(value)} to literal #{inspect(literal)}"
     end
   end
 
-  def any(value, _) do
+  def any(value, __type_params_processors) do
     value
   end
 
-  def atom(value, _) do
+  def atom(value, __type_params_processors) do
     case value do
       value when is_atom(value) -> value
       _ -> raise Error, "can't convert #{inspect(value)} to an atom"
     end
   end
 
-  def boolean(value, _) do
+  def boolean(value, __type_params_processors) do
     case value do
       value when is_boolean(value) -> value
       _ -> raise Error, "can't convert #{inspect(value)} to a boolean"
     end
   end
 
-  def binary(value, _) do
+  def binary(value, __type_params_processors) do
     case value do
       value when is_binary(value) -> value
       _ -> raise Error, "can't convert #{inspect(value)} to a binary"
     end
   end
 
-  def pid(value, _) do
+  def pid(value, __type_params_processors) do
     case value do
       value when is_pid(value) -> value
       _ -> raise Error, "can't convert #{inspect(value)} to a pid"
     end
   end
 
-  def reference(value, _) do
+  def reference(value, __type_params_processors) do
     case value do
       value when is_reference(value) -> value
       _ -> raise Error, "can't convert #{inspect(value)} to a reference"
     end
   end
 
-  def number(value, _) do
+  def number(value, __type_params_processors) do
     case value do
       value when is_number(value) -> value
       _ -> raise Error, "can't convert #{inspect(value)} to a number"
     end
   end
 
-  def float(value, _) do
+  def float(value, __type_params_processors) do
     case value do
       value when is_number(value) -> :erlang.float(value)
       _ -> raise Error, "can't convert #{inspect(value)} to a float"
     end
   end
 
-  def integer(value, _) do
+  def integer(value, __type_params_processors) do
     case value do
       value when is_integer(value) -> value
       _ -> raise Error, "can't convert #{inspect(value)} to an integer"
     end
   end
 
-  def neg_integer(value, _) do
+  def neg_integer(value, __type_params_processors) do
     case value do
       value when is_integer(value) and value < 0 -> value
       _ -> raise Error, "can't convert #{inspect(value)} to a neg_integer"
     end
   end
 
-  def non_neg_integer(value, _) do
+  def non_neg_integer(value, __type_params_processors) do
     case value do
       value when is_integer(value) and value >= 0 -> value
       _ -> raise Error, "can't convert #{inspect(value)} to a non_neg_integer"
     end
   end
 
-  def pos_integer(value, _) do
+  def pos_integer(value, __type_params_processors) do
     case value do
       value when is_integer(value) and value > 0 -> value
       _ -> raise Error, "can't convert #{inspect(value)} to a pos_integer"
     end
   end
 
-  def range(lower, upper, value, _) do
+  def range(lower, upper, value, __type_params_processors) do
     case value do
       value when is_integer(value) and lower <= value and value <= upper -> value
       _ -> raise Error, "can't convert #{inspect(value)} to a range of #{inspect(lower..upper)}"
