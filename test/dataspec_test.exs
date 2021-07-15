@@ -6,10 +6,6 @@ defmodule Test.DataSpec do
   @types_module Test.DataSpec.SampleType
   @types_struct_module Test.DataSpec.SampleStructType
 
-  setup do
-    :ok
-  end
-
   test "literal" do
     assert {:ok, :a} == DataSpec.load(:a, {@types_module, :t_literal_atom})
     assert {:ok, 1} == DataSpec.load(1, {@types_module, :t_literal_integer})
