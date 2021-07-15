@@ -93,10 +93,12 @@ defmodule Test.DataSpec do
     assert {:ok, [1, 2]} == DataSpec.load([1, 2], {@types_module, :t_list_param}, %{}, [integer])
     assert {:ok, [1, :a]} == DataSpec.load([1, :a], {@types_module, :t_nonempty_list_0})
     assert {:ok, [:a, :b]} == DataSpec.load([:a, :b], {@types_module, :t_nonempty_list_1})
+    assert {:ok, [:a, 1]} == DataSpec.load([:a, 1], {@types_module, :t_list_of_any})
     assert {:error, %Error{}} = DataSpec.load(:a, {@types_module, :t_list})
     assert {:error, %Error{}} = DataSpec.load([1], {@types_module, :t_list})
     assert {:error, %Error{}} = DataSpec.load([1], {@types_module, :t_empty_list})
     assert {:error, %Error{}} = DataSpec.load([], {@types_module, :t_nonempty_list_0})
+    assert {:error, %Error{}} = DataSpec.load(:not_a_list, {@types_module, :t_list_of_any})
   end
 
   test "keyword list" do
@@ -106,8 +108,10 @@ defmodule Test.DataSpec do
   test "tuple" do
     assert {:ok, {}} == DataSpec.load({}, {@types_module, :t_tuple})
     assert {:ok, {1, 2}} == DataSpec.load({1, 2}, {@types_module, :t_tuple})
+    assert {:ok, {1, "a"}} == DataSpec.load({1, "a"}, {@types_module, :t_tuple_any_size})
     assert {:error, %Error{}} = DataSpec.load(nil, {@types_module, :t_tuple})
     assert {:error, %Error{}} = DataSpec.load({:a, 2}, {@types_module, :t_tuple})
+    assert {:error, %Error{}} = DataSpec.load(:not_a_tuple, {@types_module, :t_tuple_any_size})
   end
 
   test "map" do
@@ -203,6 +207,10 @@ defmodule Test.DataSpec do
     datetime = ~U[2021-07-14 20:22:49.653077Z]
     iso_datetime_string = DateTime.to_iso8601(datetime)
     assert {:ok, MapSet.new(1..3)} == DataSpec.load(1..3, {@types_module, :t_mapset}, custom_type_loaders)
+
+    assert {:ok, MapSet.new(["1", :a, 1])} ==
+             DataSpec.load(["1", :a, 1], {@types_module, :t_mapset_1}, custom_type_loaders)
+
     assert {:ok, datetime} == DataSpec.load(iso_datetime_string, {@types_module, :t_datetime}, custom_type_loaders)
   end
 end

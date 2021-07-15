@@ -126,6 +126,16 @@ defmodule DataSpec.Loaders do
     end
   end
 
+  def list(value, _custom_type_loaders, []) do
+    case value do
+      value when is_list(value) ->
+        value
+
+      _ ->
+        raise Error, "can't convert #{inspect(value)} to a list"
+    end
+  end
+
   def list(value, custom_type_loaders, [type_params_loader]) do
     case value do
       value when is_list(value) -> Enum.map(value, &type_params_loader.(&1, custom_type_loaders, []))
@@ -171,6 +181,16 @@ defmodule DataSpec.Loaders do
 
       _ ->
         raise Error, "can't convert #{inspect(map)} to a map"
+    end
+  end
+
+  def tuple_any(value, _custom_type_loaders, _type_params_loaders) do
+    case value do
+      value when is_tuple(value) ->
+        value
+
+      _ ->
+        raise Error, "can't convert #{inspect(value)} to a tuple"
     end
   end
 

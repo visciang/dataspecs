@@ -278,6 +278,20 @@ defmodule DataSpec.Typespecs do
     maybe_custom_loader({module, type_id, length(type_vars)}, default_loader)
   end
 
+  defp eatf_loader(module, type_id, {:type, _lineno, :tuple, :any}, []) do
+    # Example:
+    #   @type t_tuple_any_size :: tuple()
+    #
+    #   erlang abstract type format:
+    #     {:type, 31, :tuple, :any}
+
+    default_loader = fn value, custom_type_loaders, [] ->
+      Loaders.tuple_any(value, custom_type_loaders, [])
+    end
+
+    maybe_custom_loader({module, type_id, 0}, default_loader)
+  end
+
   defp eatf_loader(module, type_id, {:type, _lineno, :tuple, type_params}, type_vars) do
     # Example:
     #   @type t_user_type_param(x, y) :: {integer(), x, y}
@@ -409,7 +423,7 @@ defmodule DataSpec.Typespecs do
     maybe_custom_loader({module, type_id, length(type_vars)}, default_loader)
   end
 
-  defp eatf_loader(module, _type_id, {:user_type, _lineno, type_id, type_params}, type_vars) do
+  defp eatf_loader(module, _type_id, {:user_type, _lineno, user_type_id, type_params}, type_vars) do
     # Example:
     #   @type xxx :: t_user_type_param(integer(), integer())
     #
@@ -417,19 +431,19 @@ defmodule DataSpec.Typespecs do
     #     {:user_type, 6, :t_user_type_param, [{:type, 6, :integer, []}, {:type, 6, :integer, []}]}
 
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      type_params_loaders = type_params_var_expansion(module, type_id, type_params, type_params_loaders, type_vars)
+      type_params_loaders = type_params_var_expansion(module, user_type_id, type_params, type_params_loaders, type_vars)
 
-      type_loader = loader(module, type_id, length(type_params))
+      type_loader = loader(module, user_type_id, length(type_params))
       type_loader.(value, custom_type_loaders, type_params_loaders)
     end
 
-    maybe_custom_loader({module, type_id, length(type_vars)}, default_loader)
+    maybe_custom_loader({module, user_type_id, length(type_vars)}, default_loader)
   end
 
   defp eatf_loader(
          module,
          type_id,
-         {:remote_type, _lineno, [{:atom, _, remote_module}, {:atom, _, remote_type}, remote_type_params]},
+         {:remote_type, _lineno, [{:atom, _, remote_module}, {:atom, _, remote_type_id}, remote_type_params]},
          type_vars
        ) do
     # Example:
@@ -441,14 +455,14 @@ defmodule DataSpec.Typespecs do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
       type_params_loaders =
         type_params_var_expansion(
-          remote_module,
-          remote_type,
+          module,
+          type_id,
           remote_type_params,
           type_params_loaders,
           type_vars
         )
 
-      type_loader = loader(remote_module, remote_type, length(remote_type_params))
+      type_loader = loader(remote_module, remote_type_id, length(remote_type_params))
       type_loader.(value, custom_type_loaders, type_params_loaders)
     end
 

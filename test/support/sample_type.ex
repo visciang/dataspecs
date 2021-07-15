@@ -23,11 +23,13 @@ defmodule Test.DataSpec.SampleType do
   @type t_list_param(x) :: [x]
   @type t_nonempty_list_0 :: [...]
   @type t_nonempty_list_1 :: [atom(), ...]
+  @type t_list_of_any :: list()
 
   @type t_keyword_list :: [a: integer(), b: atom()]
 
   @type t_empty_tuple :: {}
   @type t_tuple :: {integer(), integer()}
+  @type t_tuple_any_size :: tuple()
 
   @type t_empty_map :: %{}
   @type t_map_0 :: %{required_key: integer()}
@@ -49,6 +51,7 @@ defmodule Test.DataSpec.SampleType do
   @type t_remote_type(x) :: Test.DataSpec.SampleRemoteModuleType.t_remote(x)
   @type t_remote_type_string :: String.t()
   @type t_mapset :: MapSet.t(integer())
+  @type t_mapset_1 :: MapSet.t(t_union_0(binary()))
   @type t_datetime :: DateTime.t()
 
   @type t_recursive :: atom() | %{recursive: t_recursive()}
