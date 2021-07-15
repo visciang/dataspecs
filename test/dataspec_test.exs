@@ -171,10 +171,10 @@ defmodule Test.DataSpec do
 
   test "opaque type with custom type loader" do
     custom_type_loaders = %{
-      {@types_module, :t_opaque, 1} => fn value, [type_params_loader] ->
+      {@types_module, :t_opaque, 1} => fn value, _custom_type_loaders, [type_params_loader] ->
         {:custom_opaque, type_params_loader.(value, %{}, [])}
       end,
-      {MapSet, :t, 1} => fn value, [type_params_loader] ->
+      {MapSet, :t, 1} => fn value, _custom_type_loaders, [type_params_loader] ->
         case Enumerable.impl_for(value) do
           nil ->
             raise Error, "can't convert #{inspect(value)} to a MapSet.t/1"
@@ -183,7 +183,7 @@ defmodule Test.DataSpec do
             MapSet.new(value, fn item -> type_params_loader.(item, []) end)
         end
       end,
-      {DateTime, :t, 0} => fn value, [] ->
+      {DateTime, :t, 0} => fn value, _custom_type_loaders, [] ->
         with {:is_binary, true} <- {:is_binary, is_binary(value)},
              {:from_iso8601, {:ok, datetime, _}} <- {:from_iso8601, DateTime.from_iso8601(value)} do
           datetime

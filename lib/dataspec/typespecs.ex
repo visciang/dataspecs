@@ -482,13 +482,8 @@ defmodule DataSpec.Typespecs do
          default_loader
        ) do
     fn value, custom_type_loaders, type_params_loaders ->
-      case Map.get(custom_type_loaders, type_ref) do
-        nil ->
-          default_loader.(value, custom_type_loaders, type_params_loaders)
-
-        custom_loader ->
-          custom_loader.(value, type_params_loaders)
-      end
+      loader = Map.get(custom_type_loaders, type_ref, default_loader)
+      loader.(value, custom_type_loaders, type_params_loaders)
     end
   end
 
