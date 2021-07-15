@@ -76,7 +76,7 @@ defmodule Test.DataSpec do
   end
 
   test "union" do
-    float = loader_for_scalar_type(:float)
+    float = &Loaders.float/3
     assert {:ok, :test} == DataSpec.load(:test, {@types_module, :t_union_0}, %{}, [float])
     assert {:ok, 1} == DataSpec.load(1, {@types_module, :t_union_0}, %{}, [float])
     assert {:ok, 1.1} == DataSpec.load(1.1, {@types_module, :t_union_0}, %{}, [float])
@@ -87,7 +87,7 @@ defmodule Test.DataSpec do
   end
 
   test "list" do
-    integer = loader_for_scalar_type(:integer)
+    integer = &Loaders.integer/3
     assert {:ok, []} == DataSpec.load([], {@types_module, :t_empty_list})
     assert {:ok, [:a, :b]} == DataSpec.load([:a, :b], {@types_module, :t_list})
     assert {:ok, [1, 2]} == DataSpec.load([1, 2], {@types_module, :t_list_param}, %{}, [integer])
@@ -111,7 +111,7 @@ defmodule Test.DataSpec do
   end
 
   test "map" do
-    integer = loader_for_scalar_type(:integer)
+    integer = &Loaders.integer/3
     assert {:ok, %{}} == DataSpec.load(%{}, {@types_module, :t_empty_map})
     assert {:ok, %{required_key: 1}} == DataSpec.load(%{required_key: 1}, {@types_module, :t_map_0})
     assert {:ok, %{0 => :a}} == DataSpec.load(%{0 => :a}, {@types_module, :t_map_1})
@@ -125,14 +125,14 @@ defmodule Test.DataSpec do
   end
 
   test "user type parametrized" do
-    integer = loader_for_scalar_type(:integer)
+    integer = &Loaders.integer/3
     assert {:ok, {0, 1, 2}} == DataSpec.load({0, 1, 2}, {@types_module, :t_user_type_param_0})
     assert {:ok, {0, 1, 2}} == DataSpec.load({0, 1, 2}, {@types_module, :t_user_type_param_1}, %{}, [integer, integer])
     assert {:ok, 1} == DataSpec.load(1, {@types_module, :t_user_type_param_2}, %{}, [integer])
   end
 
   test "same type name with differnt arities" do
-    atom = loader_for_scalar_type(:atom)
+    atom = &Loaders.atom/3
     assert {:ok, :test} == DataSpec.load(:test, {@types_module, :t_arity})
     assert {:ok, :test} == DataSpec.load(:test, {@types_module, :t_arity}, %{}, [atom])
   end
@@ -149,7 +149,7 @@ defmodule Test.DataSpec do
   end
 
   test "remote type" do
-    integer = loader_for_scalar_type(:integer)
+    integer = &Loaders.integer/3
     assert {:ok, 1} == DataSpec.load(1, {@types_module, :t_remote_type}, %{}, [integer])
     assert {:ok, :test} == DataSpec.load(:test, {@types_module, :t_remote_type}, %{}, [integer])
     assert {:ok, "string"} == DataSpec.load("string", {@types_module, :t_remote_type_string})
@@ -164,23 +164,23 @@ defmodule Test.DataSpec do
   end
 
   test "opaque type without custom type loader" do
-    integer = loader_for_scalar_type(:integer)
+    integer = &Loaders.integer/3
     assert {:error, %Error{}} = DataSpec.load(:opaque, {@types_module, :t_opaque}, %{}, [integer])
     assert {:error, %Error{}} = DataSpec.load(:opaque, {@types_module, :t_mapset})
   end
 
   test "opaque type with custom type loader" do
     custom_type_loaders = %{
-      {@types_module, :t_opaque, 1} => fn value, _custom_type_loaders, [type_params_loader] ->
-        {:custom_opaque, type_params_loader.(value, %{}, [])}
+      {@types_module, :t_opaque, 1} => fn value, custom_type_loaders, [type_params_loader] ->
+        {:custom_opaque, type_params_loader.(value, custom_type_loaders, [])}
       end,
-      {MapSet, :t, 1} => fn value, _custom_type_loaders, [type_params_loader] ->
+      {MapSet, :t, 1} => fn value, custom_type_loaders, [type_params_loader] ->
         case Enumerable.impl_for(value) do
           nil ->
             raise Error, "can't convert #{inspect(value)} to a MapSet.t/1"
 
           _ ->
-            MapSet.new(value, fn item -> type_params_loader.(item, []) end)
+            MapSet.new(value, fn item -> type_params_loader.(item, custom_type_loaders, []) end)
         end
       end,
       {DateTime, :t, 0} => fn value, _custom_type_loaders, [] ->
@@ -197,18 +197,12 @@ defmodule Test.DataSpec do
       end
     }
 
-    integer = loader_for_scalar_type(:integer)
+    integer = &Loaders.integer/3
     assert {:ok, {:custom_opaque, 1}} == DataSpec.load(1, {@types_module, :t_opaque}, custom_type_loaders, [integer])
 
     datetime = ~U[2021-07-14 20:22:49.653077Z]
     iso_datetime_string = DateTime.to_iso8601(datetime)
     assert {:ok, MapSet.new(1..3)} == DataSpec.load(1..3, {@types_module, :t_mapset}, custom_type_loaders)
     assert {:ok, datetime} == DataSpec.load(iso_datetime_string, {@types_module, :t_datetime}, custom_type_loaders)
-  end
-
-  defp loader_for_scalar_type(type) do
-    fn value, _custom_type_loaders, type_params_loaders ->
-      apply(Loaders, type, [value, type_params_loaders])
-    end
   end
 end

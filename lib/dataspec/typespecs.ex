@@ -58,120 +58,120 @@ defmodule DataSpec.Typespecs do
 
   @literal_types [:atom, :integer]
   defp eatf_loader(module, type_id, {literal_type, 0, literal}, []) when literal_type in @literal_types do
-    default_loader = fn value, _custom_type_loaders, type_params_loaders ->
-      Loaders.literal(literal, value, type_params_loaders)
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loaders.literal(literal, value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
   end
 
   defp eatf_loader(module, type_id, {:type, _lineno, :any, []}, []) do
-    default_loader = fn value, _custom_type_loaders, type_params_loaders ->
-      Loaders.any(value, type_params_loaders)
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loaders.any(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
   end
 
   defp eatf_loader(module, type_id, {:type, _lineno, :term, []}, []) do
-    default_loader = fn value, _custom_type_loaders, type_params_loaders ->
-      Loaders.any(value, type_params_loaders)
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loaders.any(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
   end
 
   defp eatf_loader(module, type_id, {:type, _lineno, :pid, []}, []) do
-    default_loader = fn value, _custom_type_loaders, type_params_loaders ->
-      Loaders.pid(value, type_params_loaders)
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loaders.pid(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
   end
 
   defp eatf_loader(module, type_id, {:type, _lineno, :reference, []}, []) do
-    default_loader = fn value, _custom_type_loaders, type_params_loaders ->
-      Loaders.reference(value, type_params_loaders)
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loaders.reference(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
   end
 
   defp eatf_loader(module, type_id, {:type, _lineno, :atom, []}, []) do
-    default_loader = fn value, _custom_type_loaders, type_params_loaders ->
-      Loaders.atom(value, type_params_loaders)
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loaders.atom(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
   end
 
   defp eatf_loader(module, type_id, {:type, _lineno, :boolean, []}, []) do
-    default_loader = fn value, _custom_type_loaders, type_params_loaders ->
-      Loaders.boolean(value, type_params_loaders)
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loaders.boolean(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
   end
 
   defp eatf_loader(module, type_id, {:type, _lineno, :binary, []}, []) do
-    default_loader = fn value, _custom_type_loaders, type_params_loaders ->
-      Loaders.binary(value, type_params_loaders)
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loaders.binary(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
   end
 
   defp eatf_loader(module, type_id, {:type, _lineno, :number, []}, []) do
-    default_loader = fn value, _custom_type_loaders, type_params_loaders ->
-      Loaders.number(value, type_params_loaders)
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loaders.number(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
   end
 
   defp eatf_loader(module, type_id, {:type, _lineno, :float, []}, []) do
-    default_loader = fn value, _custom_type_loaders, type_params_loaders ->
-      Loaders.float(value, type_params_loaders)
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loaders.float(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
   end
 
   defp eatf_loader(module, type_id, {:type, _lineno, :integer, []}, []) do
-    default_loader = fn value, _custom_type_loaders, type_params_loaders ->
-      Loaders.integer(value, type_params_loaders)
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loaders.integer(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
   end
 
   defp eatf_loader(module, type_id, {:type, _lineno, :neg_integer, []}, []) do
-    default_loader = fn value, _custom_type_loaders, type_params_loaders ->
-      Loaders.neg_integer(value, type_params_loaders)
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loaders.neg_integer(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
   end
 
   defp eatf_loader(module, type_id, {:type, _lineno, :non_neg_integer, []}, []) do
-    default_loader = fn value, _custom_type_loaders, type_params_loaders ->
-      Loaders.non_neg_integer(value, type_params_loaders)
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loaders.non_neg_integer(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
   end
 
   defp eatf_loader(module, type_id, {:type, _lineno, :pos_integer, []}, []) do
-    default_loader = fn value, _custom_type_loaders, type_params_loaders ->
-      Loaders.pos_integer(value, type_params_loaders)
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loaders.pos_integer(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
   end
 
   defp eatf_loader(module, type_id, {:type, _lineno, :range, [{:integer, 0, lower}, {:integer, 0, upper}]}, []) do
-    default_loader = fn value, _custom_type_loaders, type_params_loaders ->
-      Loaders.range(lower, upper, value, type_params_loaders)
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loaders.range(lower, upper, value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -190,10 +190,9 @@ defmodule DataSpec.Typespecs do
     type_params = [var]
 
     default_loader = fn value, custom_type_loaders, [_type_params_loader] = type_params_loaders ->
-      [type_loader] =
-        type_params_var_expansion(module, type_id, custom_type_loaders, type_params, type_params_loaders, type_vars)
+      [type_loader] = type_params_var_expansion(module, type_id, type_params, type_params_loaders, type_vars)
 
-      type_loader.(value, [type_loader])
+      type_loader.(value, custom_type_loaders, [type_loader])
     end
 
     maybe_custom_loader({module, type_id, length(type_vars)}, default_loader)
@@ -210,10 +209,9 @@ defmodule DataSpec.Typespecs do
     #     [{:var, 9, :x}]
 
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      type_params_loaders =
-        type_params_var_expansion(module, type_id, custom_type_loaders, type_params, type_params_loaders, type_vars)
+      type_params_loaders = type_params_var_expansion(module, type_id, type_params, type_params_loaders, type_vars)
 
-      Loaders.union(value, type_params_loaders)
+      Loaders.union(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, length(type_vars)}, default_loader)
@@ -226,8 +224,8 @@ defmodule DataSpec.Typespecs do
     #   erlang abstract type format:
     #     {:type, 0, nil, []}
 
-    default_loader = fn value, _custom_type_loaders, type_params_loaders ->
-      Loaders.empty_list(value, type_params_loaders)
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loaders.empty_list(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -244,10 +242,9 @@ defmodule DataSpec.Typespecs do
     #     []
 
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      type_params_loaders =
-        type_params_var_expansion(module, type_id, custom_type_loaders, type_params, type_params_loaders, type_vars)
+      type_params_loaders = type_params_var_expansion(module, type_id, type_params, type_params_loaders, type_vars)
 
-      Loaders.list(value, type_params_loaders)
+      Loaders.list(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, length(type_vars)}, default_loader)
@@ -273,10 +270,9 @@ defmodule DataSpec.Typespecs do
       end
 
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      type_params_loaders =
-        type_params_var_expansion(module, type_id, custom_type_loaders, type_params, type_params_loaders, type_vars)
+      type_params_loaders = type_params_var_expansion(module, type_id, type_params, type_params_loaders, type_vars)
 
-      Loaders.nonempty_list(value, type_params_loaders)
+      Loaders.nonempty_list(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, length(type_vars)}, default_loader)
@@ -293,10 +289,9 @@ defmodule DataSpec.Typespecs do
     #     [{:var, 4, :x}, {:var, 4, :y}]
 
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      type_params_loaders =
-        type_params_var_expansion(module, type_id, custom_type_loaders, type_params, type_params_loaders, type_vars)
+      type_params_loaders = type_params_var_expansion(module, type_id, type_params, type_params_loaders, type_vars)
 
-      Loaders.tuple(value, type_params_loaders)
+      Loaders.tuple(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, length(type_vars)}, default_loader)
@@ -351,8 +346,8 @@ defmodule DataSpec.Typespecs do
     #   erlang abstract type format:
     #     {:type, 36, :map, []}
 
-    default_loader = fn value, _custom_type_loaders, type_params_loaders ->
-      Loaders.empty_map(value, type_params_loaders)
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loaders.empty_map(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -379,13 +374,12 @@ defmodule DataSpec.Typespecs do
               type_params_var_expansion(
                 module,
                 type_id,
-                custom_type_loaders,
                 type_params,
                 type_params_loaders,
                 type_vars
               )
 
-            {value_rest, value_processed_new} = Loaders.map_field_required(value_rest, type_params)
+            {value_rest, value_processed_new} = Loaders.map_field_required(value_rest, custom_type_loaders, type_params)
             {value_rest, Map.merge(value_processed, value_processed_new)}
         end)
 
@@ -396,13 +390,12 @@ defmodule DataSpec.Typespecs do
               type_params_var_expansion(
                 module,
                 type_id,
-                custom_type_loaders,
                 type_params,
                 type_params_loaders,
                 type_vars
               )
 
-            {value_rest, value_processed_new} = Loaders.map_field_optional(value_rest, type_params)
+            {value_rest, value_processed_new} = Loaders.map_field_optional(value_rest, custom_type_loaders, type_params)
             {value_rest, Map.merge(value_processed, value_processed_new)}
         end)
 
@@ -424,8 +417,7 @@ defmodule DataSpec.Typespecs do
     #     {:user_type, 6, :t_user_type_param, [{:type, 6, :integer, []}, {:type, 6, :integer, []}]}
 
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      type_params_loaders =
-        type_params_var_expansion(module, type_id, custom_type_loaders, type_params, type_params_loaders, type_vars)
+      type_params_loaders = type_params_var_expansion(module, type_id, type_params, type_params_loaders, type_vars)
 
       type_loader = loader(module, type_id, length(type_params))
       type_loader.(value, custom_type_loaders, type_params_loaders)
@@ -451,7 +443,6 @@ defmodule DataSpec.Typespecs do
         type_params_var_expansion(
           remote_module,
           remote_type,
-          custom_type_loaders,
           remote_type_params,
           type_params_loaders,
           type_vars
@@ -487,7 +478,7 @@ defmodule DataSpec.Typespecs do
     end
   end
 
-  defp type_params_var_expansion(module, type_id, custom_type_loaders, type_params, type_params_loaders, type_vars) do
+  defp type_params_var_expansion(module, type_id, type_params, type_params_loaders, type_vars) do
     if length(type_vars) != length(type_params_loaders) do
       raise "Wrong number of type params for #{module}.#{type_id}/#{length(type_vars)}, got #{length(type_params_loaders)}"
     end
@@ -497,18 +488,10 @@ defmodule DataSpec.Typespecs do
       |> Enum.zip(type_params_loaders)
       |> Map.new()
 
-    type_params
-    |> Enum.map(fn
+    Enum.map(type_params, fn
       {:var, _, _} = var -> Map.fetch!(type_vars_2_loader, var)
       {literal_type, 0, _literal} = eatf -> eatf_loader(module, literal_type, eatf, [])
       {_, _, type_id, _} = eatf -> eatf_loader(module, type_id, eatf, [])
-    end)
-    |> Enum.map(fn loader ->
-      if is_function(loader, 2) do
-        loader
-      else
-        &loader.(&1, custom_type_loaders, &2)
-      end
     end)
   end
 end
