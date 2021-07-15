@@ -1,12 +1,7 @@
 defmodule DataSpec.Loaders do
-  alias DataSpec.Error
+  @moduledoc false
 
-  def literal(literal, value, _custom_type_loaders, _type_params_loaders) do
-    case value do
-      ^literal -> value
-      _ -> raise Error, "can't convert #{inspect(value)} to literal #{inspect(literal)}"
-    end
-  end
+  alias DataSpec.Error
 
   def any(value, _custom_type_loaders, _type_params_loaders) do
     value
@@ -14,85 +9,129 @@ defmodule DataSpec.Loaders do
 
   def atom(value, _custom_type_loaders, _type_params_loaders) do
     case value do
-      value when is_atom(value) -> value
-      _ -> raise Error, "can't convert #{inspect(value)} to an atom"
+      value when is_atom(value) ->
+        value
+
+      value when is_binary(value) ->
+        try do
+          String.to_existing_atom(value)
+        rescue
+          ArgumentError ->
+            reraise Error, [message: "can't convert #{inspect(value)} to an existing atom"], __STACKTRACE__
+        end
+
+      _ ->
+        raise Error, "can't convert #{inspect(value)} to an atom"
     end
   end
 
   def boolean(value, _custom_type_loaders, _type_params_loaders) do
     case value do
-      value when is_boolean(value) -> value
-      _ -> raise Error, "can't convert #{inspect(value)} to a boolean"
+      value when is_boolean(value) ->
+        value
+
+      _ ->
+        raise Error, "can't convert #{inspect(value)} to a boolean"
     end
   end
 
   def binary(value, _custom_type_loaders, _type_params_loaders) do
     case value do
-      value when is_binary(value) -> value
-      _ -> raise Error, "can't convert #{inspect(value)} to a binary"
+      value when is_binary(value) ->
+        value
+
+      _ ->
+        raise Error, "can't convert #{inspect(value)} to a binary"
     end
   end
 
   def pid(value, _custom_type_loaders, _type_params_loaders) do
     case value do
-      value when is_pid(value) -> value
-      _ -> raise Error, "can't convert #{inspect(value)} to a pid"
+      value when is_pid(value) ->
+        value
+
+      _ ->
+        raise Error, "can't convert #{inspect(value)} to a pid"
     end
   end
 
   def reference(value, _custom_type_loaders, _type_params_loaders) do
     case value do
-      value when is_reference(value) -> value
-      _ -> raise Error, "can't convert #{inspect(value)} to a reference"
+      value when is_reference(value) ->
+        value
+
+      _ ->
+        raise Error, "can't convert #{inspect(value)} to a reference"
     end
   end
 
   def number(value, _custom_type_loaders, _type_params_loaders) do
     case value do
-      value when is_number(value) -> value
-      _ -> raise Error, "can't convert #{inspect(value)} to a number"
+      value when is_number(value) ->
+        value
+
+      _ ->
+        raise Error, "can't convert #{inspect(value)} to a number"
     end
   end
 
   def float(value, _custom_type_loaders, _type_params_loaders) do
     case value do
-      value when is_number(value) -> :erlang.float(value)
-      _ -> raise Error, "can't convert #{inspect(value)} to a float"
+      value when is_number(value) ->
+        :erlang.float(value)
+
+      _ ->
+        raise Error, "can't convert #{inspect(value)} to a float"
     end
   end
 
   def integer(value, _custom_type_loaders, _type_params_loaders) do
     case value do
-      value when is_integer(value) -> value
-      _ -> raise Error, "can't convert #{inspect(value)} to an integer"
+      value when is_integer(value) ->
+        value
+
+      _ ->
+        raise Error, "can't convert #{inspect(value)} to an integer"
     end
   end
 
   def neg_integer(value, _custom_type_loaders, _type_params_loaders) do
     case value do
-      value when is_integer(value) and value < 0 -> value
-      _ -> raise Error, "can't convert #{inspect(value)} to a neg_integer"
+      value when is_integer(value) and value < 0 ->
+        value
+
+      _ ->
+        raise Error, "can't convert #{inspect(value)} to a neg_integer"
     end
   end
 
   def non_neg_integer(value, _custom_type_loaders, _type_params_loaders) do
     case value do
-      value when is_integer(value) and value >= 0 -> value
-      _ -> raise Error, "can't convert #{inspect(value)} to a non_neg_integer"
+      value when is_integer(value) and value >= 0 ->
+        value
+
+      _ ->
+        raise Error, "can't convert #{inspect(value)} to a non_neg_integer"
     end
   end
 
   def pos_integer(value, _custom_type_loaders, _type_params_loaders) do
     case value do
-      value when is_integer(value) and value > 0 -> value
-      _ -> raise Error, "can't convert #{inspect(value)} to a pos_integer"
+      value when is_integer(value) and value > 0 ->
+        value
+
+      _ ->
+        raise Error, "can't convert #{inspect(value)} to a pos_integer"
     end
   end
 
   def range(lower, upper, value, _custom_type_loaders, _type_params_loaders) do
     case value do
-      value when is_integer(value) and lower <= value and value <= upper -> value
-      _ -> raise Error, "can't convert #{inspect(value)} to a range of #{inspect(lower..upper)}"
+      value when is_integer(value) and lower <= value and value <= upper ->
+        value
+
+      _ ->
+        raise Error, "can't convert #{inspect(value)} to a range of #{inspect(lower..upper)}"
     end
   end
 
@@ -107,22 +146,31 @@ defmodule DataSpec.Loaders do
       end
     end)
     |> case do
-      {:ok, res} -> res
-      :error -> raise Error, "can't convert #{inspect(value)} to a union"
+      {:ok, res} ->
+        res
+
+      :error ->
+        raise Error, "can't convert #{inspect(value)} to a union"
     end
   end
 
   def empty_list(value, _custom_type_loaders, _type_params_loaders) do
     case value do
-      [] -> value
-      _ -> raise Error, "can't convert #{inspect(value)} to an empty list"
+      [] ->
+        value
+
+      _ ->
+        raise Error, "can't convert #{inspect(value)} to an empty list"
     end
   end
 
   def nonempty_list(value, _custom_type_loaders, _type_params_loaders) do
     case value do
-      [_ | _] -> value
-      _ -> raise Error, "can't convert #{inspect(value)} to a non empty list"
+      [_ | _] ->
+        value
+
+      _ ->
+        raise Error, "can't convert #{inspect(value)} to a non empty list"
     end
   end
 
@@ -138,8 +186,11 @@ defmodule DataSpec.Loaders do
 
   def list(value, custom_type_loaders, [type_params_loader]) do
     case value do
-      value when is_list(value) -> Enum.map(value, &type_params_loader.(&1, custom_type_loaders, []))
-      _ -> raise Error, "can't convert #{inspect(value)} to a list"
+      value when is_list(value) ->
+        Enum.map(value, &type_params_loader.(&1, custom_type_loaders, []))
+
+      _ ->
+        raise Error, "can't convert #{inspect(value)} to a list"
     end
   end
 

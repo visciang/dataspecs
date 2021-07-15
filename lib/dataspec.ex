@@ -1,4 +1,6 @@
 defmodule DataSpec do
+  @moduledoc File.read!("README.md")
+
   use Application
   alias DataSpec.{Error, Typespecs}
 

@@ -18,11 +18,11 @@ defmodule DataSpec.Mixfile do
     ]
   end
 
-  defp description() do
-    "Provides structured parsing of JSON-like data based on modules' Typespecs."
+  defp description do
+    "Provides structured parsing of data based on Typespecs."
   end
 
-  defp package() do
+  defp package do
     [
       name: "dataspec",
       licenses: ["MIT"],
@@ -47,7 +47,8 @@ defmodule DataSpec.Mixfile do
     [
       {:excoveralls, "~> 0.12", only: :test},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
-      {:ex_doc, "~> 0.21", only: :dev}
+      {:ex_doc, "~> 0.21", only: :dev},
+      {:credo, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
 

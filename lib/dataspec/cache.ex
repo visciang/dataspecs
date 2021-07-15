@@ -1,4 +1,6 @@
 defmodule DataSpec.Cache do
+  @moduledoc false
+
   use GenServer
 
   @name __MODULE__

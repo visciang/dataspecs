@@ -38,9 +38,12 @@ jobs:
 
       - name: Lint format
         run: mix format --check-formatted
-      
+
       - name: Lint dialyzer
         run: mix dialyzer --no-check
+
+      - name: Lint credo
+        run: mix credo --all --strict
 
       - name: Test
         env:

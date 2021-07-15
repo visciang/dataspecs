@@ -1,4 +1,6 @@
 defmodule DataSpec.Typespecs do
+  @moduledoc false
+
   alias DataSpec.{Cache, Error, Loaders}
 
   require Logger
@@ -59,7 +61,13 @@ defmodule DataSpec.Typespecs do
   @literal_types [:atom, :integer]
   defp eatf_loader(module, type_id, {literal_type, 0, literal}, []) when literal_type in @literal_types do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loaders.literal(literal, value, custom_type_loaders, type_params_loaders)
+      converted_value = apply(Loaders, literal_type, [value, custom_type_loaders, type_params_loaders])
+
+      if converted_value != literal do
+        raise Error, "value #{inspect(value)} doesn't match literal value #{literal}"
+      end
+
+      converted_value
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -177,7 +185,7 @@ defmodule DataSpec.Typespecs do
     maybe_custom_loader({module, type_id, 0}, default_loader)
   end
 
-  defp eatf_loader(module, type_id, {:var, _lineno, _id} = var, [var] = type_vars) do
+  defp eatf_loader(module, type_id, {:var, _lineno, _var_id} = var, [var] = type_vars) do
     # Example:
     #   @type t(x) :: x
     #
@@ -345,8 +353,8 @@ defmodule DataSpec.Typespecs do
       try do
         struct!(module, map)
       rescue
-        err in [ArgumentError] ->
-          raise Error, err.message
+        exception in [ArgumentError] ->
+          reraise Error, [message: exception.message], __STACKTRACE__
       end
     end
 
@@ -469,6 +477,8 @@ defmodule DataSpec.Typespecs do
     maybe_custom_loader({module, type_id, length(type_vars)}, default_loader)
   end
 
+  # coveralls-ignore-start
+
   defp eatf_loader(module, type_id, eatf, type_params) do
     err_type_ref = "#{inspect(module)}.#{type_id}/#{length(type_params)}"
     err_eaf = "erl_abstract_format: #{inspect(eatf)}"
@@ -481,6 +491,8 @@ defmodule DataSpec.Typespecs do
       raise Error, err_message
     end
   end
+
+  # coveralls-ignore-end
 
   defp maybe_custom_loader(
          {_module, _type, _arity} = type_ref,
@@ -503,9 +515,17 @@ defmodule DataSpec.Typespecs do
       |> Map.new()
 
     Enum.map(type_params, fn
-      {:var, _, _} = var -> Map.fetch!(type_vars_2_loader, var)
-      {literal_type, 0, _literal} = eatf -> eatf_loader(module, literal_type, eatf, [])
-      {_, _, type_id, _} = eatf -> eatf_loader(module, type_id, eatf, [])
+      {:var, _lineno, _var_id} = var ->
+        Map.fetch!(type_vars_2_loader, var)
+
+      {literal_type, 0, _literal} = eatf ->
+        eatf_loader(module, literal_type, eatf, [])
+
+      {type, _lineno, type_id, _type_params} = eatf when type in [:type, :typep, :user_type] ->
+        eatf_loader(module, type_id, eatf, [])
+
+      {:remote_type, _lineno, [{:atom, _, remote_module}, {:atom, _, remote_type_id}, remote_type_params]} = eatf ->
+        eatf_loader(remote_module, remote_type_id, eatf, remote_type_params)
     end)
   end
 end

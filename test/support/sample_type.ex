@@ -1,10 +1,13 @@
 defmodule Test.DataSpec.SampleType do
+  @moduledoc false
+
   @type t_literal_atom :: :a
   @type t_literal_integer :: 1
 
   @type t_range :: 1..10
 
   @type t_any :: any()
+  @type t_term :: term()
   @type t_pid :: pid()
   @type t_reference :: reference()
   @type t_atom :: atom()
@@ -56,6 +59,9 @@ defmodule Test.DataSpec.SampleType do
 
   @type t_recursive :: atom() | %{recursive: t_recursive()}
 
+  @type t_reference_to_private_type :: t_private()
+  @typep t_private() :: atom()
+
   @opaque t_opaque(x) :: {x, float()}
 
   # CURRENTLY NOT IMPLEMENTED TYPES
@@ -80,15 +86,20 @@ defmodule Test.DataSpec.SampleType do
 end
 
 defmodule Test.DataSpec.SampleRemoteModuleType do
+  @moduledoc false
+
   @type t_remote(x) :: x | atom()
 end
 
 defmodule Test.DataSpec.SampleStructType do
+  @moduledoc false
+
   @enforce_keys [:f_1]
-  defstruct [:f_1, :f_2]
+  defstruct [:f_1, :f_2, :f_3, :f_4]
 
   @type t :: %__MODULE__{
           f_1: atom(),
-          f_2: integer()
+          f_2: integer(),
+          f_3: String.t()
         }
 end

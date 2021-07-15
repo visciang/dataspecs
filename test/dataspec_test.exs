@@ -6,6 +6,14 @@ defmodule Test.DataSpec do
   @types_module Test.DataSpec.SampleType
   @types_struct_module Test.DataSpec.SampleStructType
 
+  test "unknown type in module" do
+    assert {:error, %Error{}} = DataSpec.load(:a, {@types_module, :this_type_does_not_exist})
+  end
+
+  test "not implemented type loader" do
+    assert {:error, %Error{}} = DataSpec.load(:a, {@types_module, :this_type_does_not_exist})
+  end
+
   test "literal" do
     assert {:ok, :a} == DataSpec.load(:a, {@types_module, :t_literal_atom})
     assert {:ok, 1} == DataSpec.load(1, {@types_module, :t_literal_integer})
@@ -17,6 +25,10 @@ defmodule Test.DataSpec do
     assert {:ok, {:test, 1, ["a", "b"], 1..2}} == DataSpec.load({:test, 1, ["a", "b"], 1..2}, {@types_module, :t_any})
   end
 
+  test "term" do
+    assert {:ok, {"a_term"}} == DataSpec.load({"a_term"}, {@types_module, :t_term})
+  end
+
   test "pid" do
     assert {:ok, self()} == DataSpec.load(self(), {@types_module, :t_pid})
     assert {:error, %Error{}} = DataSpec.load(1, {@types_module, :t_pid})
@@ -24,6 +36,7 @@ defmodule Test.DataSpec do
 
   test "atom" do
     assert {:ok, :test} == DataSpec.load(:test, {@types_module, :t_atom})
+    assert {:error, %Error{}} = DataSpec.load("this_is_a_non_existing_atom", {@types_module, :t_atom})
     assert {:error, %Error{}} = DataSpec.load(1, {@types_module, :t_atom})
   end
 
@@ -118,6 +131,7 @@ defmodule Test.DataSpec do
     integer = &Loaders.integer/3
     assert {:ok, %{}} == DataSpec.load(%{}, {@types_module, :t_empty_map})
     assert {:ok, %{required_key: 1}} == DataSpec.load(%{required_key: 1}, {@types_module, :t_map_0})
+    assert {:ok, %{required_key: 1}} == DataSpec.load(%{"required_key" => 1}, {@types_module, :t_map_0})
     assert {:ok, %{0 => :a}} == DataSpec.load(%{0 => :a}, {@types_module, :t_map_1})
     assert {:ok, %{0 => :a}} == DataSpec.load(%{0 => :a}, {@types_module, :t_map_2})
     assert {:ok, %{0 => :a, :b => 1}} == DataSpec.load(%{0 => :a, :b => 1}, {@types_module, :t_map_3})
@@ -142,10 +156,10 @@ defmodule Test.DataSpec do
   end
 
   test "struct" do
-    assert {:ok, %@types_struct_module{f_1: :a, f_2: 1}} ==
-             DataSpec.load(%{f_1: :a, f_2: 1}, {@types_struct_module, :t})
+    assert {:ok, %@types_struct_module{f_1: :a, f_2: 1, f_3: "s"}} ==
+             DataSpec.load(%{f_1: :a, f_2: 1, f_3: "s"}, {@types_struct_module, :t})
 
-    assert {:ok, %@types_struct_module{f_1: :a, f_2: nil}} ==
+    assert {:ok, %@types_struct_module{f_1: :a, f_2: nil, f_3: nil}} ==
              DataSpec.load(%{f_1: :a}, {@types_struct_module, :t})
 
     error_message = "the following keys must also be given when building struct Test.DataSpec.SampleStructType: [:f_1]"
@@ -184,7 +198,7 @@ defmodule Test.DataSpec do
             raise Error, "can't convert #{inspect(value)} to a MapSet.t/1"
 
           _ ->
-            MapSet.new(value, fn item -> type_params_loader.(item, custom_type_loaders, []) end)
+            MapSet.new(value, &type_params_loader.(&1, custom_type_loaders, []))
         end
       end,
       {DateTime, :t, 0} => fn value, _custom_type_loaders, [] ->
@@ -212,5 +226,9 @@ defmodule Test.DataSpec do
              DataSpec.load(["1", :a, 1], {@types_module, :t_mapset_1}, custom_type_loaders)
 
     assert {:ok, datetime} == DataSpec.load(iso_datetime_string, {@types_module, :t_datetime}, custom_type_loaders)
+  end
+
+  test "typep" do
+    assert {:ok, :a} == DataSpec.load(:a, {@types_module, :t_reference_to_private_type})
   end
 end
