@@ -13,6 +13,8 @@ you data as JSON or MessagePack, but that you wish to transform into either
 proper structs or richer data types without a native JSON representation
 (such as dates or sets) in your application.
 
+## Usage
+
 ```elixir
 defmodule User do
   defstruct [:id, :name, :age, :gender]
@@ -30,14 +32,15 @@ DataSpec.load!(%{"id" => "1", "name" => "Fredrik", "age" => 30, "gender" => :mal
 ```
 
 DataSpec tries to figure out how to translate its input to a typespec.
-Some types can be simply mapped one to one, all the scalar types such as
-booleans, integers, etc. and some composite types such as lists, plain maps.
 
-However, not all types have natural representations in JSON, for example dates,
-or don't want to expose their internals (opaque types).
+Scalar types (such as booleans, integers, etc.) and some composite types (such as lists, plain maps), can be simply mapped one to one after validation without any additional transformation. 
+
+However, not all Elixir types have natural representations in JSON-like data, for example dates, or don't want to expose their internals (opaque types).
+
+## Custom type loaders
 
 In these cases you can pass a set of custom type loaders along as an optional argument
-to the DataSpec.load function
+to the `DataSpec.load` function
 
 ```elixir
 defmodule LogRow do
@@ -76,7 +79,7 @@ DataSpec.load!(
 The type of the custom loader function is
 
 ```elixir
-(value(), custom_type_loaders(), [type_params_loader] -> value())
+(value(), custom_type_loaders(), [type_params_loader()] -> value())
 ```
 
 for example a custom `MapSet.t/1` loader could be implement as:
@@ -94,9 +97,8 @@ end
 ```
 
 The custom loader take the input value, check it's enumerable and then builds a `MapSet`
-over the items of the input value.
-Like every loader it takes, as the last argument, a list of type_params_loader associated
-with the type parameters (in this case an `integer()` loader since we have a `MapSet.t(integer())`)
+over the items of the input value. It takes as argument a list of `type_params_loader()` associated
+with the type parameters.
 
 For example, let's say we have:
 
@@ -104,7 +106,7 @@ For example, let's say we have:
 @type my_set_of_integer :: MapSet.t(integer())
 ```
 
-and the input value:
+and an input value:
 
 
 ```elixir
