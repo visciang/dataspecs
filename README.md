@@ -2,7 +2,7 @@
 
 ![CI](https://github.com/visciang/dataspec/workflows/CI/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/visciang/dataspec/badge.svg?branch=master)](https://coveralls.io/github/visciang/dataspec?branch=master)
 
-Typespec based data loader (and validator) for Elixir.
+Typespec based data loader (and validator) for Elixir (inspired by [forma](https://github.com/soundtrackyourbrand/forma)).
 
 DataSpec can validate and load elixir data into a more structured form
 by trying to map it to conform to a typespec.
