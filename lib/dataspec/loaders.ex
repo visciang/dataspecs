@@ -247,7 +247,7 @@ defmodule DataSpec.Loaders do
 
   def tuple(value, custom_type_loaders, type_params_loaders) do
     case value do
-      value when is_tuple(value) ->
+      value when is_tuple(value) and tuple_size(value) == length(type_params_loaders) ->
         value
         |> Tuple.to_list()
         |> Enum.zip(type_params_loaders)

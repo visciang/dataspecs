@@ -39,6 +39,7 @@ defmodule Test.DataSpec.SampleType do
   @type t_map_1 :: %{integer() => atom()}
   @type t_map_2 :: %{required(integer()) => atom()}
   @type t_map_3 :: %{required(integer()) => atom(), optional(atom()) => integer()}
+  @type t_map_4 :: %{integer() => %{atom() => boolean()}}
   @type t_map_param(x) :: %{x => atom()}
 
   @type t_union_0(x) :: x | atom() | integer()

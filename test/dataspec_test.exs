@@ -188,7 +188,7 @@ defmodule Test.DataSpec do
 
   describe "tuple" do
     test "ok" do
-      assert {:ok, {}} == DataSpec.load({}, {@types_module, :t_tuple})
+      assert {:ok, {}} == DataSpec.load({}, {@types_module, :t_empty_tuple})
       assert {:ok, {1, 2}} == DataSpec.load({1, 2}, {@types_module, :t_tuple})
       assert {:ok, {1, "a"}} == DataSpec.load({1, "a"}, {@types_module, :t_tuple_any_size})
     end
@@ -196,6 +196,7 @@ defmodule Test.DataSpec do
     test "error" do
       assert {:error, %Error{}} = DataSpec.load(nil, {@types_module, :t_tuple})
       assert {:error, %Error{}} = DataSpec.load({:a, 2}, {@types_module, :t_tuple})
+      assert {:error, %Error{}} = DataSpec.load({1, 2, 3}, {@types_module, :t_tuple})
       assert {:error, %Error{}} = DataSpec.load(:not_a_tuple, {@types_module, :t_tuple_any_size})
     end
   end
@@ -209,6 +210,10 @@ defmodule Test.DataSpec do
       assert {:ok, %{0 => :a}} == DataSpec.load(%{0 => :a}, {@types_module, :t_map_1})
       assert {:ok, %{0 => :a}} == DataSpec.load(%{0 => :a}, {@types_module, :t_map_2})
       assert {:ok, %{0 => :a, :b => 1}} == DataSpec.load(%{0 => :a, :b => 1}, {@types_module, :t_map_3})
+
+      assert {:ok, %{0 => %{a: true}, 1 => %{b: false}}} ==
+               DataSpec.load(%{0 => %{a: true}, 1 => %{b: false}}, {@types_module, :t_map_4})
+
       assert {:ok, %{0 => :a}} == DataSpec.load(%{0 => :a}, {@types_module, :t_map_param}, %{}, [integer])
     end
 
