@@ -48,8 +48,8 @@ defmodule Test.DataSpec.SampleType do
   @type t_user_type_param_1(x, y) :: {integer(), x, y}
   @type t_user_type_param_2(x) :: x
 
-  @type t_arity :: atom()
-  @type t_arity(x) :: x
+  @type t_type_arity :: atom()
+  @type t_type_arity(x) :: x
 
   @type t_remote_type(x) :: Test.DataSpec.SampleRemoteModuleType.t_remote(x)
   @type t_remote_type_string :: String.t()

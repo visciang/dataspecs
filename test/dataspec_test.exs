@@ -230,10 +230,10 @@ defmodule Test.DataSpec do
     assert {:ok, 1} == DataSpec.load(1, {@types_module, :t_user_type_param_2}, %{}, [integer])
   end
 
-  test "same type name with differnt arities" do
+  test "same type name with different arities" do
     atom = &Loaders.atom/3
-    assert {:ok, :test} == DataSpec.load(:test, {@types_module, :t_arity})
-    assert {:ok, :test} == DataSpec.load(:test, {@types_module, :t_arity}, %{}, [atom])
+    assert {:ok, :test} == DataSpec.load(:test, {@types_module, :t_type_arity})
+    assert {:ok, :test} == DataSpec.load(:test, {@types_module, :t_type_arity}, %{}, [atom])
   end
 
   describe "struct" do
