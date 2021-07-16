@@ -54,7 +54,6 @@ defmodule Test.DataSpec do
 
     test "error" do
       assert {:error, %Error{}} = DataSpec.load("this_is_a_non_existing_atom", {@types_module, :t_atom})
-      assert {:error, %Error{}} = DataSpec.load(1, {@types_module, :t_atom})
     end
   end
 
@@ -304,6 +303,8 @@ defmodule Test.DataSpec do
 end
 
 defmodule Test.DataSpec.CustomLoader do
+  alias DataSpec.Error
+
   def opaque(value, custom_type_loaders, [type_params_loader]) do
     {:custom_opaque, type_params_loader.(value, custom_type_loaders, [])}
   end
