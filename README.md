@@ -2,16 +2,18 @@
 
 ![CI](https://github.com/visciang/dataspec/workflows/CI/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/visciang/dataspec/badge.svg?branch=master)](https://coveralls.io/github/visciang/dataspec?branch=master)
 
-Typespec based data loader (and validator) for Elixir (inspired by [forma](https://github.com/soundtrackyourbrand/forma)).
+Typespec based data loader and validator (inspired by [forma](https://github.com/soundtrackyourbrand/forma)).
 
-DataSpec can validate and load elixir data into a more structured form
-by trying to map it to conform to a typespec.
+DataSpec **validate and load** elixir data into a more structured form
+by trying to map it to conform to a **typespec**. It support most typespec
+specification: basic types, literal types, built-in types, union type,
+parametrized types, maps, remote types and user defined types.
 
-It can be simply used to validate some elixir data against a typespec or it
+It can be used to validate some elixir data against a typespec or it
 can be useful when interfacing with external data sources that provide
-you data as JSON or MessagePack, but that you wish to transform into either
-proper structs or richer data types without a native JSON representation
-(such as dates or sets) in your application.
+you data as JSON or MessagePack, but that you wish to validate transform
+into either proper structs or richer data types without a native
+JSON representation (such as dates or sets) in your application.
 
 ## Usage
 
@@ -23,12 +25,14 @@ defmodule User do
     id: String.t(),
     name: String.t(),
     age: non_neg_integer(),
-    gender: :male | :female | :other | :prefer_not_to_say
+    gender: opt(:male | :female | :other)
   }
+
+  @type opt(x) :: nil | x
 end
 
 DataSpec.load!(%{"id" => "1", "name" => "Fredrik", "age" => 30, "gender" => :male}, {User, :t})
-# => %User{id: "1", name: "Fredrik", age: 30, gender: :male}
+# => %User{age: 30, gender: :male, id: "1", name: "Fredrik"}
 ```
 
 DataSpec tries to figure out how to translate its input to a typespec.
@@ -120,3 +124,35 @@ custom_mapset_loader(1..10, custom_type_loaders, [&builtin_integer_loader/3])
 ```
 
 Refer to the library test suite for more examples.
+
+## Validators
+
+Custom validation rules can be defined with a custom type loader.
+
+For example let's say than we want to validate a field of type string to be in upcase form:
+
+```elixir
+defmodule AStruct do
+  defstruct [:field]
+
+  @type t :: %__MODULE__{
+    field: field()
+  }
+
+  @type field :: String.t()
+
+  def custom_field_loader(value, custom_type_loaders, type_params_loaders) do
+    name = DataSpec.Loaders.binary(value, custom_type_loaders, type_params_loaders)
+
+    if name == String.upcase(name) do
+      name
+    else
+      raise DataSpecError, "#{inspect(value)} is not an upcase string"
+    end
+  end
+end
+
+DataSpec.load!(%{field: "AAA"}, {AStruct, :t}, %{{AStruct, :field, 0} => &AStruct.custom_field_loader/3})
+# => %AStruct{field: "AAA"}
+```
+
