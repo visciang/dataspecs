@@ -131,7 +131,7 @@ defmodule DataSpec.Loaders do
         value
 
       _ ->
-        raise Error, "can't convert #{inspect(value)} to a range of #{inspect(lower..upper)}"
+        raise Error, "can't convert #{inspect(value)} to a range #{inspect(lower..upper)}"
     end
   end
 
@@ -246,15 +246,20 @@ defmodule DataSpec.Loaders do
   end
 
   def tuple(value, custom_type_loaders, type_params_loaders) do
-    case value do
-      value when is_tuple(value) and tuple_size(value) == length(type_params_loaders) ->
+    tuple_type_size = length(type_params_loaders)
+
+    cond do
+      is_tuple(value) and tuple_size(value) == tuple_type_size ->
         value
         |> Tuple.to_list()
         |> Enum.zip(type_params_loaders)
         |> Enum.map(fn {item, loader} -> loader.(item, custom_type_loaders, []) end)
         |> List.to_tuple()
 
-      _ ->
+      is_tuple(value) ->
+        raise Error, "can't convert #{inspect(value)} to a tuple of size #{tuple_type_size}"
+
+      true ->
         raise Error, "can't convert #{inspect(value)} to a tuple"
     end
   end
