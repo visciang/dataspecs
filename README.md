@@ -156,3 +156,72 @@ DataSpec.load!(%{field: "AAA"}, {AStruct, :t}, %{{AStruct, :field, 0} => &AStruc
 # => %AStruct{field: "AAA"}
 ```
 
+## Type coercion
+
+The following types coercion are applied:
+
+### float()
+
+`integer() -> float()`
+
+Example:
+
+```elixir
+# ---
+1
+# to
+1.0
+```
+
+### struct()
+
+`map() -> struct()`
+
+Example:
+
+```elixir
+defmodule AStruct do
+  defstruct [:field]
+
+  @type t :: %__MODULE__{
+    a: binary(),
+    b: binary()
+  }
+
+# ---
+%{a: "1", b: "2"}
+# to
+%AStruct{a: "1", b: "2"}
+```
+
+### map/struct keys
+
+`map / struct binary() keys -> existing atom()`
+
+Example:
+
+```elixir
+
+@type a_map :: %{
+        a: binary,
+        b: binary
+      }
+
+# ---
+%{"a" => "1", "b" => "2"}
+# to
+%{a: "1", b: "2"}
+```
+
+### atom()
+
+`binary() -> existing atom()`
+
+Example:
+
+```elixir
+# ---
+"bin"
+# to
+:bin
+```
