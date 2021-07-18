@@ -220,6 +220,7 @@ defmodule Test.DataSpec do
     test "error" do
       assert {:error, %Error{}} = DataSpec.load(%{a: 1}, {@types_module, :t_empty_map})
       assert {:error, %Error{}} = DataSpec.load(:a, {@types_module, :t_map_0})
+      assert {:error, %Error{}} = DataSpec.load(%{required_key_missing: 1}, {@types_module, :t_map_0})
       assert {:error, %Error{}} = DataSpec.load(%{:b => 1}, {@types_module, :t_map_3})
       assert {:error, %Error{}} = DataSpec.load(%{0 => :a, :b => 1, 1.1 => 1}, {@types_module, :t_map_3})
     end
