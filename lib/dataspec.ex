@@ -15,7 +15,8 @@ defmodule DataSpec do
   def load(value, {module, type_id}, custom_type_loaders \\ %{}, type_params_loaders \\ []) do
     {:ok, load!(value, {module, type_id}, custom_type_loaders, type_params_loaders)}
   rescue
-    err in Error -> {:error, err}
+    err in Error ->
+      {:error, err}
   end
 
   @spec load!(value(), type_ref(), custom_type_loaders(), [type_params_loader()]) :: value()

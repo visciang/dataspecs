@@ -22,8 +22,9 @@ defmodule Test.DataSpec do
     end
 
     test "error" do
-      assert {:error, %Error{}} = DataSpec.load(1, {@types_module, :t_literal_atom})
-      assert {:error, %Error{}} = DataSpec.load(:a, {@types_module, :t_literal_integer})
+      assert {:error, %Error{}} = DataSpec.load(:a_different_literal_atom, {@types_module, :t_literal_atom})
+      assert {:error, %Error{}} = DataSpec.load("not an atom", {@types_module, :t_literal_atom})
+      assert {:error, %Error{}} = DataSpec.load(:not_an_integer, {@types_module, :t_literal_integer})
     end
   end
 
