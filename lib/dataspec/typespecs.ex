@@ -12,7 +12,7 @@ defmodule DataSpec.Typespecs do
         Cache.set(type_loaders)
 
         Cache.get(module, type_id, type_arity) ||
-          raise Error, "Unknown type #{inspect(module)}.#{type_id}/#{type_arity}"
+          raise Error, errors: ["Unknown type #{inspect(module)}.#{type_id}/#{type_arity}"]
 
       type_loader ->
         type_loader
@@ -52,7 +52,7 @@ defmodule DataSpec.Typespecs do
     err_type_ref = "#{inspect(module)}.#{type_id}/#{length(type_vars)}"
 
     default_loader = fn _value, _custom_type_loaders, _type_params_loaders ->
-      raise Error, "Opaque type #{err_type_ref} has no custom type loader defined"
+      raise Error, errors: ["Opaque type #{err_type_ref} has no custom type loader defined"]
     end
 
     maybe_custom_loader({module, type_id, length(type_vars)}, default_loader)
@@ -64,7 +64,7 @@ defmodule DataSpec.Typespecs do
       converted_value = apply(Loaders, literal_type, [value, custom_type_loaders, type_params_loaders])
 
       if converted_value != literal do
-        raise Error, "value #{inspect(value)} doesn't match literal value #{literal}"
+        raise Error, errors: ["value #{inspect(value)} doesn't match literal value #{literal}"]
       end
 
       converted_value
@@ -354,7 +354,7 @@ defmodule DataSpec.Typespecs do
         struct!(module, map)
       rescue
         exception in [ArgumentError] ->
-          reraise Error, [message: exception.message], __STACKTRACE__
+          reraise Error, [errors: [exception.message]], __STACKTRACE__
       end
     end
 
@@ -389,9 +389,10 @@ defmodule DataSpec.Typespecs do
       Enum.split_with(kv_type_params, &match?({:type, _, :map_field_exact, _}, &1))
 
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      {value_rest, value_processed} =
-        Enum.reduce(kv_required_type_params, {value, %{}}, fn
-          {:type, _lineno, :map_field_exact, type_params}, {value_rest, value_processed} ->
+      {value_with_unprocessed_kv, value_with_optional_processed_kv} =
+        Enum.reduce(kv_optional_type_params, {value, %{}}, fn
+          {:type, _lineno, :map_field_assoc, [_key, _value] = type_params},
+          {value_with_unprocessed_kv, value_with_optional_processed_kv} ->
             type_params =
               type_params_var_expansion(
                 module,
@@ -401,13 +402,17 @@ defmodule DataSpec.Typespecs do
                 type_vars
               )
 
-            {value_rest, value_processed_new} = Loaders.map_field_required(value_rest, custom_type_loaders, type_params)
-            {value_rest, Map.merge(value_processed, value_processed_new)}
+            {value_with_unprocessed_kv, value_with_optional_processed_kv_new, _errors} =
+              Loaders.map_field_optional(value_with_unprocessed_kv, custom_type_loaders, type_params)
+
+            {value_with_unprocessed_kv,
+             Map.merge(value_with_optional_processed_kv, value_with_optional_processed_kv_new)}
         end)
 
-      {value_rest, value_processed} =
-        Enum.reduce(kv_optional_type_params, {value_rest, value_processed}, fn
-          {:type, _lineno, :map_field_assoc, type_params}, {value_rest, value_processed} ->
+      {value_with_unprocessed_kv, value_with_processed_kv, errors} =
+        Enum.reduce(kv_required_type_params, {value_with_unprocessed_kv, value_with_optional_processed_kv, []}, fn
+          {:type, _lineno, :map_field_exact, [_key, _value] = type_params},
+          {value_with_unprocessed_kv, value_with_processed_kv, map_errors} ->
             type_params =
               type_params_var_expansion(
                 module,
@@ -417,14 +422,21 @@ defmodule DataSpec.Typespecs do
                 type_vars
               )
 
-            {value_rest, value_processed_new} = Loaders.map_field_optional(value_rest, custom_type_loaders, type_params)
-            {value_rest, Map.merge(value_processed, value_processed_new)}
+            {value_with_unprocessed_kv, value_with_processed_kv_new, errors} =
+              Loaders.map_field_required(value_with_unprocessed_kv, custom_type_loaders, type_params)
+
+            {value_with_unprocessed_kv, Map.merge(value_with_processed_kv, value_with_processed_kv_new),
+             map_errors ++ errors}
         end)
 
-      if value_rest == %{} do
-        value_processed
+      if value_with_unprocessed_kv == %{} do
+        value_with_processed_kv
       else
-        raise Error, "can't convert #{inspect(value)} to a map, bad k/v #{inspect(value_rest)}"
+        raise Error,
+          errors: [
+            "can't convert #{inspect(value)} to a map, bad k/v pairs: #{inspect(value_with_unprocessed_kv)}",
+            errors
+          ]
       end
     end
 
@@ -488,16 +500,13 @@ defmodule DataSpec.Typespecs do
     Logger.info(err_message)
 
     fn _value, _custom_type_loaders, _type_params_loaders ->
-      raise Error, err_message
+      raise Error, errors: [err_message]
     end
   end
 
   # coveralls-ignore-end
 
-  defp maybe_custom_loader(
-         {_module, _type, _arity} = type_ref,
-         default_loader
-       ) do
+  defp maybe_custom_loader({_module, _type, _arity} = type_ref, default_loader) do
     fn value, custom_type_loaders, type_params_loaders ->
       loader = Map.get(custom_type_loaders, type_ref, default_loader)
       loader.(value, custom_type_loaders, type_params_loaders)

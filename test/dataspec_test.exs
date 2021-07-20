@@ -224,6 +224,8 @@ defmodule Test.DataSpec do
       assert {:error, %Error{}} = DataSpec.load(%{required_key_missing: 1}, {@types_module, :t_map_0})
       assert {:error, %Error{}} = DataSpec.load(%{:b => 1}, {@types_module, :t_map_3})
       assert {:error, %Error{}} = DataSpec.load(%{0 => :a, :b => 1, 1.1 => 1}, {@types_module, :t_map_3})
+
+      assert {:error, %Error{}} = DataSpec.load(%{0 => %{a: true}, 1 => %{b: "not a bool"}}, {@types_module, :t_map_4})
     end
   end
 
@@ -256,7 +258,7 @@ defmodule Test.DataSpec do
       error_message =
         "the following keys must also be given when building struct Test.DataSpec.SampleStructType: [:f_1]"
 
-      assert {:error, %DataSpec.Error{message: ^error_message}} = DataSpec.load(%{}, {@types_struct_module, :t})
+      assert {:error, %DataSpec.Error{errors: [^error_message]}} = DataSpec.load(%{}, {@types_struct_module, :t})
     end
   end
 
@@ -319,7 +321,7 @@ defmodule Test.DataSpec.CustomLoader do
   def mapset(value, custom_type_loaders, [type_params_loader]) do
     case Enumerable.impl_for(value) do
       nil ->
-        raise Error, "can't convert #{inspect(value)} to a MapSet.t/1"
+        raise Error, errors: ["can't convert #{inspect(value)} to a MapSet.t/1"]
 
       _ ->
         MapSet.new(value, &type_params_loader.(&1, custom_type_loaders, []))
@@ -332,10 +334,10 @@ defmodule Test.DataSpec.CustomLoader do
       datetime
     else
       {:is_binary, false} ->
-        raise Error, "can't convert #{inspect(value)} to a DateTime.t/0"
+        raise Error, errors: ["can't convert #{inspect(value)} to a DateTime.t/0"]
 
       {:from_iso8601, {:error, reason}} ->
-        raise Error, "can't convert #{inspect(value)} to a DateTime.t/0 (#{inspect(reason)})"
+        raise Error, errors: ["can't convert #{inspect(value)} to a DateTime.t/0 (#{inspect(reason)})"]
     end
   end
 end

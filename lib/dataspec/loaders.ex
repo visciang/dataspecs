@@ -17,11 +17,11 @@ defmodule DataSpec.Loaders do
           String.to_existing_atom(value)
         rescue
           ArgumentError ->
-            reraise Error, [message: "can't convert #{inspect(value)} to an existing atom"], __STACKTRACE__
+            reraise Error, [errors: ["can't convert #{inspect(value)} to an existing atom"]], __STACKTRACE__
         end
 
       _ ->
-        raise Error, "can't convert #{inspect(value)} to an atom"
+        raise Error, errors: ["can't convert #{inspect(value)} to an atom"]
     end
   end
 
@@ -31,7 +31,7 @@ defmodule DataSpec.Loaders do
         value
 
       _ ->
-        raise Error, "can't convert #{inspect(value)} to a boolean"
+        raise Error, errors: ["can't convert #{inspect(value)} to a boolean"]
     end
   end
 
@@ -41,7 +41,7 @@ defmodule DataSpec.Loaders do
         value
 
       _ ->
-        raise Error, "can't convert #{inspect(value)} to a binary"
+        raise Error, errors: ["can't convert #{inspect(value)} to a binary"]
     end
   end
 
@@ -51,7 +51,7 @@ defmodule DataSpec.Loaders do
         value
 
       _ ->
-        raise Error, "can't convert #{inspect(value)} to a pid"
+        raise Error, errors: ["can't convert #{inspect(value)} to a pid"]
     end
   end
 
@@ -61,7 +61,7 @@ defmodule DataSpec.Loaders do
         value
 
       _ ->
-        raise Error, "can't convert #{inspect(value)} to a reference"
+        raise Error, errors: ["can't convert #{inspect(value)} to a reference"]
     end
   end
 
@@ -71,7 +71,7 @@ defmodule DataSpec.Loaders do
         value
 
       _ ->
-        raise Error, "can't convert #{inspect(value)} to a number"
+        raise Error, errors: ["can't convert #{inspect(value)} to a number"]
     end
   end
 
@@ -81,7 +81,7 @@ defmodule DataSpec.Loaders do
         :erlang.float(value)
 
       _ ->
-        raise Error, "can't convert #{inspect(value)} to a float"
+        raise Error, errors: ["can't convert #{inspect(value)} to a float"]
     end
   end
 
@@ -91,7 +91,7 @@ defmodule DataSpec.Loaders do
         value
 
       _ ->
-        raise Error, "can't convert #{inspect(value)} to an integer"
+        raise Error, errors: ["can't convert #{inspect(value)} to an integer"]
     end
   end
 
@@ -101,7 +101,7 @@ defmodule DataSpec.Loaders do
         value
 
       _ ->
-        raise Error, "can't convert #{inspect(value)} to a neg_integer"
+        raise Error, errors: ["can't convert #{inspect(value)} to a neg_integer"]
     end
   end
 
@@ -111,7 +111,7 @@ defmodule DataSpec.Loaders do
         value
 
       _ ->
-        raise Error, "can't convert #{inspect(value)} to a non_neg_integer"
+        raise Error, errors: ["can't convert #{inspect(value)} to a non_neg_integer"]
     end
   end
 
@@ -121,7 +121,7 @@ defmodule DataSpec.Loaders do
         value
 
       _ ->
-        raise Error, "can't convert #{inspect(value)} to a pos_integer"
+        raise Error, errors: ["can't convert #{inspect(value)} to a pos_integer"]
     end
   end
 
@@ -131,26 +131,26 @@ defmodule DataSpec.Loaders do
         value
 
       _ ->
-        raise Error, "can't convert #{inspect(value)} to a range #{inspect(lower..upper)}"
+        raise Error, errors: ["can't convert #{inspect(value)} to a range #{inspect(lower..upper)}"]
     end
   end
 
   def union(value, custom_type_loaders, type_params_loaders) do
     type_params_loaders
-    |> Enum.reduce_while(:error, fn loader, _ ->
+    |> Enum.reduce_while({:error, []}, fn loader, {:error, errors} ->
       try do
         {:halt, {:ok, loader.(value, custom_type_loaders, [])}}
       rescue
-        Error ->
-          {:cont, :error}
+        error in Error ->
+          {:cont, {:error, errors ++ error.errors}}
       end
     end)
     |> case do
       {:ok, res} ->
         res
 
-      :error ->
-        raise Error, "can't convert #{inspect(value)} to a union"
+      {:error, errors} ->
+        raise Error, errors: ["can't convert #{inspect(value)} to a union", errors]
     end
   end
 
@@ -160,7 +160,7 @@ defmodule DataSpec.Loaders do
         value
 
       _ ->
-        raise Error, "can't convert #{inspect(value)} to an empty list"
+        raise Error, errors: ["can't convert #{inspect(value)} to an empty list"]
     end
   end
 
@@ -170,27 +170,23 @@ defmodule DataSpec.Loaders do
         value
 
       _ ->
-        raise Error, "can't convert #{inspect(value)} to a non empty list"
+        raise Error, errors: ["can't convert #{inspect(value)} to a non empty list"]
     end
   end
 
-  def list(value, _custom_type_loaders, []) do
+  def list(value, custom_type_loaders, type_params_loaders) do
     case value do
       value when is_list(value) ->
-        value
+        case type_params_loaders do
+          [] ->
+            value
+
+          [type_params_loader] ->
+            Enum.map(value, &type_params_loader.(&1, custom_type_loaders, []))
+        end
 
       _ ->
-        raise Error, "can't convert #{inspect(value)} to a list"
-    end
-  end
-
-  def list(value, custom_type_loaders, [type_params_loader]) do
-    case value do
-      value when is_list(value) ->
-        Enum.map(value, &type_params_loader.(&1, custom_type_loaders, []))
-
-      _ ->
-        raise Error, "can't convert #{inspect(value)} to a list"
+        raise Error, errors: ["can't convert #{inspect(value)} to a list"]
     end
   end
 
@@ -198,24 +194,25 @@ defmodule DataSpec.Loaders do
     if value == %{} do
       value
     else
-      raise Error, "can't convert #{inspect(value)} to an empty map"
+      raise Error, errors: ["can't convert #{inspect(value)} to an empty map"]
     end
   end
 
   def map_field_required(map, custom_type_loaders, [type_key_loader, type_value_loader]) do
-    {map_rest, map_processed} = map_field_optional(map, custom_type_loaders, [type_key_loader, type_value_loader])
+    {map_rest, map_processed, errors} =
+      map_field_optional(map, custom_type_loaders, [type_key_loader, type_value_loader])
 
     if map_size(map_processed) == 0 do
-      raise Error, "can't convert #{inspect(map)} to a map, missing required k/v"
+      raise Error, errors: ["can't convert #{inspect(map)} to a map, missing required k/v", errors]
     end
 
-    {map_rest, map_processed}
+    {map_rest, map_processed, errors}
   end
 
   def map_field_optional(map, custom_type_loaders, [type_key_loader, type_value_loader]) do
     case map do
       map when is_map(map) ->
-        Enum.reduce(map, {map, %{}}, fn {map_key, map_value}, {map_rest, map_processed} ->
+        Enum.reduce(map, {map, %{}, []}, fn {map_key, map_value}, {map_rest, map_processed, errors} ->
           try do
             map_key_processed = type_key_loader.(map_key, custom_type_loaders, [])
             map_value_processed = type_value_loader.(map_value, custom_type_loaders, [])
@@ -223,15 +220,15 @@ defmodule DataSpec.Loaders do
 
             map_rest = Map.delete(map_rest, map_key)
 
-            {map_rest, map_processed}
+            {map_rest, map_processed, errors}
           rescue
-            Error ->
-              {map_rest, map_processed}
+            error in Error ->
+              {map_rest, map_processed, errors ++ error.errors}
           end
         end)
 
       _ ->
-        raise Error, "can't convert #{inspect(map)} to a map"
+        raise Error, errors: ["can't convert #{inspect(map)} to a map"]
     end
   end
 
@@ -241,7 +238,7 @@ defmodule DataSpec.Loaders do
         value
 
       _ ->
-        raise Error, "can't convert #{inspect(value)} to a tuple"
+        raise Error, errors: ["can't convert #{inspect(value)} to a tuple"]
     end
   end
 
@@ -257,10 +254,10 @@ defmodule DataSpec.Loaders do
         |> List.to_tuple()
 
       is_tuple(value) ->
-        raise Error, "can't convert #{inspect(value)} to a tuple of size #{tuple_type_size}"
+        raise Error, errors: ["can't convert #{inspect(value)} to a tuple of size #{tuple_type_size}"]
 
       true ->
-        raise Error, "can't convert #{inspect(value)} to a tuple"
+        raise Error, errors: ["can't convert #{inspect(value)} to a tuple"]
     end
   end
 end
