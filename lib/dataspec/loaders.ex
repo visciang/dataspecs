@@ -164,10 +164,10 @@ defmodule DataSpec.Loaders do
     end
   end
 
-  def nonempty_list(value, _custom_type_loaders, _type_params_loaders) do
+  def nonempty_list(value, custom_type_loaders, type_params_loaders) do
     case value do
       [_ | _] ->
-        value
+        list(value, custom_type_loaders, type_params_loaders)
 
       _ ->
         raise Error, errors: ["can't convert #{inspect(value)} to a non empty list"]
