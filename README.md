@@ -62,10 +62,10 @@ def custom_isodatetime_loader(value, _custom_type_loaders, []) do
     datetime
   else
     {:is_binary, false} ->
-      raise DataSpec.Error, "can't convert #{inspect(value)} to a DateTime.t/0"
+      raise DataSpec.Error, errors: ["can't convert #{inspect(value)} to a DateTime.t/0"]
 
     {:from_iso8601, {:error, reason}} ->
-      raise DataSpec.Error, "can't convert #{inspect(value)} to a DateTime.t/0 (#{inspect(reason)})"
+      raise DataSpec.Error, errors: ["can't convert #{inspect(value)} to a DateTime.t/0 (#{inspect(reason)})"]
   end
 end
 
@@ -92,7 +92,7 @@ for example a custom `MapSet.t/1` loader could be implement as:
 def custom_mapset_loader(value, custom_type_loaders, [type_params_loader] do
   case Enumerable.impl_for(value) do
     nil ->
-      raise DataSpec.Error, "can't convert #{inspect(value)} to a MapSet.t/1"
+      raise DataSpec.Error, errors: ["can't convert #{inspect(value)} to a MapSet.t/1"]
 
     _ ->
       MapSet.new(value, &type_params_loader.(&1, custom_type_loaders, []))
@@ -147,7 +147,7 @@ defmodule AStruct do
     if name == String.upcase(name) do
       name
     else
-      raise DataSpecError, "#{inspect(value)} is not an upcase string"
+      raise DataSpec.Error, errors: ["#{inspect(value)} is not an upcase string"]
     end
   end
 end
