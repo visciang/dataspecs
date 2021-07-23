@@ -56,19 +56,19 @@ DataSpec.load(%{
   }]
 }, {Person, :t})
 
-# %Person{
-#  address: [
-#    %Address{
-#      postcode: "SO31 4NG",
-#      streenumber: "3a",
-#      streetname: "High Street",
-#      town: "Hedge End, Southampton"
+# +> %Person{
+#      address: [
+#        %Address{
+#          postcode: "SO31 4NG",
+#          streenumber: "3a",
+#          streetname: "High Street",
+#          town: "Hedge End, Southampton"
+#        }
+#      ],
+#      gender: :male,
+#      name: "Joe",
+#      surname: "Smith"
 #    }
-#  ],
-#  gender: :male,
-#  name: "Joe",
-#  surname: "Smith"
-#}
 ```
 
 DataSpec tries to figure out how to translate its input to a typespec.
