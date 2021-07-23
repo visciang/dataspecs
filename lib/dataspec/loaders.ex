@@ -280,7 +280,10 @@ defmodule DataSpec.Loaders do
       value when is_tuple(value) and tuple_size(value) == tuple_type_size ->
         load_tuple(value, custom_type_loaders, type_params_loaders)
 
-      value when is_tuple(value) ->
+      value when is_list(value) and length(value) == tuple_type_size ->
+        tuple(List.to_tuple(value), custom_type_loaders, type_params_loaders)
+
+      value when is_tuple(value) or is_list(value) ->
         {:error, ["can't convert #{inspect(value)} to a tuple of size #{tuple_type_size}"]}
 
       _ ->

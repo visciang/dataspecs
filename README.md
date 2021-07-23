@@ -196,7 +196,7 @@ DataSpec.load(%{field: "AAA"}, {AStruct, :t}, %{{AStruct, :field, 0} => &AStruct
 
 ## Type coercion
 
-The following types coercion are applied:
+The following types coercion are implicitly applied:
 
 ### float()
 
@@ -209,6 +209,19 @@ Example:
 1
 # to
 1.0
+```
+
+### tuple()
+
+`list() -> tuple()`
+
+```elixir
+@type t :: {atom(), integer()}
+
+# ---
+[:a, 1]
+# to
+{:a, 1}
 ```
 
 ### struct()
@@ -232,7 +245,7 @@ defmodule AStruct do
 %AStruct{a: "1", b: "2"}
 ```
 
-### map/struct keys
+### map / struct keys
 
 `map / struct binary() keys -> existing atom()`
 

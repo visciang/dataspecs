@@ -237,6 +237,7 @@ defmodule Test.DataSpec do
     test "ok" do
       assert {:ok, {}} == DataSpec.load({}, {@types_module, :t_empty_tuple})
       assert {:ok, {1, 2}} == DataSpec.load({1, 2}, {@types_module, :t_tuple})
+      assert {:ok, {1, 2}} == DataSpec.load([1, 2], {@types_module, :t_tuple})
       assert {:ok, {1, "a"}} == DataSpec.load({1, "a"}, {@types_module, :t_tuple_any_size})
     end
 
