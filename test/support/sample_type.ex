@@ -1,4 +1,4 @@
-defmodule Test.DataSpec.SampleType do
+defmodule Test.DataSpecs.SampleType do
   @moduledoc false
 
   @type t_literal_atom :: :a
@@ -52,7 +52,7 @@ defmodule Test.DataSpec.SampleType do
   @type t_type_arity :: atom()
   @type t_type_arity(x) :: x
 
-  @type t_remote_type(x) :: Test.DataSpec.SampleRemoteModuleType.t_remote(x)
+  @type t_remote_type(x) :: Test.DataSpecs.SampleRemoteModuleType.t_remote(x)
   @type t_remote_type_string :: String.t()
   @type t_mapset :: MapSet.t(integer())
   @type t_mapset_1 :: MapSet.t(t_union_0(binary()))
@@ -86,13 +86,13 @@ defmodule Test.DataSpec.SampleType do
   # @type t_timeout :: timeout()
 end
 
-defmodule Test.DataSpec.SampleRemoteModuleType do
+defmodule Test.DataSpecs.SampleRemoteModuleType do
   @moduledoc false
 
   @type t_remote(x) :: x | atom()
 end
 
-defmodule Test.DataSpec.SampleStructType do
+defmodule Test.DataSpecs.SampleStructType do
   @moduledoc false
 
   @enforce_keys [:f_1]

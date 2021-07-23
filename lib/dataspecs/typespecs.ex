@@ -1,7 +1,7 @@
-defmodule DataSpec.Typespecs do
+defmodule DataSpecs.Typespecs do
   @moduledoc false
 
-  alias DataSpec.{Cache, Loaders}
+  alias DataSpecs.{Cache, Loaders}
 
   require Logger
 
@@ -346,7 +346,7 @@ defmodule DataSpec.Typespecs do
     #   erlang abstract type format:
     #     {:type, 48, :map,
     #       [
-    #         {:type, 48, :map_field_exact, [{:atom, 0, :__struct__}, {:atom, 0, Test.DataSpec.SampleStructType}]},
+    #         {:type, 48, :map_field_exact, [{:atom, 0, :__struct__}, {:atom, 0, Test.DataSpecs.SampleStructType}]},
     #         {:type, 48, :map_field_exact, [{:atom, 0, :f_1}, {:type, 49, :atom, []}]},
     #         {:type, 48, :map_field_exact, [{:atom, 0, :f_2}, {:type, 50, :integer, []}]}
     #       ]

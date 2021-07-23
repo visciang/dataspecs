@@ -1,8 +1,8 @@
-defmodule DataSpec do
+defmodule DataSpecs do
   @moduledoc File.read!("README.md")
 
   use Application
-  alias DataSpec.Typespecs
+  alias DataSpecs.Typespecs
 
   @type value() :: any()
   @type reason :: [String.t() | reason()]
@@ -19,6 +19,6 @@ defmodule DataSpec do
   end
 
   def start(_type, _args) do
-    Supervisor.start_link([DataSpec.Cache], strategy: :one_for_one)
+    Supervisor.start_link([DataSpecs.Cache], strategy: :one_for_one)
   end
 end

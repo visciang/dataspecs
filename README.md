@@ -1,10 +1,10 @@
-# dataspec
+# dataspecs
 
-![CI](https://github.com/visciang/dataspec/workflows/CI/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/visciang/dataspec/badge.svg?branch=master)](https://coveralls.io/github/visciang/dataspec?branch=master)
+![CI](https://github.com/visciang/dataspecs/workflows/CI/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/visciang/dataspecs/badge.svg?branch=master)](https://coveralls.io/github/visciang/dataspecs?branch=master)
 
 Typespec based data loader and validator (inspired by [forma](https://github.com/soundtrackyourbrand/forma)).
 
-DataSpec **validate and load** elixir data into a more structured form
+DataSpecs **validate and load** elixir data into a more structured form
 by trying to map it to conform to a **typespec**. It support most typespec
 specification: **basic** types, **literal** types, **built-in** types, **union** type,
 **parametrized** types, **maps**, **remote** types and **user defined** types.
@@ -44,7 +44,7 @@ defmodule Address do
   }
 end
 
-DataSpec.load(%{
+DataSpecs.load(%{
   "name" => "Joe",
   "surname" => "Smith",
   "gender" => "male",
@@ -71,7 +71,7 @@ DataSpec.load(%{
 #    }
 ```
 
-DataSpec tries to figure out how to translate its input to a typespec.
+DataSpecs tries to figure out how to translate its input to a typespec.
 
 Scalar types (such as booleans, integers, etc.) and some composite types (such as lists, plain maps), can be simply mapped one to one after validation without any additional transformation. 
 
@@ -84,7 +84,7 @@ Refer to the library test suite for more examples.
 ```elixir
 def deps do
   [
-    {:dataspec, "~> xxx"}
+    {:dataspecs, "~> xxx"}
   ]
 end
 ```
@@ -121,7 +121,7 @@ end
 ## Custom type loaders
 
 In these cases you can pass a set of custom type loaders along as an optional argument
-to the `DataSpec.load` function
+to the `DataSpecs.load` function
 
 ```elixir
 defmodule LogRow do
@@ -147,7 +147,7 @@ def custom_isodatetime_loader(value, _custom_type_loaders, []) do
   end
 end
 
-DataSpec.load(
+DataSpecs.load(
   %{"log" => "An error occurred", "timestamp" => "2021-07-14 20:22:49.653077Z"},
   %{{DateTime, :t, 0} => &custom_isodatetime_loader/3}
 )
@@ -228,7 +228,7 @@ defmodule AStruct do
   @type field :: String.t()
 
   def custom_field_loader(value, custom_type_loaders, type_params_loaders) do
-    name = DataSpec.Loaders.binary(value, custom_type_loaders, type_params_loaders)
+    name = DataSpecs.Loaders.binary(value, custom_type_loaders, type_params_loaders)
 
     if name == String.upcase(name) do
       {:ok, name}
@@ -238,7 +238,7 @@ defmodule AStruct do
   end
 end
 
-DataSpec.load(%{field: "AAA"}, {AStruct, :t}, %{{AStruct, :field, 0} => &AStruct.custom_field_loader/3})
+DataSpecs.load(%{field: "AAA"}, {AStruct, :t}, %{{AStruct, :field, 0} => &AStruct.custom_field_loader/3})
 # => %AStruct{field: "AAA"}
 ```
 

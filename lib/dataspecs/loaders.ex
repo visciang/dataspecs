@@ -1,4 +1,4 @@
-defmodule DataSpec.Loaders do
+defmodule DataSpecs.Loaders do
   @moduledoc false
 
   def any(value, _custom_type_loaders, _type_params_loaders) do

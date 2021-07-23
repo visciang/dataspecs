@@ -1,10 +1,10 @@
-defmodule DataSpec.Mixfile do
+defmodule DataSpecs.Mixfile do
   use Mix.Project
 
   def project do
     [
-      app: :dataspec,
-      name: "dataspec",
+      app: :dataspecs,
+      name: "dataspecs",
       version: "0.0.1",
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -14,7 +14,7 @@ defmodule DataSpec.Mixfile do
       preferred_cli_env: preferred_cli_env(),
       description: description(),
       package: package(),
-      source_url: "https://github.com/visciang/dataspec"
+      source_url: "https://github.com/visciang/dataspecs"
     ]
   end
 
@@ -24,18 +24,18 @@ defmodule DataSpec.Mixfile do
 
   defp package do
     [
-      name: "dataspec",
+      name: "dataspecs",
       licenses: ["MIT"],
       files: ["lib", "README.md", "LICENSE", "mix.exs"],
       maintainers: ["Giovanni Visciano"],
-      links: %{"GitHub" => "https://github.com/visciang/dataspec"}
+      links: %{"GitHub" => "https://github.com/visciang/dataspecs"}
     ]
   end
 
   def application do
     [
       extra_applications: [:logger],
-      mod: {DataSpec, []}
+      mod: {DataSpecs, []}
     ]
   end
 
