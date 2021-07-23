@@ -61,13 +61,13 @@ end
 def custom_isodatetime_loader(value, _custom_type_loaders, []) do
   with {:is_binary, true} <- {:is_binary, is_binary(value)},
         {:from_iso8601, {:ok, datetime, _}} <- {:from_iso8601, DateTime.from_iso8601(value)} do
-    datetime
+    {:ok, datetime}
   else
     {:is_binary, false} ->
-      raise DataSpec.Error, errors: ["can't convert #{inspect(value)} to a DateTime.t/0"]
+      {:error, ["can't convert #{inspect(value)} to a DateTime.t/0"]}
 
     {:from_iso8601, {:error, reason}} ->
-      raise DataSpec.Error, errors: ["can't convert #{inspect(value)} to a DateTime.t/0 (#{inspect(reason)})"]
+      {:error, ["can't convert #{inspect(value)} to a DateTime.t/0 (#{inspect(reason)})"]}
   end
 end
 
@@ -91,13 +91,22 @@ The type of the custom loader function is
 for example a custom `MapSet.t/1` loader could be implement as:
 
 ```elixir
-def custom_mapset_loader(value, custom_type_loaders, [type_params_loader] do
+def custom_mapset_loader(value, custom_type_loaders, [type_params_loader]) do
   case Enumerable.impl_for(value) do
     nil ->
-      raise DataSpec.Error, errors: ["can't convert #{inspect(value)} to a MapSet.t/1"]
+      {:error, ["can't convert #{inspect(value)} to a MapSet.t/1, value not enumerable"]}
 
     _ ->
-      MapSet.new(value, &type_params_loader.(&1, custom_type_loaders, []))
+      value
+      |> Enum.to_list()
+      |> Loaders.list(custom_type_loaders, [type_params_loader])
+      |> case do
+        {:ok, loaded_value} ->
+          {:ok, MapSet.new(loaded_value)}
+
+        {:error, errors} ->
+          {:error, ["can't convert #{inspect(value)} to a MapSet.t/1", errors]}
+      end
   end
 end
 ```
@@ -148,9 +157,9 @@ defmodule AStruct do
     name = DataSpec.Loaders.binary(value, custom_type_loaders, type_params_loaders)
 
     if name == String.upcase(name) do
-      name
+      {:ok, name}
     else
-      raise DataSpec.Error, errors: ["#{inspect(value)} is not an upcase string"]
+      {:error, ["#{inspect(value)} is not an upcase string"]}
     end
   end
 end
