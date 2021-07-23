@@ -25,11 +25,11 @@ defmodule Person do
   @type t :: %__MODULE__{
     name: String.t(),
     surname: String.t(),
-    gender: opt(:male | :female | :other),
-    address: opt(nonempty_list(Address.t()))
+    gender: option(:male | :female | :other),
+    address: option(nonempty_list(Address.t()))
   }
 
-  @type opt(x) :: nil | x
+  @type option(x) :: nil | x
 end
 
 defmodule Address do
