@@ -6,8 +6,8 @@ Typespec based data loader and validator (inspired by [forma](https://github.com
 
 DataSpec **validate and load** elixir data into a more structured form
 by trying to map it to conform to a **typespec**. It support most typespec
-specification: basic types, literal types, built-in types, union type,
-parametrized types, maps, remote types and user defined types.
+specification: **basic** types, **literal** types, **built-in** types, **union** type,
+**parametrized** types, **maps**, **remote** types and **user defined** types.
 
 It can be used to validate some elixir data against a typespec or it
 can be useful when interfacing with external data sources that provide
@@ -18,22 +18,57 @@ JSON representation (such as dates or sets) in your application.
 ## Usage
 
 ```elixir
-defmodule User do
-  @enforce_keys [:id, :name, :age]
-  defstruct [:id, :name, :age, :gender]
+defmodule Person do
+  @enforce_keys [:name, :surname]
+  defstruct [:name, :surname, :gender, :address]
 
   @type t :: %__MODULE__{
-    id: String.t(),
     name: String.t(),
-    age: non_neg_integer(),
-    gender: opt(:male | :female | :other)
+    surname: String.t(),
+    gender: opt(:male | :female | :other),
+    address: opt(nonempty_list(Address.t()))
   }
 
   @type opt(x) :: nil | x
 end
 
-DataSpec.load(%{"id" => "1", "name" => "Fredrik", "age" => 30, "gender" => :male}, {User, :t})
-# => %User{age: 30, gender: :male, id: "1", name: "Fredrik"}
+defmodule Address do
+  @enforce_keys [:streetname, :streenumber, :postcode, :town]
+  defstruct [:streetname, :streenumber, :postcode, :town]
+
+  @type t :: %__MODULE__{
+    streetname: String.t(),
+    streenumber: String.t(),
+    postcode: String.t(),
+    town: String.t()
+  }
+end
+
+DataSpec.load(%{
+  "name" => "Joe",
+  "surname" => "Smith",
+  "gender" => "male",
+  "address" => [%{
+    "streetname" => "High Street",
+    "streenumber" => "3a",
+    "postcode" => "SO31 4NG",
+    "town" => "Hedge End, Southampton"
+  }]
+}, {Person, :t})
+
+# %Person{
+#  address: [
+#    %Address{
+#      postcode: "SO31 4NG",
+#      streenumber: "3a",
+#      streetname: "High Street",
+#      town: "Hedge End, Southampton"
+#    }
+#  ],
+#  gender: :male,
+#  name: "Joe",
+#  surname: "Smith"
+#}
 ```
 
 DataSpec tries to figure out how to translate its input to a typespec.
