@@ -42,6 +42,8 @@ Scalar types (such as booleans, integers, etc.) and some composite types (such a
 
 However, not all Elixir types have natural representations in JSON-like data, for example dates, or don't want to expose their internals (opaque types).
 
+Refer to the library test suite for more examples.
+
 ## Installation
 
 ```elixir
@@ -159,8 +161,6 @@ then the custom type loader function will be called with
 ```elixir
 custom_mapset_loader(1..10, custom_type_loaders, [&builtin_integer_loader/3])
 ```
-
-Refer to the library test suite for more examples.
 
 ## Validators
 
