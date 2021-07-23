@@ -19,6 +19,7 @@ JSON representation (such as dates or sets) in your application.
 
 ```elixir
 defmodule User do
+  @enforce_keys [:id, :name, :age]
   defstruct [:id, :name, :age, :gender]
 
   @type t :: %__MODULE__{
@@ -31,7 +32,7 @@ defmodule User do
   @type opt(x) :: nil | x
 end
 
-DataSpec.load!(%{"id" => "1", "name" => "Fredrik", "age" => 30, "gender" => :male}, {User, :t})
+DataSpec.load(%{"id" => "1", "name" => "Fredrik", "age" => 30, "gender" => :male}, {User, :t})
 # => %User{age: 30, gender: :male, id: "1", name: "Fredrik"}
 ```
 
@@ -69,7 +70,7 @@ def custom_isodatetime_loader(value, _custom_type_loaders, []) do
   end
 end
 
-DataSpec.load!(
+DataSpec.load(
   %{"log" => "An error occurred", "timestamp" => "2021-07-14 20:22:49.653077Z"},
   %{{DateTime, :t, 0} => &custom_isodatetime_loader/3}
 )
@@ -152,7 +153,7 @@ defmodule AStruct do
   end
 end
 
-DataSpec.load!(%{field: "AAA"}, {AStruct, :t}, %{{AStruct, :field, 0} => &AStruct.custom_field_loader/3})
+DataSpec.load(%{field: "AAA"}, {AStruct, :t}, %{{AStruct, :field, 0} => &AStruct.custom_field_loader/3})
 # => %AStruct{field: "AAA"}
 ```
 
