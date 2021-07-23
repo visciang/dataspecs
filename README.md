@@ -91,7 +91,7 @@ end
 
 Typespecs should be included in the compiled ebin.
 
-Set the `:strip_beams` option to `false` when compiling your project with mix release.
+Set the `:strip_beams` option to `false` when compiling your project with mix release or mix escript.
 
 ```elixir
 def project do
@@ -100,7 +100,20 @@ def project do
     deps: deps(),
     releases: [
       my_app: [strip_beams: false]
-    ]
+    ],
+    ...
+  ]
+end
+
+def project do
+  [
+    app: :my_script,
+    deps: deps(),
+    escript: [
+      strip_beams: false,
+      ...
+    ],
+    ...
   ]
 end
 ```
