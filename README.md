@@ -49,6 +49,7 @@ to the `DataSpec.load` function
 
 ```elixir
 defmodule LogRow do
+  @enforce_keys [:log, :timestamp]
   defstruct [:log, :timestamp]
 
   type t :: %__MODULE__{
@@ -134,6 +135,7 @@ For example let's say than we want to validate a field of type string to be in u
 
 ```elixir
 defmodule AStruct do
+  @enforce_keys [:field]
   defstruct [:field]
 
   @type t :: %__MODULE__{
@@ -185,8 +187,8 @@ defmodule AStruct do
   defstruct [:field]
 
   @type t :: %__MODULE__{
-    a: binary(),
-    b: binary()
+    a: nil | binary(),
+    b: nil | binary()
   }
 
 # ---
