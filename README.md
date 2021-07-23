@@ -42,6 +42,32 @@ Scalar types (such as booleans, integers, etc.) and some composite types (such a
 
 However, not all Elixir types have natural representations in JSON-like data, for example dates, or don't want to expose their internals (opaque types).
 
+## Installation
+
+```elixir
+def deps do
+  [
+    {:dataspec, "~> xxx"}
+  ]
+end
+```
+
+Typespecs should be included in the compiled ebin.
+
+Set the `:strip_beams` option to `false` when compiling your project with mix release.
+
+```elixir
+def project do
+  [
+    app: :my_app,
+    deps: deps(),
+    releases: [
+      my_app: [strip_beams: false]
+    ]
+  ]
+end
+```
+
 ## Custom type loaders
 
 In these cases you can pass a set of custom type loaders along as an optional argument
