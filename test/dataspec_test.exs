@@ -7,9 +7,17 @@ defmodule Test.DataSpec do
   @types_module Test.DataSpec.SampleType
   @types_struct_module Test.DataSpec.SampleStructType
 
-  test "unknown type in module" do
-    assert_raise RuntimeError, "Unknown type #{inspect(@types_module)}.this_type_does_not_exist/0", fn ->
-      DataSpec.load(:a, {@types_module, :this_type_does_not_exist})
+  describe "Unknown" do
+    test "module" do
+      assert_raise RuntimeError, "Can't fetch type specifications for module :unknown_module", fn ->
+        DataSpec.load(:a, {:unknown_module, :t})
+      end
+    end
+
+    test "type in module" do
+      assert_raise RuntimeError, "Unknown type #{inspect(@types_module)}.this_type_does_not_exist/0", fn ->
+        DataSpec.load(:a, {@types_module, :this_type_does_not_exist})
+      end
     end
   end
 

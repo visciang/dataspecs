@@ -26,8 +26,15 @@ defmodule DataSpec.Typespecs do
   end
 
   defp code_typespec_fetch_types(module) do
-    {:ok, eaf_types} = Code.Typespec.fetch_types(module)
-    eaf_types
+    module
+    |> Code.Typespec.fetch_types()
+    |> case do
+      {:ok, eaf_types} ->
+        eaf_types
+
+      :error ->
+        raise "Can't fetch type specifications for module #{inspect(module)}"
+    end
   end
 
   defp type_loader(module, {type, {type_id, eatf, type_params}}) do
