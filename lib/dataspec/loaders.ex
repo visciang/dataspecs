@@ -1,166 +1,166 @@
 defmodule DataSpec.Loaders do
   @moduledoc false
 
-  alias DataSpec.Error
-
   def any(value, _custom_type_loaders, _type_params_loaders) do
-    value
+    {:ok, value}
   end
 
   def atom(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_atom(value) ->
-        value
+        {:ok, value}
 
       value when is_binary(value) ->
         try do
-          String.to_existing_atom(value)
+          {:ok, String.to_existing_atom(value)}
         rescue
           ArgumentError ->
-            reraise Error, [errors: ["can't convert #{inspect(value)} to an existing atom"]], __STACKTRACE__
+            {:error, ["can't convert #{inspect(value)} to an existing atom"]}
         end
 
       _ ->
-        raise Error, errors: ["can't convert #{inspect(value)} to an atom"]
+        {:error, ["can't convert #{inspect(value)} to an atom"]}
     end
   end
 
   def boolean(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_boolean(value) ->
-        value
+        {:ok, value}
 
       _ ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a boolean"]
+        {:error, ["can't convert #{inspect(value)} to a boolean"]}
     end
   end
 
   def binary(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_binary(value) ->
-        value
+        {:ok, value}
 
       _ ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a binary"]
+        {:error, ["can't convert #{inspect(value)} to a binary"]}
     end
   end
 
   def pid(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_pid(value) ->
-        value
+        {:ok, value}
 
       _ ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a pid"]
+        {:error, ["can't convert #{inspect(value)} to a pid"]}
     end
   end
 
   def reference(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_reference(value) ->
-        value
+        {:ok, value}
 
       _ ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a reference"]
+        {:error, ["can't convert #{inspect(value)} to a reference"]}
     end
   end
 
   def number(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_number(value) ->
-        value
+        {:ok, value}
 
       _ ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a number"]
+        {:error, ["can't convert #{inspect(value)} to a number"]}
     end
   end
 
   def float(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_number(value) ->
-        :erlang.float(value)
+        {:ok, :erlang.float(value)}
 
       _ ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a float"]
+        {:error, ["can't convert #{inspect(value)} to a float"]}
     end
   end
 
   def integer(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_integer(value) ->
-        value
+        {:ok, value}
 
       _ ->
-        raise Error, errors: ["can't convert #{inspect(value)} to an integer"]
+        {:error, ["can't convert #{inspect(value)} to an integer"]}
     end
   end
 
   def neg_integer(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_integer(value) and value < 0 ->
-        value
+        {:ok, value}
 
       _ ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a neg_integer"]
+        {:error, ["can't convert #{inspect(value)} to a neg_integer"]}
     end
   end
 
   def non_neg_integer(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_integer(value) and value >= 0 ->
-        value
+        {:ok, value}
 
       _ ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a non_neg_integer"]
+        {:error, ["can't convert #{inspect(value)} to a non_neg_integer"]}
     end
   end
 
   def pos_integer(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_integer(value) and value > 0 ->
-        value
+        {:ok, value}
 
       _ ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a pos_integer"]
+        {:error, ["can't convert #{inspect(value)} to a pos_integer"]}
     end
   end
 
   def range(lower, upper, value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_integer(value) and lower <= value and value <= upper ->
-        value
+        {:ok, value}
 
       _ ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a range #{inspect(lower..upper)}"]
+        {:error, ["can't convert #{inspect(value)} to a range #{inspect(lower..upper)}"]}
     end
   end
 
   def union(value, custom_type_loaders, type_params_loaders) do
     type_params_loaders
     |> Enum.reduce_while({:error, []}, fn loader, {:error, errors} ->
-      try do
-        {:halt, {:ok, loader.(value, custom_type_loaders, [])}}
-      rescue
-        error in Error ->
-          {:cont, {:error, errors ++ error.errors}}
+      loader.(value, custom_type_loaders, [])
+      |> case do
+        {:ok, res} ->
+          {:halt, {:ok, res}}
+
+        {:error, new_errors} ->
+          {:cont, {:error, errors ++ new_errors}}
       end
     end)
     |> case do
       {:ok, res} ->
-        res
+        {:ok, res}
 
       {:error, errors} ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a union", errors]
+        {:error, ["can't convert #{inspect(value)} to a union", errors]}
     end
   end
 
   def empty_list(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       [] ->
-        value
+        {:ok, value}
 
       _ ->
-        raise Error, errors: ["can't convert #{inspect(value)} to an empty list"]
+        {:error, ["can't convert #{inspect(value)} to an empty list"]}
     end
   end
 
@@ -170,94 +170,151 @@ defmodule DataSpec.Loaders do
         list(value, custom_type_loaders, type_params_loaders)
 
       _ ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a non empty list"]
+        {:error, ["can't convert #{inspect(value)} to a non empty list"]}
     end
   end
 
   def list(value, custom_type_loaders, type_params_loaders) do
     case value do
       value when is_list(value) ->
-        case type_params_loaders do
-          [] ->
-            value
-
-          [type_params_loader] ->
-            Enum.map(value, &type_params_loader.(&1, custom_type_loaders, []))
-        end
+        load_list(value, custom_type_loaders, type_params_loaders)
 
       _ ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a list"]
+        {:error, ["can't convert #{inspect(value)} to a list"]}
+    end
+  end
+
+  defp load_list(value, _custom_type_loaders, []) do
+    # case for:  list() -> list(any())
+    {:ok, value}
+  end
+
+  defp load_list(value, custom_type_loaders, [type_params_loader]) do
+    value
+    |> Enum.with_index()
+    |> Enum.reduce_while([], fn {item, item_idx}, loaded_list ->
+      type_params_loader.(item, custom_type_loaders, [])
+      |> case do
+        {:ok, loaded_value} ->
+          {:cont, [loaded_value | loaded_list]}
+
+        {:error, errors} ->
+          error = "can't convert #{inspect(value)} to a list, bad item at index=#{item_idx}"
+          {:halt, {:error, [error, errors]}}
+      end
+    end)
+    |> case do
+      {:error, _} = error ->
+        error
+
+      loaded_list ->
+        {:ok, Enum.reverse(loaded_list)}
     end
   end
 
   def empty_map(value, _custom_type_loaders, []) do
     if value == %{} do
-      value
+      {:ok, value}
     else
-      raise Error, errors: ["can't convert #{inspect(value)} to an empty map"]
+      {:error, ["can't convert #{inspect(value)} to an empty map"]}
     end
   end
 
   def map_field_required(map, custom_type_loaders, [type_key_loader, type_value_loader]) do
-    {map_rest, map_processed, errors} =
-      map_field_optional(map, custom_type_loaders, [type_key_loader, type_value_loader])
+    map_field_optional(map, custom_type_loaders, [type_key_loader, type_value_loader])
+    |> case do
+      {:ok, {_map_rest, map_processed, errors}} when map_size(map_processed) == 0 ->
+        {:error, ["can't convert #{inspect(map)} to a map, missing required k/v", errors]}
 
-    if map_size(map_processed) == 0 do
-      raise Error, errors: ["can't convert #{inspect(map)} to a map, missing required k/v", errors]
+      {:ok, res} ->
+        {:ok, res}
+
+      {:error, errors} ->
+        {:error, errors}
     end
-
-    {map_rest, map_processed, errors}
   end
 
   def map_field_optional(map, custom_type_loaders, [type_key_loader, type_value_loader]) do
     case map do
+      map when is_struct(map) ->
+        map = Map.from_struct(map)
+        map_field_optional(map, custom_type_loaders, [type_key_loader, type_value_loader])
+
       map when is_map(map) ->
-        Enum.reduce(map, {map, %{}, []}, fn {map_key, map_value}, {map_rest, map_processed, errors} ->
-          try do
-            map_key_processed = type_key_loader.(map_key, custom_type_loaders, [])
-            map_value_processed = type_value_loader.(map_value, custom_type_loaders, [])
-            map_processed = Map.put(map_processed, map_key_processed, map_value_processed)
+        res =
+          Enum.reduce(map, {map, %{}, []}, fn {map_key, map_value}, {map_rest, map_processed, errors} ->
+            with {:ok, map_key_processed} <- type_key_loader.(map_key, custom_type_loaders, []),
+                 {:ok, map_value_processed} <- type_value_loader.(map_value, custom_type_loaders, []) do
+              map_processed = Map.put(map_processed, map_key_processed, map_value_processed)
+              map_rest = Map.delete(map_rest, map_key)
 
-            map_rest = Map.delete(map_rest, map_key)
+              {map_rest, map_processed, errors}
+            else
+              {:error, new_errors} ->
+                {map_rest, map_processed, errors ++ new_errors}
+            end
+          end)
 
-            {map_rest, map_processed, errors}
-          rescue
-            error in Error ->
-              {map_rest, map_processed, errors ++ error.errors}
-          end
-        end)
+        {:ok, res}
 
       _ ->
-        raise Error, errors: ["can't convert #{inspect(map)} to a map"]
+        {:error, ["can't convert #{inspect(map)} to a map"]}
     end
   end
 
+  @spec tuple_any(any, any, any) :: {:error, [<<_::64, _::_*8>>, ...]} | {:ok, tuple}
   def tuple_any(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_tuple(value) ->
-        value
+        {:ok, value}
 
       _ ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a tuple"]
+        {:error, ["can't convert #{inspect(value)} to a tuple"]}
     end
   end
 
   def tuple(value, custom_type_loaders, type_params_loaders) do
     tuple_type_size = length(type_params_loaders)
 
-    cond do
-      is_tuple(value) and tuple_size(value) == tuple_type_size ->
-        value
-        |> Tuple.to_list()
-        |> Enum.zip(type_params_loaders)
-        |> Enum.map(fn {item, loader} -> loader.(item, custom_type_loaders, []) end)
-        |> List.to_tuple()
+    case value do
+      value when is_tuple(value) and tuple_size(value) == tuple_type_size ->
+        load_tuple(value, custom_type_loaders, type_params_loaders)
 
-      is_tuple(value) ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a tuple of size #{tuple_type_size}"]
+      value when is_tuple(value) ->
+        {:error, ["can't convert #{inspect(value)} to a tuple of size #{tuple_type_size}"]}
 
-      true ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a tuple"]
+      _ ->
+        {:error, ["can't convert #{inspect(value)} to a tuple"]}
+    end
+  end
+
+  defp load_tuple(value, custom_type_loaders, type_params_loaders) do
+    value
+    |> Tuple.to_list()
+    |> Enum.with_index()
+    |> Enum.zip(type_params_loaders)
+    |> Enum.reduce_while([], fn {{item, item_idx}, loader}, loaded_list ->
+      loader.(item, custom_type_loaders, [])
+      |> case do
+        {:ok, loaded_value} ->
+          {:cont, [loaded_value | loaded_list]}
+
+        {:error, errors} ->
+          error = "can't convert #{inspect(value)} to a tuple, bad item at index=#{item_idx}"
+          {:halt, {:error, [error, errors]}}
+      end
+    end)
+    |> case do
+      {:error, _} = error ->
+        error
+
+      loaded_list ->
+        loaded_tuple =
+          loaded_list
+          |> Enum.reverse()
+          |> List.to_tuple()
+
+        {:ok, loaded_tuple}
     end
   end
 end

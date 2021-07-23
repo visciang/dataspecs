@@ -1,18 +1,16 @@
 defmodule Test.DataSpec do
   use ExUnit.Case
 
-  alias DataSpec.{Error, Loaders}
+  alias DataSpec.Loaders
   alias Test.DataSpec.CustomLoader
 
   @types_module Test.DataSpec.SampleType
   @types_struct_module Test.DataSpec.SampleStructType
 
   test "unknown type in module" do
-    assert {:error, %Error{}} = DataSpec.load(:a, {@types_module, :this_type_does_not_exist})
-  end
-
-  test "not implemented type loader" do
-    assert {:error, %Error{}} = DataSpec.load(:a, {@types_module, :this_type_does_not_exist})
+    assert_raise RuntimeError, "Unknown type #{inspect(@types_module)}.this_type_does_not_exist/0", fn ->
+      DataSpec.load(:a, {@types_module, :this_type_does_not_exist})
+    end
   end
 
   describe "literal" do
@@ -22,9 +20,14 @@ defmodule Test.DataSpec do
     end
 
     test "error" do
-      assert {:error, %Error{}} = DataSpec.load(:a_different_literal_atom, {@types_module, :t_literal_atom})
-      assert {:error, %Error{}} = DataSpec.load("not an atom", {@types_module, :t_literal_atom})
-      assert {:error, %Error{}} = DataSpec.load(:not_an_integer, {@types_module, :t_literal_integer})
+      reason = ["value :not_a doesn't match literal value :a"]
+      assert {:error, ^reason} = DataSpec.load(:not_a, {@types_module, :t_literal_atom})
+
+      reason = ["can't convert \"not an atom\" to an existing atom"]
+      assert {:error, ^reason} = DataSpec.load("not an atom", {@types_module, :t_literal_atom})
+
+      reason = ["can't convert :not_an_integer to an integer"]
+      assert {:error, ^reason} = DataSpec.load(:not_an_integer, {@types_module, :t_literal_integer})
     end
   end
 
@@ -44,7 +47,8 @@ defmodule Test.DataSpec do
     end
 
     test "error" do
-      assert {:error, %Error{}} = DataSpec.load(1, {@types_module, :t_pid})
+      reason = ["can't convert 1 to a pid"]
+      assert {:error, ^reason} = DataSpec.load(1, {@types_module, :t_pid})
     end
   end
 
@@ -54,7 +58,8 @@ defmodule Test.DataSpec do
     end
 
     test "error" do
-      assert {:error, %Error{}} = DataSpec.load("this_is_a_non_existing_atom", {@types_module, :t_atom})
+      reason = ["can't convert \"this_is_a_non_existing_atom\" to an existing atom"]
+      assert {:error, ^reason} = DataSpec.load("this_is_a_non_existing_atom", {@types_module, :t_atom})
     end
   end
 
@@ -64,7 +69,8 @@ defmodule Test.DataSpec do
     end
 
     test "error" do
-      assert {:error, %Error{}} = DataSpec.load(1, {@types_module, :t_boolean})
+      reason = ["can't convert 1 to a boolean"]
+      assert {:error, ^reason} = DataSpec.load(1, {@types_module, :t_boolean})
     end
   end
 
@@ -74,7 +80,8 @@ defmodule Test.DataSpec do
     end
 
     test "error" do
-      assert {:error, %Error{}} = DataSpec.load(1, {@types_module, :t_binary})
+      reason = ["can't convert 1 to a binary"]
+      assert {:error, ^reason} = DataSpec.load(1, {@types_module, :t_binary})
     end
   end
 
@@ -85,7 +92,8 @@ defmodule Test.DataSpec do
     end
 
     test "error" do
-      assert {:error, %Error{}} = DataSpec.load(1, {@types_module, :t_reference})
+      reason = ["can't convert 1 to a reference"]
+      assert {:error, ^reason} = DataSpec.load(1, {@types_module, :t_reference})
     end
   end
 
@@ -96,7 +104,8 @@ defmodule Test.DataSpec do
     end
 
     test "error" do
-      assert {:error, %Error{}} = DataSpec.load(:a, {@types_module, :t_number})
+      reason = ["can't convert :a to a number"]
+      assert {:error, ^reason} = DataSpec.load(:a, {@types_module, :t_number})
     end
   end
 
@@ -107,7 +116,8 @@ defmodule Test.DataSpec do
     end
 
     test "error" do
-      assert {:error, %Error{}} = DataSpec.load(:a, {@types_module, :t_float})
+      reason = ["can't convert :a to a float"]
+      assert {:error, ^reason} = DataSpec.load(:a, {@types_module, :t_float})
     end
   end
 
@@ -120,24 +130,38 @@ defmodule Test.DataSpec do
     end
 
     test "error" do
-      assert {:error, %Error{}} = DataSpec.load(:a, {@types_module, :t_integer})
-      assert {:error, %Error{}} = DataSpec.load(:a, {@types_module, :t_neg_integer})
-      assert {:error, %Error{}} = DataSpec.load(:a, {@types_module, :t_non_neg_integer})
-      assert {:error, %Error{}} = DataSpec.load(:a, {@types_module, :t_pos_integer})
-      assert {:error, %Error{}} = DataSpec.load(1, {@types_module, :t_neg_integer})
-      assert {:error, %Error{}} = DataSpec.load(-1, {@types_module, :t_non_neg_integer})
-      assert {:error, %Error{}} = DataSpec.load(0, {@types_module, :t_pos_integer})
+      reason = ["can't convert :a to an integer"]
+      assert {:error, ^reason} = DataSpec.load(:a, {@types_module, :t_integer})
+
+      reason = ["can't convert :a to a neg_integer"]
+      assert {:error, ^reason} = DataSpec.load(:a, {@types_module, :t_neg_integer})
+
+      reason = ["can't convert :a to a non_neg_integer"]
+      assert {:error, ^reason} = DataSpec.load(:a, {@types_module, :t_non_neg_integer})
+
+      reason = ["can't convert :a to a pos_integer"]
+      assert {:error, ^reason} = DataSpec.load(:a, {@types_module, :t_pos_integer})
+
+      reason = ["can't convert 1 to a neg_integer"]
+      assert {:error, ^reason} = DataSpec.load(1, {@types_module, :t_neg_integer})
+
+      reason = ["can't convert -1 to a non_neg_integer"]
+      assert {:error, ^reason} = DataSpec.load(-1, {@types_module, :t_non_neg_integer})
+
+      reason = ["can't convert 0 to a pos_integer"]
+      assert {:error, ^reason} = DataSpec.load(0, {@types_module, :t_pos_integer})
     end
   end
 
   describe "range" do
     test "ok" do
       assert {:ok, 5} == DataSpec.load(5, {@types_module, :t_range})
-      assert {:error, %Error{}} = DataSpec.load(:a, {@types_module, :t_range})
+      assert {:error, _} = DataSpec.load(:a, {@types_module, :t_range})
     end
 
     test "error" do
-      assert {:error, %Error{}} = DataSpec.load(0, {@types_module, :t_range})
+      reason = ["can't convert 0 to a range 1..10"]
+      assert {:error, ^reason} = DataSpec.load(0, {@types_module, :t_range})
     end
   end
 
@@ -153,7 +177,12 @@ defmodule Test.DataSpec do
     end
 
     test "error" do
-      assert {:error, %Error{}} = DataSpec.load(%{}, {@types_module, :t_union_1})
+      reason = [
+        "can't convert %{} to a union",
+        ["can't convert %{} to a tuple", "can't convert %{} to an atom", "can't convert %{} to an integer"]
+      ]
+
+      assert {:error, ^reason} = DataSpec.load(%{}, {@types_module, :t_union_1})
     end
   end
 
@@ -169,11 +198,20 @@ defmodule Test.DataSpec do
     end
 
     test "error" do
-      assert {:error, %Error{}} = DataSpec.load(:a, {@types_module, :t_list})
-      assert {:error, %Error{}} = DataSpec.load([1], {@types_module, :t_list})
-      assert {:error, %Error{}} = DataSpec.load([1], {@types_module, :t_empty_list})
-      assert {:error, %Error{}} = DataSpec.load([], {@types_module, :t_nonempty_list_0})
-      assert {:error, %Error{}} = DataSpec.load(:not_a_list, {@types_module, :t_list_of_any})
+      reason = ["can't convert :a to a list"]
+      assert {:error, ^reason} = DataSpec.load(:a, {@types_module, :t_list})
+
+      reason = ["can't convert [:a, 1] to a list, bad item at index=1", ["can't convert 1 to an atom"]]
+      assert {:error, ^reason} = DataSpec.load([:a, 1], {@types_module, :t_list})
+
+      reason = ["can't convert [1] to an empty list"]
+      assert {:error, ^reason} = DataSpec.load([1], {@types_module, :t_empty_list})
+
+      reason = ["can't convert [] to a non empty list"]
+      assert {:error, ^reason} = DataSpec.load([], {@types_module, :t_nonempty_list_0})
+
+      reason = ["can't convert :not_a_list to a list"]
+      assert {:error, ^reason} = DataSpec.load(:not_a_list, {@types_module, :t_list_of_any})
     end
   end
 
@@ -183,7 +221,7 @@ defmodule Test.DataSpec do
     end
 
     test "error" do
-      assert {:error, %Error{}} = DataSpec.load([{:a, 1}, :bad], {@types_module, :t_keyword_list})
+      assert {:error, _} = DataSpec.load([{:a, 1}, :bad], {@types_module, :t_keyword_list})
     end
   end
 
@@ -195,10 +233,17 @@ defmodule Test.DataSpec do
     end
 
     test "error" do
-      assert {:error, %Error{}} = DataSpec.load(nil, {@types_module, :t_tuple})
-      assert {:error, %Error{}} = DataSpec.load({:a, 2}, {@types_module, :t_tuple})
-      assert {:error, %Error{}} = DataSpec.load({1, 2, 3}, {@types_module, :t_tuple})
-      assert {:error, %Error{}} = DataSpec.load(:not_a_tuple, {@types_module, :t_tuple_any_size})
+      reason = ["can't convert nil to a tuple"]
+      assert {:error, ^reason} = DataSpec.load(nil, {@types_module, :t_tuple})
+
+      reason = ["can't convert {:a, 2} to a tuple, bad item at index=0", ["can't convert :a to an integer"]]
+      assert {:error, ^reason} = DataSpec.load({:a, 2}, {@types_module, :t_tuple})
+
+      reason = ["can't convert {1, 2, 3} to a tuple of size 2"]
+      assert {:error, ^reason} = DataSpec.load({1, 2, 3}, {@types_module, :t_tuple})
+
+      reason = ["can't convert :not_a_tuple to a tuple"]
+      assert {:error, ^reason} = DataSpec.load(:not_a_tuple, {@types_module, :t_tuple_any_size})
     end
   end
 
@@ -219,13 +264,38 @@ defmodule Test.DataSpec do
     end
 
     test "error" do
-      assert {:error, %Error{}} = DataSpec.load(%{a: 1}, {@types_module, :t_empty_map})
-      assert {:error, %Error{}} = DataSpec.load(:a, {@types_module, :t_map_0})
-      assert {:error, %Error{}} = DataSpec.load(%{required_key_missing: 1}, {@types_module, :t_map_0})
-      assert {:error, %Error{}} = DataSpec.load(%{:b => 1}, {@types_module, :t_map_3})
-      assert {:error, %Error{}} = DataSpec.load(%{0 => :a, :b => 1, 1.1 => 1}, {@types_module, :t_map_3})
+      reason = ["can't convert %{a: 1} to an empty map"]
+      assert {:error, ^reason} = DataSpec.load(%{a: 1}, {@types_module, :t_empty_map})
 
-      assert {:error, %Error{}} = DataSpec.load(%{0 => %{a: true}, 1 => %{b: "not a bool"}}, {@types_module, :t_map_4})
+      reason = ["can't convert :a to a map"]
+      assert {:error, ^reason} = DataSpec.load(:a, {@types_module, :t_map_0})
+
+      reason = [
+        "can't convert %{required_key_missing: 1} to a map, missing required k/v",
+        ["value :required_key_missing doesn't match literal value :required_key"]
+      ]
+
+      assert {:error, ^reason} = DataSpec.load(%{required_key_missing: 1}, {@types_module, :t_map_0})
+
+      reason = ["can't convert %{b: 1} to a map, missing required k/v", ["can't convert :b to an integer"]]
+      assert {:error, ^reason} = DataSpec.load(%{:b => 1}, {@types_module, :t_map_3})
+
+      reason = [
+        "can't convert %{0 => :a, 1.1 => 1, :b => 1} to a map, bad k/v pairs: %{1.1 => 1}",
+        ["can't convert 1.1 to an integer", "can't convert :b to an integer"]
+      ]
+
+      assert {:error, ^reason} = DataSpec.load(%{0 => :a, :b => 1, 1.1 => 1}, {@types_module, :t_map_3})
+
+      reason = [
+        "can't convert %{0 => %{a: true}, 1 => %{b: \"not a bool\"}} to a map, bad k/v pairs: %{1 => %{b: \"not a bool\"}}",
+        [
+          "can't convert %{b: \"not a bool\"} to a map, missing required k/v",
+          ["can't convert \"not a bool\" to a boolean"]
+        ]
+      ]
+
+      assert {:error, ^reason} = DataSpec.load(%{0 => %{a: true}, 1 => %{b: "not a bool"}}, {@types_module, :t_map_4})
     end
   end
 
@@ -252,13 +322,22 @@ defmodule Test.DataSpec do
 
       assert {:ok, %@types_struct_module{f_1: :a, f_2: nil, f_3: nil}} ==
                DataSpec.load(%{f_1: :a}, {@types_struct_module, :t})
+
+      assert {:ok, %@types_struct_module{f_1: :a, f_2: nil, f_3: nil}} ==
+               DataSpec.load(%@types_struct_module{f_1: :a}, {@types_struct_module, :t})
     end
 
     test "error" do
-      error_message =
-        "the following keys must also be given when building struct Test.DataSpec.SampleStructType: [:f_1]"
+      reason = "the following keys must also be given when building struct #{inspect(@types_struct_module)}: [:f_1]"
 
-      assert {:error, %DataSpec.Error{errors: [^error_message]}} = DataSpec.load(%{}, {@types_struct_module, :t})
+      assert {:error, [^reason]} = DataSpec.load(%{}, {@types_struct_module, :t})
+
+      reason = [
+        "can't convert %{f_1: \"not an atom\"} to a %#{inspect(@types_struct_module)}{} struct",
+        ["can't convert %{f_1: \"not an atom\"} to a map, bad k/v pairs: %{f_1: \"not an atom\"}", []]
+      ]
+
+      assert {:error, ^reason} = DataSpec.load(%{f_1: "not an atom"}, {@types_struct_module, :t})
     end
   end
 
@@ -280,8 +359,12 @@ defmodule Test.DataSpec do
   describe "opaque type" do
     test "without custom type loader" do
       integer = &Loaders.integer/3
-      assert {:error, %Error{}} = DataSpec.load(:opaque, {@types_module, :t_opaque}, %{}, [integer])
-      assert {:error, %Error{}} = DataSpec.load(:opaque, {@types_module, :t_mapset})
+
+      reason = ["opaque type #{inspect(@types_module)}.t_opaque/1 has no custom type loader defined"]
+      assert {:error, ^reason} = DataSpec.load(:opaque, {@types_module, :t_opaque}, %{}, [integer])
+
+      reason = ["opaque type MapSet.t/1 has no custom type loader defined"]
+      assert {:error, ^reason} = DataSpec.load(:opaque, {@types_module, :t_mapset})
     end
 
     test "with custom type loader" do
@@ -312,32 +395,48 @@ defmodule Test.DataSpec do
 end
 
 defmodule Test.DataSpec.CustomLoader do
-  alias DataSpec.Error
+  alias DataSpec.Loaders
 
   def opaque(value, custom_type_loaders, [type_params_loader]) do
-    {:custom_opaque, type_params_loader.(value, custom_type_loaders, [])}
+    type_params_loader.(value, custom_type_loaders, [])
+    |> case do
+      {:ok, loaded_value} ->
+        {:ok, {:custom_opaque, loaded_value}}
+
+      {:error, _} = error ->
+        error
+    end
   end
 
   def mapset(value, custom_type_loaders, [type_params_loader]) do
     case Enumerable.impl_for(value) do
       nil ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a MapSet.t/1"]
+        {:error, ["can't convert #{inspect(value)} to a MapSet.t/1, value not enumerable"]}
 
       _ ->
-        MapSet.new(value, &type_params_loader.(&1, custom_type_loaders, []))
+        value
+        |> Enum.to_list()
+        |> Loaders.list(custom_type_loaders, [type_params_loader])
+        |> case do
+          {:ok, loaded_value} ->
+            {:ok, MapSet.new(loaded_value)}
+
+          {:error, errors} ->
+            {:error, ["can't convert #{inspect(value)} to a MapSet.t/1", errors]}
+        end
     end
   end
 
   def isodatetime(value, _custom_type_loaders, []) do
     with {:is_binary, true} <- {:is_binary, is_binary(value)},
          {:from_iso8601, {:ok, datetime, _}} <- {:from_iso8601, DateTime.from_iso8601(value)} do
-      datetime
+      {:ok, datetime}
     else
       {:is_binary, false} ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a DateTime.t/0"]
+        {:error, ["can't convert #{inspect(value)} to a DateTime.t/0"]}
 
       {:from_iso8601, {:error, reason}} ->
-        raise Error, errors: ["can't convert #{inspect(value)} to a DateTime.t/0 (#{inspect(reason)})"]
+        {:error, ["can't convert #{inspect(value)} to a DateTime.t/0 (#{inspect(reason)})"]}
     end
   end
 end

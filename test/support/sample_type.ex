@@ -100,7 +100,7 @@ defmodule Test.DataSpec.SampleStructType do
 
   @type t :: %__MODULE__{
           f_1: atom(),
-          f_2: integer(),
-          f_3: String.t()
+          f_2: nil | integer(),
+          f_3: nil | String.t()
         }
 end
