@@ -222,10 +222,10 @@ defmodule AStruct do
   defstruct [:field]
 
   @type t :: %__MODULE__{
-    field: field()
+    field: upcase_string()
   }
 
-  @type field :: String.t()
+  @type upcase_string :: String.t()
 
   def custom_field_loader(value, custom_type_loaders, type_params_loaders) do
     name = DataSpecs.Loaders.binary(value, custom_type_loaders, type_params_loaders)
@@ -238,7 +238,7 @@ defmodule AStruct do
   end
 end
 
-DataSpecs.load(%{field: "AAA"}, {AStruct, :t}, %{{AStruct, :field, 0} => &AStruct.custom_field_loader/3})
+DataSpecs.load(%{field: "AAA"}, {AStruct, :t}, %{{AStruct, :upcase_string, 0} => &AStruct.custom_field_loader/3})
 # => %AStruct{field: "AAA"}
 ```
 
