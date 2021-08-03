@@ -1,13 +1,15 @@
 # dataspecs
 
-![CI](https://github.com/visciang/dataspecs/workflows/CI/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/visciang/dataspecs/badge.svg?branch=main)](https://coveralls.io/github/visciang/dataspecs?branch=main)
+![CI](https://github.com/visciang/dataspecs/workflows/CI/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/visciang/dataspecs/badge.svg?branch=main)](https://coveralls.io/github/visciang/dataspecs?branch=main)
 
 Typespec based data loader and validator (inspired by [forma](https://github.com/soundtrackyourbrand/forma)).
 
 DataSpecs **validate and load** elixir data into a more structured form
-by trying to map it to conform to a **typespec**. It support most typespec
-specification: **basic** types, **literal** types, **built-in** types, **union** type,
-**parametrized** types, **maps**, **remote** types and **user defined** types.
+by trying to map it to conform to a [typespec](https://hexdocs.pm/elixir/typespecs.html).
+It support most typespec specification: **basic** types, **literal** types,
+**built-in** types, **union** type, **parametrized** types, **maps**, **remote** types
+and **user defined** types.
 
 It can be used to validate some elixir data against a typespec or it
 can be useful when interfacing with external data sources that provide
@@ -73,9 +75,12 @@ DataSpecs.load(%{
 
 DataSpecs tries to figure out how to translate its input to a typespec.
 
-Scalar types (such as booleans, integers, etc.) and some composite types (such as lists, plain maps), can be simply mapped one to one after validation without any additional transformation. 
+Scalar types (such as booleans, integers, etc.) and some composite types
+(such as lists, plain maps), can be simply mapped one to one after validation
+without any additional transformation. 
 
-However, not all Elixir types have natural representations in JSON-like data, for example dates, or don't want to expose their internals (opaque types).
+However, not all Elixir types have natural representations in JSON-like data,
+for example dates, or don't want to expose their internals (opaque types).
 
 Refer to the library test suite for more examples.
 
@@ -91,7 +96,8 @@ end
 
 Typespecs should be included in the compiled ebin.
 
-Set the `:strip_beams` option to `false` when compiling your project with mix release or mix escript.
+Set the `:strip_beams` option to `false` when compiling your project with mix
+release or mix escript.
 
 ```elixir
 def project do
