@@ -14,7 +14,10 @@ defmodule DataSpecs.Mixfile do
       preferred_cli_env: preferred_cli_env(),
       description: description(),
       package: package(),
-      source_url: "https://github.com/visciang/dataspecs"
+      source_url: "https://github.com/visciang/dataspecs",
+      dialyzer: [
+        plt_file: {:no_warn, "deps/dialyzer.plt"}
+      ]
     ]
   end
 
@@ -46,7 +49,6 @@ defmodule DataSpecs.Mixfile do
     [
       {:excoveralls, "~> 0.12", only: :test},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
-      {:ex_doc, "~> 0.21", only: :dev},
       {:credo, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
@@ -57,8 +59,7 @@ defmodule DataSpecs.Mixfile do
       "coveralls.github": :test,
       "coveralls.detail": :test,
       "coveralls.post": :test,
-      "coveralls.html": :test,
-      docs: :dev
+      "coveralls.html": :test
     ]
   end
 end
