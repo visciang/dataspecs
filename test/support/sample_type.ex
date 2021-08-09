@@ -96,7 +96,7 @@ defmodule Test.DataSpecs.SampleStructType do
   @moduledoc false
 
   @enforce_keys [:f_1]
-  defstruct [:f_1, :f_2, :f_3, :f_4]
+  defstruct [:f_1, :f_2, :f_3]
 
   @type t :: %__MODULE__{
           f_1: atom(),
