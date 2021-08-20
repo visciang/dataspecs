@@ -44,7 +44,7 @@ jobs:
           CYCLES=$(mix xref graph --format=cycles)
 
           if echo "$CYCLES" | grep "No cycles found"; then
-            # OK
+            true
           else
             echo "Found module dependency cycle:"
             echo "$CYCLES"
