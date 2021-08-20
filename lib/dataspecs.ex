@@ -1,7 +1,6 @@
 defmodule DataSpecs do
   @moduledoc File.read!("README.md")
 
-  use Application
   alias DataSpecs.Typespecs
 
   @type value() :: any()
@@ -47,10 +46,5 @@ defmodule DataSpecs do
   def load(value, {module, type_id}, custom_type_loaders \\ %{}, type_params_loaders \\ []) do
     loader = Typespecs.loader(module, type_id, length(type_params_loaders))
     loader.(value, custom_type_loaders, type_params_loaders)
-  end
-
-  @spec start(any(), any()) :: {:error, any()} | {:ok, pid()}
-  def start(_type, _args) do
-    Supervisor.start_link([DataSpecs.Cache], strategy: :one_for_one)
   end
 end

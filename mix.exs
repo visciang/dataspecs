@@ -38,7 +38,7 @@ defmodule DataSpecs.Mixfile do
   def application do
     [
       extra_applications: [:logger],
-      mod: {DataSpecs, []}
+      mod: {DataSpecs.App, []}
     ]
   end
 
