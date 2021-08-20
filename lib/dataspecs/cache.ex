@@ -28,7 +28,7 @@ defmodule DataSpecs.Cache do
 
   @impl GenServer
   def init(nil) do
-    :ets.new(@ets_name, [:set, :protected, :named_table])
+    :ets.new(@ets_name, [:set, :protected, :named_table, read_concurrency: true])
     {:ok, nil}
   end
 
