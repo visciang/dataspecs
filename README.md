@@ -58,7 +58,7 @@ DataSpecs.load(%{
   }]
 }, {Person, :t})
 
-# +> %Person{
+# => %Person{
 #      address: [
 #        %Address{
 #          postcode: "SO31 4NG",
