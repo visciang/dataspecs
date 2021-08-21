@@ -19,7 +19,7 @@ defmodule DataSpecs.Cache do
   end
 
   def set(type_loaders) do
-    GenServer.call(@name, {:set, type_loaders})
+    GenServer.call(@name, {:set, type_loaders}, :infinity)
   end
 
   def start_link(_args) do
