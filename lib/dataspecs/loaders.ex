@@ -1,9 +1,19 @@
 defmodule DataSpecs.Loaders do
-  @moduledoc false
+  @moduledoc """
+  Type loaders for Erlang builtin types
+  """
+
+  alias DataSpecs.Types
+
+  @spec any(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, any()}
 
   def any(value, _custom_type_loaders, _type_params_loaders) do
     {:ok, value}
   end
+
+  @spec atom(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, atom()}
 
   def atom(value, _custom_type_loaders, _type_params_loaders) do
     case value do
@@ -23,6 +33,9 @@ defmodule DataSpecs.Loaders do
     end
   end
 
+  @spec boolean(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, boolean()}
+
   def boolean(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_boolean(value) ->
@@ -32,6 +45,9 @@ defmodule DataSpecs.Loaders do
         {:error, ["can't convert #{inspect(value)} to a boolean"]}
     end
   end
+
+  @spec binary(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, binary()}
 
   def binary(value, _custom_type_loaders, _type_params_loaders) do
     case value do
@@ -43,6 +59,9 @@ defmodule DataSpecs.Loaders do
     end
   end
 
+  @spec pid(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, pid()}
+
   def pid(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_pid(value) ->
@@ -52,6 +71,9 @@ defmodule DataSpecs.Loaders do
         {:error, ["can't convert #{inspect(value)} to a pid"]}
     end
   end
+
+  @spec reference(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, reference()}
 
   def reference(value, _custom_type_loaders, _type_params_loaders) do
     case value do
@@ -63,6 +85,9 @@ defmodule DataSpecs.Loaders do
     end
   end
 
+  @spec number(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, number()}
+
   def number(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_number(value) ->
@@ -72,6 +97,9 @@ defmodule DataSpecs.Loaders do
         {:error, ["can't convert #{inspect(value)} to a number"]}
     end
   end
+
+  @spec float(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, float()}
 
   def float(value, _custom_type_loaders, _type_params_loaders) do
     case value do
@@ -83,6 +111,9 @@ defmodule DataSpecs.Loaders do
     end
   end
 
+  @spec integer(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, integer()}
+
   def integer(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_integer(value) ->
@@ -92,6 +123,9 @@ defmodule DataSpecs.Loaders do
         {:error, ["can't convert #{inspect(value)} to an integer"]}
     end
   end
+
+  @spec neg_integer(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, neg_integer()}
 
   def neg_integer(value, _custom_type_loaders, _type_params_loaders) do
     case value do
@@ -103,6 +137,9 @@ defmodule DataSpecs.Loaders do
     end
   end
 
+  @spec non_neg_integer(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, non_neg_integer()}
+
   def non_neg_integer(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_integer(value) and value >= 0 ->
@@ -112,6 +149,9 @@ defmodule DataSpecs.Loaders do
         {:error, ["can't convert #{inspect(value)} to a non_neg_integer"]}
     end
   end
+
+  @spec pos_integer(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, pos_integer()}
 
   def pos_integer(value, _custom_type_loaders, _type_params_loaders) do
     case value do
@@ -123,6 +163,9 @@ defmodule DataSpecs.Loaders do
     end
   end
 
+  @spec range(integer(), integer(), Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, integer()}
+
   def range(lower, upper, value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_integer(value) and lower <= value and value <= upper ->
@@ -132,6 +175,9 @@ defmodule DataSpecs.Loaders do
         {:error, ["can't convert #{inspect(value)} to a range #{inspect(lower..upper)}"]}
     end
   end
+
+  @spec union(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, any()}
 
   def union(value, custom_type_loaders, type_params_loaders) do
     type_params_loaders
@@ -154,6 +200,9 @@ defmodule DataSpecs.Loaders do
     end
   end
 
+  @spec empty_list(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, []}
+
   def empty_list(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       [] ->
@@ -164,6 +213,9 @@ defmodule DataSpecs.Loaders do
     end
   end
 
+  @spec nonempty_list(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, nonempty_list()}
+
   def nonempty_list(value, custom_type_loaders, type_params_loaders) do
     case value do
       [_ | _] ->
@@ -173,6 +225,9 @@ defmodule DataSpecs.Loaders do
         {:error, ["can't convert #{inspect(value)} to a non empty list"]}
     end
   end
+
+  @spec list(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, list()}
 
   def list(value, custom_type_loaders, type_params_loaders) do
     case value do
@@ -212,6 +267,9 @@ defmodule DataSpecs.Loaders do
     end
   end
 
+  @spec empty_map(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, %{}}
+
   def empty_map(value, _custom_type_loaders, []) do
     if value == %{} do
       {:ok, value}
@@ -219,6 +277,9 @@ defmodule DataSpecs.Loaders do
       {:error, ["can't convert #{inspect(value)} to an empty map"]}
     end
   end
+
+  @spec map_field_required(map(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, {map(), map(), Types.reason()}}
 
   def map_field_required(map, custom_type_loaders, [type_key_loader, type_value_loader]) do
     map_field_optional(map, custom_type_loaders, [type_key_loader, type_value_loader])
@@ -233,6 +294,9 @@ defmodule DataSpecs.Loaders do
         {:error, errors}
     end
   end
+
+  @spec map_field_optional(map(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, {map(), map(), Types.reason()}}
 
   def map_field_optional(map, custom_type_loaders, [type_key_loader, type_value_loader]) do
     case map do
@@ -262,7 +326,9 @@ defmodule DataSpecs.Loaders do
     end
   end
 
-  @spec tuple_any(any, any, any) :: {:error, [<<_::64, _::_*8>>, ...]} | {:ok, tuple}
+  @spec tuple_any(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, tuple()}
+
   def tuple_any(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_tuple(value) ->
@@ -272,6 +338,9 @@ defmodule DataSpecs.Loaders do
         {:error, ["can't convert #{inspect(value)} to a tuple"]}
     end
   end
+
+  @spec tuple(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, tuple()}
 
   def tuple(value, custom_type_loaders, type_params_loaders) do
     tuple_type_size = length(type_params_loaders)

@@ -1,15 +1,10 @@
 defmodule DataSpecs do
   @moduledoc File.read!("README.md")
 
-  alias DataSpecs.Typespecs
+  alias DataSpecs.{Types, Typespecs}
 
-  @type value() :: any()
-  @type reason :: [String.t() | reason()]
-  @type type_id :: atom()
-  @type type_ref :: {module(), type_id()}
-  @type custom_type_ref :: {module(), type_id(), arity()}
-  @type type_params_loader :: (value(), custom_type_loaders(), [type_params_loader] -> value())
-  @type custom_type_loaders :: %{custom_type_ref() => type_params_loader()}
+  @spec load(Types.value(), Types.type_ref(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, any()}
 
   @doc """
   Loads a value that should conform to a typespec
@@ -42,7 +37,6 @@ defmodule DataSpecs do
          surname: "Smith"
        }
   """
-  @spec load(value(), type_ref(), custom_type_loaders(), [type_params_loader()]) :: {:error, reason()} | {:ok, value()}
   def load(value, {module, type_id}, custom_type_loaders \\ %{}, type_params_loaders \\ []) do
     loader = Typespecs.loader(module, type_id, length(type_params_loaders))
     loader.(value, custom_type_loaders, type_params_loaders)

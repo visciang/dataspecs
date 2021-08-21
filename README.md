@@ -167,13 +167,13 @@ DataSpecs.load(
 The type of the custom loader function is
 
 ```elixir
-(value(), custom_type_loaders(), [type_params_loader()] -> value())
+(value(), custom_type_loaders(), [type_loader_fun()] -> value())
 ```
 
 for example a custom `MapSet.t/1` loader could be implement as:
 
 ```elixir
-def custom_mapset_loader(value, custom_type_loaders, [type_params_loader]) do
+def custom_mapset_loader(value, custom_type_loaders, [type_loader_fun]) do
   case Enumerable.impl_for(value) do
     nil ->
       {:error, ["can't convert #{inspect(value)} to a MapSet.t/1, value not enumerable"]}
@@ -181,7 +181,7 @@ def custom_mapset_loader(value, custom_type_loaders, [type_params_loader]) do
     _ ->
       value
       |> Enum.to_list()
-      |> Loaders.list(custom_type_loaders, [type_params_loader])
+      |> Loaders.list(custom_type_loaders, [type_loader_fun])
       |> case do
         {:ok, loaded_value} ->
           {:ok, MapSet.new(loaded_value)}
@@ -194,7 +194,7 @@ end
 ```
 
 The custom loader take the input value, check it's enumerable and then builds a `MapSet`
-over the items of the input value. It takes as argument a list of `type_params_loader()` associated
+over the items of the input value. It takes as argument a list of `type_loader_fun()` associated
 with the type parameters.
 
 For example, let's say we have:

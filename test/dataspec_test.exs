@@ -382,20 +382,75 @@ defmodule Test.DataSpecs do
 
       custom_type_loaders = %{
         {@types_module, :t_opaque, 1} => &CustomLoader.opaque/3,
-        {MapSet, :t, 1} => &CustomLoader.mapset/3,
-        {DateTime, :t, 0} => &CustomLoader.isodatetime/3
+        {MapSet, :t, 1} => &Loaders.Extra.mapset/3
       }
 
       assert {:ok, {:custom_opaque, 1}} == DataSpecs.load(1, {@types_module, :t_opaque}, custom_type_loaders, [integer])
 
-      datetime = ~U[2021-07-14 20:22:49.653077Z]
-      iso_datetime_string = DateTime.to_iso8601(datetime)
       assert {:ok, MapSet.new(1..3)} == DataSpecs.load(1..3, {@types_module, :t_mapset}, custom_type_loaders)
 
       assert {:ok, MapSet.new(["1", :a, 1])} ==
                DataSpecs.load(["1", :a, 1], {@types_module, :t_mapset_1}, custom_type_loaders)
+    end
+  end
+
+  describe "extra loaders" do
+    test "isodatetime" do
+      custom_type_loaders = %{
+        {DateTime, :t, 0} => &Loaders.Extra.isodatetime/3
+      }
+
+      datetime = ~U[2021-07-14 20:22:49.653077Z]
+      iso_datetime_string = DateTime.to_iso8601(datetime)
 
       assert {:ok, datetime} == DataSpecs.load(iso_datetime_string, {@types_module, :t_datetime}, custom_type_loaders)
+    end
+
+    test "isodatetime error" do
+      custom_type_loaders = %{
+        {DateTime, :t, 0} => &Loaders.Extra.isodatetime/3
+      }
+
+      value = "not a datetime"
+
+      assert {:error, ["can't convert \"#{value}\" to a DateTime.t/0 (:invalid_format)"]} ==
+               DataSpecs.load(value, {@types_module, :t_datetime}, custom_type_loaders)
+
+      value = 123
+
+      assert {:error, ["can't convert #{value} to a DateTime.t/0"]} ==
+               DataSpecs.load(value, {@types_module, :t_datetime}, custom_type_loaders)
+    end
+
+    test "mapset" do
+      custom_type_loaders = %{
+        {MapSet, :t, 1} => &Loaders.Extra.mapset/3
+      }
+
+      assert {:ok, MapSet.new(1..3)} == DataSpecs.load(1..3, {@types_module, :t_mapset}, custom_type_loaders)
+
+      assert {:ok, MapSet.new(["1", :a, 1])} ==
+               DataSpecs.load(["1", :a, 1], {@types_module, :t_mapset_1}, custom_type_loaders)
+    end
+
+    test "mapset error" do
+      custom_type_loaders = %{
+        {MapSet, :t, 1} => &Loaders.Extra.mapset/3
+      }
+
+      value = 123
+
+      assert {:error, ["can't convert #{value} to a MapSet.t/1, value not enumerable"]} ==
+               DataSpecs.load(value, {@types_module, :t_mapset}, custom_type_loaders)
+
+      value = [%{}]
+
+      assert {:error,
+              [
+                "can't convert #{inspect(value)} to a MapSet.t/1",
+                ["can't convert #{inspect(value)} to a list, bad item at index=0", ["can't convert %{} to an integer"]]
+              ]} ==
+               DataSpecs.load(value, {@types_module, :t_mapset}, custom_type_loaders)
     end
   end
 
@@ -405,8 +460,6 @@ defmodule Test.DataSpecs do
 end
 
 defmodule Test.DataSpecs.CustomLoader do
-  alias DataSpecs.Loaders
-
   def opaque(value, custom_type_loaders, [type_params_loader]) do
     type_params_loader.(value, custom_type_loaders, [])
     |> case do
@@ -415,38 +468,6 @@ defmodule Test.DataSpecs.CustomLoader do
 
       {:error, _} = error ->
         error
-    end
-  end
-
-  def mapset(value, custom_type_loaders, [type_params_loader]) do
-    case Enumerable.impl_for(value) do
-      nil ->
-        {:error, ["can't convert #{inspect(value)} to a MapSet.t/1, value not enumerable"]}
-
-      _ ->
-        value
-        |> Enum.to_list()
-        |> Loaders.list(custom_type_loaders, [type_params_loader])
-        |> case do
-          {:ok, loaded_value} ->
-            {:ok, MapSet.new(loaded_value)}
-
-          {:error, errors} ->
-            {:error, ["can't convert #{inspect(value)} to a MapSet.t/1", errors]}
-        end
-    end
-  end
-
-  def isodatetime(value, _custom_type_loaders, []) do
-    with {:is_binary, true} <- {:is_binary, is_binary(value)},
-         {:from_iso8601, {:ok, datetime, _}} <- {:from_iso8601, DateTime.from_iso8601(value)} do
-      {:ok, datetime}
-    else
-      {:is_binary, false} ->
-        {:error, ["can't convert #{inspect(value)} to a DateTime.t/0"]}
-
-      {:from_iso8601, {:error, reason}} ->
-        {:error, ["can't convert #{inspect(value)} to a DateTime.t/0 (#{inspect(reason)})"]}
     end
   end
 end
