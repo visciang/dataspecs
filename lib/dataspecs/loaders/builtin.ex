@@ -1,6 +1,6 @@
-defmodule DataSpecs.Loaders do
+defmodule DataSpecs.Loaders.Builtin do
   @moduledoc """
-  Type loaders for Erlang builtin types
+  Erlang builtin types loaders
   """
 
   alias DataSpecs.Types

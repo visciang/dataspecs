@@ -176,7 +176,7 @@ defmodule Test.DataSpecs do
 
   describe "union" do
     test "ok" do
-      float = &Loaders.float/3
+      float = &Loaders.Builtin.float/3
       assert {:ok, :test} == DataSpecs.load(:test, {@types_module, :t_union_0}, %{}, [float])
       assert {:ok, 1} == DataSpecs.load(1, {@types_module, :t_union_0}, %{}, [float])
       assert {:ok, 1.1} == DataSpecs.load(1.1, {@types_module, :t_union_0}, %{}, [float])
@@ -197,7 +197,7 @@ defmodule Test.DataSpecs do
 
   describe "list" do
     test "ok" do
-      integer = &Loaders.integer/3
+      integer = &Loaders.Builtin.integer/3
       assert {:ok, []} == DataSpecs.load([], {@types_module, :t_empty_list})
       assert {:ok, [:a, :b]} == DataSpecs.load([:a, :b], {@types_module, :t_list})
       assert {:ok, [1, 2]} == DataSpecs.load([1, 2], {@types_module, :t_list_param}, %{}, [integer])
@@ -259,7 +259,7 @@ defmodule Test.DataSpecs do
 
   describe "map" do
     test "ok" do
-      integer = &Loaders.integer/3
+      integer = &Loaders.Builtin.integer/3
       assert {:ok, %{}} == DataSpecs.load(%{}, {@types_module, :t_empty_map})
       assert {:ok, %{required_key: 1}} == DataSpecs.load(%{required_key: 1}, {@types_module, :t_map_0})
       assert {:ok, %{required_key: 1}} == DataSpecs.load(%{"required_key" => 1}, {@types_module, :t_map_0})
@@ -310,7 +310,7 @@ defmodule Test.DataSpecs do
   end
 
   test "user type parametrized" do
-    integer = &Loaders.integer/3
+    integer = &Loaders.Builtin.integer/3
     assert {:ok, {0, 1, 2}} == DataSpecs.load({0, 1, 2}, {@types_module, :t_user_type_param_0})
 
     assert {:ok, {0, 1, 2}} ==
@@ -320,7 +320,7 @@ defmodule Test.DataSpecs do
   end
 
   test "same type name with different arities" do
-    atom = &Loaders.atom/3
+    atom = &Loaders.Builtin.atom/3
     assert {:ok, :test} == DataSpecs.load(:test, {@types_module, :t_type_arity})
     assert {:ok, :test} == DataSpecs.load(:test, {@types_module, :t_type_arity}, %{}, [atom])
   end
@@ -352,7 +352,7 @@ defmodule Test.DataSpecs do
   end
 
   test "remote type" do
-    integer = &Loaders.integer/3
+    integer = &Loaders.Builtin.integer/3
     assert {:ok, 1} == DataSpecs.load(1, {@types_module, :t_remote_type}, %{}, [integer])
     assert {:ok, :test} == DataSpecs.load(:test, {@types_module, :t_remote_type}, %{}, [integer])
     assert {:ok, "string"} == DataSpecs.load("string", {@types_module, :t_remote_type_string})
@@ -368,7 +368,7 @@ defmodule Test.DataSpecs do
 
   describe "opaque type" do
     test "without custom type loader" do
-      integer = &Loaders.integer/3
+      integer = &Loaders.Builtin.integer/3
 
       reason = ["opaque type #{inspect(@types_module)}.t_opaque/1 has no custom type loader defined"]
       assert {:error, ^reason} = DataSpecs.load(:opaque, {@types_module, :t_opaque}, %{}, [integer])
@@ -378,7 +378,7 @@ defmodule Test.DataSpecs do
     end
 
     test "with custom type loader" do
-      integer = &Loaders.integer/3
+      integer = &Loaders.Builtin.integer/3
 
       custom_type_loaders = %{
         {@types_module, :t_opaque, 1} => &CustomLoader.opaque/3,

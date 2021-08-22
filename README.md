@@ -234,7 +234,7 @@ defmodule AStruct do
   @type upcase_string :: String.t()
 
   def custom_field_loader(value, custom_type_loaders, type_params_loaders) do
-    name = DataSpecs.Loaders.binary(value, custom_type_loaders, type_params_loaders)
+    name = DataSpecs.Loaders.Builtin.binary(value, custom_type_loaders, type_params_loaders)
 
     if name == String.upcase(name) do
       {:ok, name}
