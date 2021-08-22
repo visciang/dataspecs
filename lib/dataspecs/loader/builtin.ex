@@ -1,4 +1,4 @@
-defmodule DataSpecs.Loaders.Builtin do
+defmodule DataSpecs.Loader.Builtin do
   @moduledoc """
   Erlang builtin types loaders
   """

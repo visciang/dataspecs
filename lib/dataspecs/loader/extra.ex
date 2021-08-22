@@ -1,9 +1,9 @@
-defmodule DataSpecs.Loaders.Extra do
+defmodule DataSpecs.Loader.Extra do
   @moduledoc """
   Elixir types loaders
   """
 
-  alias DataSpecs.{Loaders, Types}
+  alias DataSpecs.{Loader, Types}
 
   @spec mapset(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, MapSet.t()}
@@ -20,7 +20,7 @@ defmodule DataSpecs.Loaders.Extra do
       _ ->
         value
         |> Enum.to_list()
-        |> Loaders.Builtin.list(custom_type_loaders, [type_params_loader])
+        |> Loader.Builtin.list(custom_type_loaders, [type_params_loader])
         |> case do
           {:ok, loaded_value} ->
             {:ok, MapSet.new(loaded_value)}

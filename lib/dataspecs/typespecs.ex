@@ -1,7 +1,7 @@
 defmodule DataSpecs.Typespecs do
   @moduledoc false
 
-  alias DataSpecs.{Cache, Loaders}
+  alias DataSpecs.{Cache, Loader}
 
   require Logger
 
@@ -68,7 +68,7 @@ defmodule DataSpecs.Typespecs do
   @literal_types [:atom, :integer]
   defp eatf_loader(module, type_id, {literal_type, 0, literal}, []) when literal_type in @literal_types do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      apply(Loaders.Builtin, literal_type, [value, custom_type_loaders, type_params_loaders])
+      apply(Loader.Builtin, literal_type, [value, custom_type_loaders, type_params_loaders])
       |> case do
         {:ok, ^literal} ->
           {:ok, literal}
@@ -86,7 +86,7 @@ defmodule DataSpecs.Typespecs do
 
   defp eatf_loader(module, type_id, {:type, _lineno, :any, []}, []) do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loaders.Builtin.any(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.any(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -94,7 +94,7 @@ defmodule DataSpecs.Typespecs do
 
   defp eatf_loader(module, type_id, {:type, _lineno, :term, []}, []) do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loaders.Builtin.any(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.any(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -102,7 +102,7 @@ defmodule DataSpecs.Typespecs do
 
   defp eatf_loader(module, type_id, {:type, _lineno, :pid, []}, []) do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loaders.Builtin.pid(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.pid(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -110,7 +110,7 @@ defmodule DataSpecs.Typespecs do
 
   defp eatf_loader(module, type_id, {:type, _lineno, :reference, []}, []) do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loaders.Builtin.reference(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.reference(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -118,7 +118,7 @@ defmodule DataSpecs.Typespecs do
 
   defp eatf_loader(module, type_id, {:type, _lineno, :atom, []}, []) do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loaders.Builtin.atom(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.atom(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -126,7 +126,7 @@ defmodule DataSpecs.Typespecs do
 
   defp eatf_loader(module, type_id, {:type, _lineno, :boolean, []}, []) do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loaders.Builtin.boolean(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.boolean(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -134,7 +134,7 @@ defmodule DataSpecs.Typespecs do
 
   defp eatf_loader(module, type_id, {:type, _lineno, :binary, []}, []) do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loaders.Builtin.binary(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.binary(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -142,7 +142,7 @@ defmodule DataSpecs.Typespecs do
 
   defp eatf_loader(module, type_id, {:type, _lineno, :number, []}, []) do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loaders.Builtin.number(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.number(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -150,7 +150,7 @@ defmodule DataSpecs.Typespecs do
 
   defp eatf_loader(module, type_id, {:type, _lineno, :float, []}, []) do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loaders.Builtin.float(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.float(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -158,7 +158,7 @@ defmodule DataSpecs.Typespecs do
 
   defp eatf_loader(module, type_id, {:type, _lineno, :integer, []}, []) do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loaders.Builtin.integer(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.integer(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -166,7 +166,7 @@ defmodule DataSpecs.Typespecs do
 
   defp eatf_loader(module, type_id, {:type, _lineno, :neg_integer, []}, []) do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loaders.Builtin.neg_integer(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.neg_integer(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -174,7 +174,7 @@ defmodule DataSpecs.Typespecs do
 
   defp eatf_loader(module, type_id, {:type, _lineno, :non_neg_integer, []}, []) do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loaders.Builtin.non_neg_integer(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.non_neg_integer(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -182,7 +182,7 @@ defmodule DataSpecs.Typespecs do
 
   defp eatf_loader(module, type_id, {:type, _lineno, :pos_integer, []}, []) do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loaders.Builtin.pos_integer(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.pos_integer(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -190,7 +190,7 @@ defmodule DataSpecs.Typespecs do
 
   defp eatf_loader(module, type_id, {:type, _lineno, :range, [{:integer, 0, lower}, {:integer, 0, upper}]}, []) do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loaders.Builtin.range(lower, upper, value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.range(lower, upper, value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -230,7 +230,7 @@ defmodule DataSpecs.Typespecs do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
       type_params_loaders = type_params_var_expansion(module, type_id, type_params, type_params_loaders, type_vars)
 
-      Loaders.Builtin.union(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.union(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, length(type_vars)}, default_loader)
@@ -244,7 +244,7 @@ defmodule DataSpecs.Typespecs do
     #     {:type, 0, nil, []}
 
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loaders.Builtin.empty_list(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.empty_list(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -263,7 +263,7 @@ defmodule DataSpecs.Typespecs do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
       type_params_loaders = type_params_var_expansion(module, type_id, type_params, type_params_loaders, type_vars)
 
-      Loaders.Builtin.list(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.list(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, length(type_vars)}, default_loader)
@@ -291,7 +291,7 @@ defmodule DataSpecs.Typespecs do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
       type_params_loaders = type_params_var_expansion(module, type_id, type_params, type_params_loaders, type_vars)
 
-      Loaders.Builtin.nonempty_list(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.nonempty_list(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, length(type_vars)}, default_loader)
@@ -305,7 +305,7 @@ defmodule DataSpecs.Typespecs do
     #     {:type, 31, :tuple, :any}
 
     default_loader = fn value, custom_type_loaders, [] ->
-      Loaders.Builtin.tuple_any(value, custom_type_loaders, [])
+      Loader.Builtin.tuple_any(value, custom_type_loaders, [])
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -324,7 +324,7 @@ defmodule DataSpecs.Typespecs do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
       type_params_loaders = type_params_var_expansion(module, type_id, type_params, type_params_loaders, type_vars)
 
-      Loaders.Builtin.tuple(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.tuple(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, length(type_vars)}, default_loader)
@@ -386,7 +386,7 @@ defmodule DataSpecs.Typespecs do
     #     {:type, 36, :map, []}
 
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loaders.Builtin.empty_map(value, custom_type_loaders, type_params_loaders)
+      Loader.Builtin.empty_map(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -543,7 +543,7 @@ defmodule DataSpecs.Typespecs do
       {:ok, {value_with_unprocessed_kv, value_with_req_processed_kv, map_errors}} ->
         type_params = type_params_var_expansion(module, type_id, type_params, type_params_loaders, type_vars)
 
-        Loaders.Builtin.map_field_required(value_with_unprocessed_kv, custom_type_loaders, type_params)
+        Loader.Builtin.map_field_required(value_with_unprocessed_kv, custom_type_loaders, type_params)
         |> case do
           {:ok, {value_with_unprocessed_kv, value_with_req_processed_kv_new, errors}} ->
             value_with_req_processed_kv = Map.merge(value_with_req_processed_kv, value_with_req_processed_kv_new)
@@ -570,7 +570,7 @@ defmodule DataSpecs.Typespecs do
       {:ok, {value_with_unprocessed_kv, value_with_processed_kv, map_errors}} ->
         type_params = type_params_var_expansion(module, type_id, type_params, type_params_loaders, type_vars)
 
-        Loaders.Builtin.map_field_optional(value_with_unprocessed_kv, custom_type_loaders, type_params)
+        Loader.Builtin.map_field_optional(value_with_unprocessed_kv, custom_type_loaders, type_params)
         |> case do
           {:ok, {value_with_unprocessed_kv, value_with_processed_kv_new, errors}} ->
             value_with_processed_kv = Map.merge(value_with_processed_kv, value_with_processed_kv_new)

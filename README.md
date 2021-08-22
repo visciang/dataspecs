@@ -181,7 +181,7 @@ def custom_mapset_loader(value, custom_type_loaders, [type_loader_fun]) do
     _ ->
       value
       |> Enum.to_list()
-      |> Loaders.list(custom_type_loaders, [type_loader_fun])
+      |> Loader.list(custom_type_loaders, [type_loader_fun])
       |> case do
         {:ok, loaded_value} ->
           {:ok, MapSet.new(loaded_value)}
@@ -213,7 +213,7 @@ and an input value:
 then the custom type loader function will be called with
 
 ```elixir
-custom_mapset_loader(1..10, custom_type_loaders, [&builtin_integer_loader/3])
+custom_mapset_loader(1..10, custom_type_loaders, [&DataSpecs.Loader.Builtin.integer/3])
 ```
 
 ## Validators
@@ -234,7 +234,7 @@ defmodule AStruct do
   @type upcase_string :: String.t()
 
   def custom_field_loader(value, custom_type_loaders, type_params_loaders) do
-    name = DataSpecs.Loaders.Builtin.binary(value, custom_type_loaders, type_params_loaders)
+    name = DataSpecs.Loader.Builtin.binary(value, custom_type_loaders, type_params_loaders)
 
     if name == String.upcase(name) do
       {:ok, name}

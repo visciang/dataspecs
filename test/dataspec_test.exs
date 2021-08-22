@@ -1,7 +1,7 @@
 defmodule Test.DataSpecs do
   use ExUnit.Case
 
-  alias DataSpecs.Loaders
+  alias DataSpecs.Loader
   alias Test.DataSpecs.CustomLoader
 
   @types_module Test.DataSpecs.SampleType
@@ -176,7 +176,7 @@ defmodule Test.DataSpecs do
 
   describe "union" do
     test "ok" do
-      float = &Loaders.Builtin.float/3
+      float = &Loader.Builtin.float/3
       assert {:ok, :test} == DataSpecs.load(:test, {@types_module, :t_union_0}, %{}, [float])
       assert {:ok, 1} == DataSpecs.load(1, {@types_module, :t_union_0}, %{}, [float])
       assert {:ok, 1.1} == DataSpecs.load(1.1, {@types_module, :t_union_0}, %{}, [float])
@@ -197,7 +197,7 @@ defmodule Test.DataSpecs do
 
   describe "list" do
     test "ok" do
-      integer = &Loaders.Builtin.integer/3
+      integer = &Loader.Builtin.integer/3
       assert {:ok, []} == DataSpecs.load([], {@types_module, :t_empty_list})
       assert {:ok, [:a, :b]} == DataSpecs.load([:a, :b], {@types_module, :t_list})
       assert {:ok, [1, 2]} == DataSpecs.load([1, 2], {@types_module, :t_list_param}, %{}, [integer])
@@ -259,7 +259,7 @@ defmodule Test.DataSpecs do
 
   describe "map" do
     test "ok" do
-      integer = &Loaders.Builtin.integer/3
+      integer = &Loader.Builtin.integer/3
       assert {:ok, %{}} == DataSpecs.load(%{}, {@types_module, :t_empty_map})
       assert {:ok, %{required_key: 1}} == DataSpecs.load(%{required_key: 1}, {@types_module, :t_map_0})
       assert {:ok, %{required_key: 1}} == DataSpecs.load(%{"required_key" => 1}, {@types_module, :t_map_0})
@@ -310,7 +310,7 @@ defmodule Test.DataSpecs do
   end
 
   test "user type parametrized" do
-    integer = &Loaders.Builtin.integer/3
+    integer = &Loader.Builtin.integer/3
     assert {:ok, {0, 1, 2}} == DataSpecs.load({0, 1, 2}, {@types_module, :t_user_type_param_0})
 
     assert {:ok, {0, 1, 2}} ==
@@ -320,7 +320,7 @@ defmodule Test.DataSpecs do
   end
 
   test "same type name with different arities" do
-    atom = &Loaders.Builtin.atom/3
+    atom = &Loader.Builtin.atom/3
     assert {:ok, :test} == DataSpecs.load(:test, {@types_module, :t_type_arity})
     assert {:ok, :test} == DataSpecs.load(:test, {@types_module, :t_type_arity}, %{}, [atom])
   end
@@ -352,7 +352,7 @@ defmodule Test.DataSpecs do
   end
 
   test "remote type" do
-    integer = &Loaders.Builtin.integer/3
+    integer = &Loader.Builtin.integer/3
     assert {:ok, 1} == DataSpecs.load(1, {@types_module, :t_remote_type}, %{}, [integer])
     assert {:ok, :test} == DataSpecs.load(:test, {@types_module, :t_remote_type}, %{}, [integer])
     assert {:ok, "string"} == DataSpecs.load("string", {@types_module, :t_remote_type_string})
@@ -368,7 +368,7 @@ defmodule Test.DataSpecs do
 
   describe "opaque type" do
     test "without custom type loader" do
-      integer = &Loaders.Builtin.integer/3
+      integer = &Loader.Builtin.integer/3
 
       reason = ["opaque type #{inspect(@types_module)}.t_opaque/1 has no custom type loader defined"]
       assert {:error, ^reason} = DataSpecs.load(:opaque, {@types_module, :t_opaque}, %{}, [integer])
@@ -378,11 +378,11 @@ defmodule Test.DataSpecs do
     end
 
     test "with custom type loader" do
-      integer = &Loaders.Builtin.integer/3
+      integer = &Loader.Builtin.integer/3
 
       custom_type_loaders = %{
         {@types_module, :t_opaque, 1} => &CustomLoader.opaque/3,
-        {MapSet, :t, 1} => &Loaders.Extra.mapset/3
+        {MapSet, :t, 1} => &Loader.Extra.mapset/3
       }
 
       assert {:ok, {:custom_opaque, 1}} == DataSpecs.load(1, {@types_module, :t_opaque}, custom_type_loaders, [integer])
@@ -397,7 +397,7 @@ defmodule Test.DataSpecs do
   describe "extra loaders" do
     test "isodatetime" do
       custom_type_loaders = %{
-        {DateTime, :t, 0} => &Loaders.Extra.isodatetime/3
+        {DateTime, :t, 0} => &Loader.Extra.isodatetime/3
       }
 
       datetime = ~U[2021-07-14 20:22:49.653077Z]
@@ -408,7 +408,7 @@ defmodule Test.DataSpecs do
 
     test "isodatetime error" do
       custom_type_loaders = %{
-        {DateTime, :t, 0} => &Loaders.Extra.isodatetime/3
+        {DateTime, :t, 0} => &Loader.Extra.isodatetime/3
       }
 
       value = "not a datetime"
@@ -424,7 +424,7 @@ defmodule Test.DataSpecs do
 
     test "mapset" do
       custom_type_loaders = %{
-        {MapSet, :t, 1} => &Loaders.Extra.mapset/3
+        {MapSet, :t, 1} => &Loader.Extra.mapset/3
       }
 
       assert {:ok, MapSet.new(1..3)} == DataSpecs.load(1..3, {@types_module, :t_mapset}, custom_type_loaders)
@@ -435,7 +435,7 @@ defmodule Test.DataSpecs do
 
     test "mapset error" do
       custom_type_loaders = %{
-        {MapSet, :t, 1} => &Loaders.Extra.mapset/3
+        {MapSet, :t, 1} => &Loader.Extra.mapset/3
       }
 
       value = 123
