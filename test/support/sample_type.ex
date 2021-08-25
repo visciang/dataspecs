@@ -13,6 +13,9 @@ defmodule Test.DataSpecs.SampleType do
   @type t_atom :: atom()
   @type t_boolean :: boolean()
   @type t_binary :: binary()
+  @type t_byte :: byte()
+  @type t_char :: char()
+  @type t_arity :: arity()
 
   @type t_number :: number()
   @type t_float :: float()
@@ -72,9 +75,6 @@ defmodule Test.DataSpecs.SampleType do
   # @type t_bitstring_0 :: <<_::4>>
   # @type t_bitstring_1 :: <<_::_*4>>
   # @type t_bitstring_2 :: <<_::8, _::_*4>>
-  # @type t_arity_1 :: arity()
-  # @type t_byte :: byte()
-  # @type t_char :: char()
   # @type t_identifier :: identifier()
   # @type t_iodata :: iodata()
   # @type t_iolist :: iolist()

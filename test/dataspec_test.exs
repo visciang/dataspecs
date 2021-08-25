@@ -94,6 +94,45 @@ defmodule Test.DataSpecs do
     end
   end
 
+  describe "byte" do
+    test "ok" do
+      assert {:ok, 0} == DataSpecs.load(0, {@types_module, :t_byte})
+      assert {:ok, 128} == DataSpecs.load(128, {@types_module, :t_byte})
+      assert {:ok, 255} == DataSpecs.load(255, {@types_module, :t_byte})
+    end
+
+    test "error" do
+      reason = ["can't convert 256 to a byte"]
+      assert {:error, ^reason} = DataSpecs.load(256, {@types_module, :t_byte})
+    end
+  end
+
+  describe "char" do
+    test "ok" do
+      assert {:ok, 0} == DataSpecs.load(0, {@types_module, :t_char})
+      assert {:ok, 128} == DataSpecs.load(128, {@types_module, :t_char})
+      assert {:ok, 0x10FFFF} == DataSpecs.load(0x10FFFF, {@types_module, :t_char})
+    end
+
+    test "error" do
+      reason = ["can't convert #{0x110000} to a char"]
+      assert {:error, ^reason} = DataSpecs.load(0x110000, {@types_module, :t_char})
+    end
+  end
+
+  describe "arity" do
+    test "ok" do
+      assert {:ok, 0} == DataSpecs.load(0, {@types_module, :t_arity})
+      assert {:ok, 128} == DataSpecs.load(128, {@types_module, :t_arity})
+      assert {:ok, 255} == DataSpecs.load(255, {@types_module, :t_arity})
+    end
+
+    test "error" do
+      reason = ["can't convert 256 to a arity"]
+      assert {:error, ^reason} = DataSpecs.load(256, {@types_module, :t_arity})
+    end
+  end
+
   describe "reference" do
     test "ok" do
       ref = make_ref()

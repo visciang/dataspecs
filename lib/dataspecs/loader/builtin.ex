@@ -59,6 +59,45 @@ defmodule DataSpecs.Loader.Builtin do
     end
   end
 
+  @spec byte(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, byte()}
+
+  def byte(value, _custom_type_loaders, _type_params_loaders) do
+    case value do
+      value when is_integer(value) and 0 <= value and value <= 255 ->
+        {:ok, value}
+
+      _ ->
+        {:error, ["can't convert #{inspect(value)} to a byte"]}
+    end
+  end
+
+  @spec char(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, char()}
+
+  def char(value, _custom_type_loaders, _type_params_loaders) do
+    case value do
+      value when is_integer(value) and 0 <= value and value <= 0x10FFFF ->
+        {:ok, value}
+
+      _ ->
+        {:error, ["can't convert #{inspect(value)} to a char"]}
+    end
+  end
+
+  @spec arity(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, arity()}
+
+  def arity(value, _custom_type_loaders, _type_params_loaders) do
+    case value do
+      value when is_integer(value) and 0 <= value and value <= 255 ->
+        {:ok, value}
+
+      _ ->
+        {:error, ["can't convert #{inspect(value)} to a arity"]}
+    end
+  end
+
   @spec pid(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, pid()}
 

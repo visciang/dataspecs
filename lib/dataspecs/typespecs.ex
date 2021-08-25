@@ -1,10 +1,11 @@
 defmodule DataSpecs.Typespecs do
   @moduledoc false
 
-  alias DataSpecs.{Cache, Loader}
+  alias DataSpecs.{Cache, Loader, Types}
 
   require Logger
 
+  @spec loader(module(), Types.type_id(), arity()) :: Types.type_loader_fun()
   def loader(module, type_id, type_arity) do
     case Cache.get(module, type_id, type_arity) do
       nil ->
@@ -135,6 +136,30 @@ defmodule DataSpecs.Typespecs do
   defp eatf_loader(module, type_id, {:type, _lineno, :binary, []}, []) do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
       Loader.Builtin.binary(value, custom_type_loaders, type_params_loaders)
+    end
+
+    maybe_custom_loader({module, type_id, 0}, default_loader)
+  end
+
+  defp eatf_loader(module, type_id, {:type, _lineno, :byte, []}, []) do
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loader.Builtin.byte(value, custom_type_loaders, type_params_loaders)
+    end
+
+    maybe_custom_loader({module, type_id, 0}, default_loader)
+  end
+
+  defp eatf_loader(module, type_id, {:type, _lineno, :char, []}, []) do
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loader.Builtin.char(value, custom_type_loaders, type_params_loaders)
+    end
+
+    maybe_custom_loader({module, type_id, 0}, default_loader)
+  end
+
+  defp eatf_loader(module, type_id, {:type, _lineno, :arity, []}, []) do
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loader.Builtin.arity(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
