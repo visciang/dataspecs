@@ -141,6 +141,22 @@ defmodule DataSpecs.Typespecs do
     maybe_custom_loader({module, type_id, 0}, default_loader)
   end
 
+  defp eatf_loader(module, type_id, {:type, _lineno, :binary, [{:integer, _, size}, {:integer, _, unit}]}, []) do
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loader.Builtin.binary(value, size, unit, custom_type_loaders, type_params_loaders)
+    end
+
+    maybe_custom_loader({module, type_id, 0}, default_loader)
+  end
+
+  defp eatf_loader(module, type_id, {:type, _lineno, :bitstring, []}, []) do
+    default_loader = fn value, custom_type_loaders, type_params_loaders ->
+      Loader.Builtin.bitstring(value, custom_type_loaders, type_params_loaders)
+    end
+
+    maybe_custom_loader({module, type_id, 0}, default_loader)
+  end
+
   defp eatf_loader(module, type_id, {:type, _lineno, :byte, []}, []) do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
       Loader.Builtin.byte(value, custom_type_loaders, type_params_loaders)

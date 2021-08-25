@@ -94,6 +94,25 @@ defmodule Test.DataSpecs do
     end
   end
 
+  describe "bitstring" do
+    test "ok" do
+      assert {:ok, <<>>} == DataSpecs.load(<<>>, {@types_module, :t_empty_bitstring})
+      assert {:ok, <<1::1>>} == DataSpecs.load(<<1::1>>, {@types_module, :t_bitstring})
+      assert {:ok, <<1::4>>} == DataSpecs.load(<<1::4>>, {@types_module, :t_bitstring_0})
+      assert {:ok, <<1::12>>} == DataSpecs.load(<<1::12>>, {@types_module, :t_bitstring_1})
+      assert {:ok, <<1, 2, 2::4>>} == DataSpecs.load(<<1, 2, 2::4>>, {@types_module, :t_bitstring_2})
+    end
+
+    test "error" do
+      assert {:error, ["can't convert 1 to a bitstring"]} = DataSpecs.load(1, {@types_module, :t_bitstring})
+
+      assert {:error, ["can't convert <<1>> to a <<>>"]} == DataSpecs.load(<<1>>, {@types_module, :t_empty_bitstring})
+
+      assert {:error, ["can't convert <<1::size(5)>> to a <<_::0, _::_*4>>"]} ==
+               DataSpecs.load(<<1::5>>, {@types_module, :t_bitstring_1})
+    end
+  end
+
   describe "byte" do
     test "ok" do
       assert {:ok, 0} == DataSpecs.load(0, {@types_module, :t_byte})

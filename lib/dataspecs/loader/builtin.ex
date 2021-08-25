@@ -59,6 +59,40 @@ defmodule DataSpecs.Loader.Builtin do
     end
   end
 
+  @spec binary(Types.value(), integer(), integer(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, binary()}
+
+  def binary(value, 0, 0, _custom_type_loaders, _type_params_loaders) do
+    case value do
+      <<>> ->
+        {:ok, value}
+
+      _ ->
+        {:error, ["can't convert #{inspect(value)} to a <<>>"]}
+    end
+  end
+
+  def binary(value, size, unit, _custom_type_loaders, _type_params_loaders) do
+    if is_bitstring(value) and bit_size(value) >= size and (unit == 0 or rem(bit_size(value) - size, unit) == 0) do
+      {:ok, value}
+    else
+      {:error, ["can't convert #{inspect(value)} to a <<_::#{size}, _::_*#{unit}>>"]}
+    end
+  end
+
+  @spec bitstring(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, bitstring()}
+
+  def bitstring(value, _custom_type_loaders, _type_params_loaders) do
+    case value do
+      value when is_bitstring(value) ->
+        {:ok, value}
+
+      _ ->
+        {:error, ["can't convert #{inspect(value)} to a bitstring"]}
+    end
+  end
+
   @spec byte(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, byte()}
 

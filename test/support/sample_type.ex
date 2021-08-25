@@ -17,6 +17,12 @@ defmodule Test.DataSpecs.SampleType do
   @type t_char :: char()
   @type t_arity :: arity()
 
+  @type t_empty_bitstring :: <<>>
+  @type t_bitstring :: bitstring()
+  @type t_bitstring_0 :: <<_::4>>
+  @type t_bitstring_1 :: <<_::_*4>>
+  @type t_bitstring_2 :: <<_::16, _::_*4>>
+
   @type t_number :: number()
   @type t_float :: float()
   @type t_integer :: integer()
@@ -70,11 +76,6 @@ defmodule Test.DataSpecs.SampleType do
 
   # CURRENTLY NOT IMPLEMENTED TYPES
   # @type t_fun :: (integer() -> integer())
-  # @type t_empty_bitstring :: <<>>
-  # @type t_bitstring :: bitstring()
-  # @type t_bitstring_0 :: <<_::4>>
-  # @type t_bitstring_1 :: <<_::_*4>>
-  # @type t_bitstring_2 :: <<_::8, _::_*4>>
   # @type t_identifier :: identifier()
   # @type t_iodata :: iodata()
   # @type t_iolist :: iolist()
