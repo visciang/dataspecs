@@ -50,7 +50,7 @@ defmodule Test.DataSpecs do
     end
   end
 
-  describe "pid" do
+  describe "pid type" do
     test "ok" do
       assert {:ok, self()} == DataSpecs.load(self(), {@types_module, :t_pid})
     end
@@ -61,7 +61,7 @@ defmodule Test.DataSpecs do
     end
   end
 
-  describe "atom" do
+  describe "atom type" do
     test "ok" do
       assert {:ok, :test} == DataSpecs.load(:test, {@types_module, :t_atom})
     end
@@ -72,7 +72,7 @@ defmodule Test.DataSpecs do
     end
   end
 
-  describe "boolean" do
+  describe "boolean type" do
     test "ok" do
       assert {:ok, true} == DataSpecs.load(true, {@types_module, :t_boolean})
     end
@@ -83,7 +83,7 @@ defmodule Test.DataSpecs do
     end
   end
 
-  describe "binary" do
+  describe "binary type" do
     test "ok" do
       assert {:ok, "binary"} == DataSpecs.load("binary", {@types_module, :t_binary})
     end
@@ -94,7 +94,7 @@ defmodule Test.DataSpecs do
     end
   end
 
-  describe "bitstring" do
+  describe "bitstring type" do
     test "ok" do
       assert {:ok, <<>>} == DataSpecs.load(<<>>, {@types_module, :t_empty_bitstring})
       assert {:ok, <<1::1>>} == DataSpecs.load(<<1::1>>, {@types_module, :t_bitstring})
@@ -104,16 +104,18 @@ defmodule Test.DataSpecs do
     end
 
     test "error" do
-      assert {:error, ["can't convert 1 to a bitstring"]} = DataSpecs.load(1, {@types_module, :t_bitstring})
+      reason = ["can't convert 1 to a bitstring"]
+      assert {:error, ^reason} = DataSpecs.load(1, {@types_module, :t_bitstring})
 
-      assert {:error, ["can't convert <<1>> to a <<>>"]} == DataSpecs.load(<<1>>, {@types_module, :t_empty_bitstring})
+      reason = ["can't convert <<1>> to a <<>>"]
+      assert {:error, ^reason} = DataSpecs.load(<<1>>, {@types_module, :t_empty_bitstring})
 
-      assert {:error, ["can't convert <<1::size(5)>> to a <<_::0, _::_*4>>"]} ==
-               DataSpecs.load(<<1::5>>, {@types_module, :t_bitstring_1})
+      reason = ["can't convert <<1::size(5)>> to a <<_::0, _::_*4>>"]
+      assert {:error, ^reason} = DataSpecs.load(<<1::5>>, {@types_module, :t_bitstring_1})
     end
   end
 
-  describe "byte" do
+  describe "byte type" do
     test "ok" do
       assert {:ok, 0} == DataSpecs.load(0, {@types_module, :t_byte})
       assert {:ok, 128} == DataSpecs.load(128, {@types_module, :t_byte})
@@ -126,7 +128,7 @@ defmodule Test.DataSpecs do
     end
   end
 
-  describe "char" do
+  describe "char type" do
     test "ok" do
       assert {:ok, 0} == DataSpecs.load(0, {@types_module, :t_char})
       assert {:ok, 128} == DataSpecs.load(128, {@types_module, :t_char})
@@ -139,7 +141,7 @@ defmodule Test.DataSpecs do
     end
   end
 
-  describe "arity" do
+  describe "arity type" do
     test "ok" do
       assert {:ok, 0} == DataSpecs.load(0, {@types_module, :t_arity})
       assert {:ok, 128} == DataSpecs.load(128, {@types_module, :t_arity})
@@ -152,7 +154,7 @@ defmodule Test.DataSpecs do
     end
   end
 
-  describe "reference" do
+  describe "reference type" do
     test "ok" do
       ref = make_ref()
       assert {:ok, ref} == DataSpecs.load(ref, {@types_module, :t_reference})
@@ -164,7 +166,7 @@ defmodule Test.DataSpecs do
     end
   end
 
-  describe "number" do
+  describe "number type" do
     test "ok" do
       assert {:ok, 123} == DataSpecs.load(123, {@types_module, :t_number})
       assert {:ok, 123.1} == DataSpecs.load(123.1, {@types_module, :t_number})
@@ -176,7 +178,7 @@ defmodule Test.DataSpecs do
     end
   end
 
-  describe "float" do
+  describe "float type" do
     test "ok" do
       assert {:ok, 123} == DataSpecs.load(123, {@types_module, :t_float})
       assert {:ok, 123.1} == DataSpecs.load(123.1, {@types_module, :t_float})
@@ -188,7 +190,7 @@ defmodule Test.DataSpecs do
     end
   end
 
-  describe "integer" do
+  describe "integer type" do
     test "ok" do
       assert {:ok, 123} == DataSpecs.load(123, {@types_module, :t_integer})
       assert {:ok, -123} == DataSpecs.load(-123, {@types_module, :t_neg_integer})
@@ -220,7 +222,7 @@ defmodule Test.DataSpecs do
     end
   end
 
-  describe "range" do
+  describe "range type" do
     test "ok" do
       assert {:ok, 5} == DataSpecs.load(5, {@types_module, :t_range})
       assert {:error, _} = DataSpecs.load(:a, {@types_module, :t_range})
@@ -232,7 +234,7 @@ defmodule Test.DataSpecs do
     end
   end
 
-  describe "union" do
+  describe "union type" do
     test "ok" do
       float = &Loader.Builtin.float/3
       assert {:ok, :test} == DataSpecs.load(:test, {@types_module, :t_union_0}, %{}, [float])
@@ -253,7 +255,7 @@ defmodule Test.DataSpecs do
     end
   end
 
-  describe "list" do
+  describe "list type" do
     test "ok" do
       integer = &Loader.Builtin.integer/3
       assert {:ok, []} == DataSpecs.load([], {@types_module, :t_empty_list})
@@ -282,7 +284,7 @@ defmodule Test.DataSpecs do
     end
   end
 
-  describe "keyword list" do
+  describe "keyword list type" do
     test "ok" do
       assert {:ok, [a: 1, b: :test]} == DataSpecs.load([a: 1, b: :test], {@types_module, :t_keyword_list})
     end
@@ -292,7 +294,7 @@ defmodule Test.DataSpecs do
     end
   end
 
-  describe "tuple" do
+  describe "tuple type" do
     test "ok" do
       assert {:ok, {}} == DataSpecs.load({}, {@types_module, :t_empty_tuple})
       assert {:ok, {1, 2}} == DataSpecs.load({1, 2}, {@types_module, :t_tuple})
@@ -315,7 +317,7 @@ defmodule Test.DataSpecs do
     end
   end
 
-  describe "map" do
+  describe "map type" do
     test "ok" do
       integer = &Loader.Builtin.integer/3
       assert {:ok, %{}} == DataSpecs.load(%{}, {@types_module, :t_empty_map})
@@ -383,14 +385,16 @@ defmodule Test.DataSpecs do
     assert {:ok, :test} == DataSpecs.load(:test, {@types_module, :t_type_arity}, %{}, [atom])
   end
 
-  describe "struct" do
-    test "ok" do
+  describe "struct type" do
+    test "ok, load from map" do
       assert {:ok, %@types_struct_module{f_1: :a, f_2: 1, f_3: "s"}} ==
                DataSpecs.load(%{f_1: :a, f_2: 1, f_3: "s"}, {@types_struct_module, :t})
 
       assert {:ok, %@types_struct_module{f_1: :a, f_2: nil, f_3: nil}} ==
                DataSpecs.load(%{f_1: :a}, {@types_struct_module, :t})
+    end
 
+    test "ok, load from struct" do
       assert {:ok, %@types_struct_module{f_1: :a, f_2: nil, f_3: nil}} ==
                DataSpecs.load(%@types_struct_module{f_1: :a}, {@types_struct_module, :t})
     end
