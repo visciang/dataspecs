@@ -41,17 +41,14 @@ defmodule DataSpecs.Typespecs do
   defp type_loader(module, {type, {type_id, eatf, type_params}}) do
     type_arity = length(type_params)
 
-    loader =
+    eatf =
       case type do
-        :type ->
-          eatf_loader(module, type_id, eatf, type_params)
-
-        :typep ->
-          eatf_loader(module, type_id, eatf, type_params)
-
-        :opaque ->
-          eatf_loader(module, type_id, :opaque, type_params)
+        :type -> eatf
+        :typep -> eatf
+        :opaque -> :opaque
       end
+
+    loader = eatf_loader(module, type_id, eatf, type_params)
 
     {{module, type_id, type_arity}, loader}
   end
@@ -66,7 +63,12 @@ defmodule DataSpecs.Typespecs do
     maybe_custom_loader({module, type_id, length(type_vars)}, default_loader)
   end
 
+  defp eatf_loader(module, type_id, {:type, lineno, :term, []}, []) do
+    eatf_loader(module, type_id, {:type, lineno, :any, []}, [])
+  end
+
   @literal_types [:atom, :integer]
+
   defp eatf_loader(module, type_id, {literal_type, 0, literal}, []) when literal_type in @literal_types do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
       apply(Loader.Builtin, literal_type, [value, custom_type_loaders, type_params_loaders])
@@ -85,57 +87,15 @@ defmodule DataSpecs.Typespecs do
     maybe_custom_loader({module, type_id, 0}, default_loader)
   end
 
-  defp eatf_loader(module, type_id, {:type, _lineno, :any, []}, []) do
+  @zero_arity_builtin_types [:any, :pid, :reference, :atom, :boolean] ++
+                              [:binary, :bitstring] ++
+                              [:byte, :char, :arity] ++
+                              [:number, :float, :integer, :neg_integer, :non_neg_integer, :pos_integer]
+
+  defp eatf_loader(module, type_id, {:type, _lineno, builtin_type, []}, [])
+       when builtin_type in @zero_arity_builtin_types do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loader.Builtin.any(value, custom_type_loaders, type_params_loaders)
-    end
-
-    maybe_custom_loader({module, type_id, 0}, default_loader)
-  end
-
-  defp eatf_loader(module, type_id, {:type, _lineno, :term, []}, []) do
-    default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loader.Builtin.any(value, custom_type_loaders, type_params_loaders)
-    end
-
-    maybe_custom_loader({module, type_id, 0}, default_loader)
-  end
-
-  defp eatf_loader(module, type_id, {:type, _lineno, :pid, []}, []) do
-    default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loader.Builtin.pid(value, custom_type_loaders, type_params_loaders)
-    end
-
-    maybe_custom_loader({module, type_id, 0}, default_loader)
-  end
-
-  defp eatf_loader(module, type_id, {:type, _lineno, :reference, []}, []) do
-    default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loader.Builtin.reference(value, custom_type_loaders, type_params_loaders)
-    end
-
-    maybe_custom_loader({module, type_id, 0}, default_loader)
-  end
-
-  defp eatf_loader(module, type_id, {:type, _lineno, :atom, []}, []) do
-    default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loader.Builtin.atom(value, custom_type_loaders, type_params_loaders)
-    end
-
-    maybe_custom_loader({module, type_id, 0}, default_loader)
-  end
-
-  defp eatf_loader(module, type_id, {:type, _lineno, :boolean, []}, []) do
-    default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loader.Builtin.boolean(value, custom_type_loaders, type_params_loaders)
-    end
-
-    maybe_custom_loader({module, type_id, 0}, default_loader)
-  end
-
-  defp eatf_loader(module, type_id, {:type, _lineno, :binary, []}, []) do
-    default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loader.Builtin.binary(value, custom_type_loaders, type_params_loaders)
+      apply(Loader.Builtin, builtin_type, [value, custom_type_loaders, type_params_loaders])
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
@@ -144,86 +104,6 @@ defmodule DataSpecs.Typespecs do
   defp eatf_loader(module, type_id, {:type, _lineno, :binary, [{:integer, _, size}, {:integer, _, unit}]}, []) do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
       Loader.Builtin.binary(value, size, unit, custom_type_loaders, type_params_loaders)
-    end
-
-    maybe_custom_loader({module, type_id, 0}, default_loader)
-  end
-
-  defp eatf_loader(module, type_id, {:type, _lineno, :bitstring, []}, []) do
-    default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loader.Builtin.bitstring(value, custom_type_loaders, type_params_loaders)
-    end
-
-    maybe_custom_loader({module, type_id, 0}, default_loader)
-  end
-
-  defp eatf_loader(module, type_id, {:type, _lineno, :byte, []}, []) do
-    default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loader.Builtin.byte(value, custom_type_loaders, type_params_loaders)
-    end
-
-    maybe_custom_loader({module, type_id, 0}, default_loader)
-  end
-
-  defp eatf_loader(module, type_id, {:type, _lineno, :char, []}, []) do
-    default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loader.Builtin.char(value, custom_type_loaders, type_params_loaders)
-    end
-
-    maybe_custom_loader({module, type_id, 0}, default_loader)
-  end
-
-  defp eatf_loader(module, type_id, {:type, _lineno, :arity, []}, []) do
-    default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loader.Builtin.arity(value, custom_type_loaders, type_params_loaders)
-    end
-
-    maybe_custom_loader({module, type_id, 0}, default_loader)
-  end
-
-  defp eatf_loader(module, type_id, {:type, _lineno, :number, []}, []) do
-    default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loader.Builtin.number(value, custom_type_loaders, type_params_loaders)
-    end
-
-    maybe_custom_loader({module, type_id, 0}, default_loader)
-  end
-
-  defp eatf_loader(module, type_id, {:type, _lineno, :float, []}, []) do
-    default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loader.Builtin.float(value, custom_type_loaders, type_params_loaders)
-    end
-
-    maybe_custom_loader({module, type_id, 0}, default_loader)
-  end
-
-  defp eatf_loader(module, type_id, {:type, _lineno, :integer, []}, []) do
-    default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loader.Builtin.integer(value, custom_type_loaders, type_params_loaders)
-    end
-
-    maybe_custom_loader({module, type_id, 0}, default_loader)
-  end
-
-  defp eatf_loader(module, type_id, {:type, _lineno, :neg_integer, []}, []) do
-    default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loader.Builtin.neg_integer(value, custom_type_loaders, type_params_loaders)
-    end
-
-    maybe_custom_loader({module, type_id, 0}, default_loader)
-  end
-
-  defp eatf_loader(module, type_id, {:type, _lineno, :non_neg_integer, []}, []) do
-    default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loader.Builtin.non_neg_integer(value, custom_type_loaders, type_params_loaders)
-    end
-
-    maybe_custom_loader({module, type_id, 0}, default_loader)
-  end
-
-  defp eatf_loader(module, type_id, {:type, _lineno, :pos_integer, []}, []) do
-    default_loader = fn value, custom_type_loaders, type_params_loaders ->
-      Loader.Builtin.pos_integer(value, custom_type_loaders, type_params_loaders)
     end
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
