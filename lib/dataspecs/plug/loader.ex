@@ -13,14 +13,13 @@ if Code.ensure_loaded?(Plug) do
 
       defmodule Api.Router.Something do
         use Plug.Router
-        alias Splug.Api.Model
         import #{__MODULE__}, only: [typeref: 2, value: 1]
 
         plug :match
         plug #{__MODULE__}
         plug :dispatch
 
-        post "/foo", typeref(Model.Foo, :t) do
+        post "/foo", typeref(Api.Model.Foo, :t) do
           %Api.Model.Foo{...} = value(conn)
           ...
         end

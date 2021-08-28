@@ -330,3 +330,23 @@ Example:
 # to
 :bin
 ```
+
+## Plug
+
+`DataSpecs.Plug.Loader` provides a plug to "Jason.decode! -> DataSpecs.load" in your routes:
+
+```elixir
+defmodule Api.Router.Something do
+  use Plug.Router
+  import DataSpecs.Plug.Loader, only: [typeref: 2, value: 1]
+
+  plug :match
+  plug DataSpecs.Plug.Loader
+  plug :dispatch
+
+  post "/foo", typeref(Api.Model.Foo, :t) do
+    %Api.Model.Foo{...} = value(conn)
+    ...
+  end
+end
+```
