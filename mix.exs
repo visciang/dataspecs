@@ -12,26 +12,8 @@ defmodule DataSpecs.Mixfile do
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: preferred_cli_env(),
-      description: description(),
-      package: package(),
-      source_url: "https://github.com/visciang/dataspecs",
-      dialyzer: [
-        plt_file: {:no_warn, "deps/dialyzer.plt"}
-      ]
-    ]
-  end
-
-  defp description do
-    "Provides structured parsing of data based on Typespecs."
-  end
-
-  defp package do
-    [
-      name: "dataspecs",
-      licenses: ["MIT"],
-      files: ["lib", "README.md", "LICENSE", "mix.exs"],
-      maintainers: ["Giovanni Visciano"],
-      links: %{"GitHub" => "https://github.com/visciang/dataspecs"}
+      description: "Provides structured parsing of data based on Typespecs.",
+      dialyzer: dialyzer()
     ]
   end
 
@@ -47,6 +29,7 @@ defmodule DataSpecs.Mixfile do
 
   defp deps do
     [
+      {:plug, "~> 1.7", optional: true},
       {:excoveralls, "~> 0.12", only: :test},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:credo, "~> 1.0", only: [:dev], runtime: false}
@@ -60,6 +43,13 @@ defmodule DataSpecs.Mixfile do
       "coveralls.detail": :test,
       "coveralls.post": :test,
       "coveralls.html": :test
+    ]
+  end
+
+  defp dialyzer do
+    [
+      plt_file: {:no_warn, "deps/dialyzer.plt"},
+      plt_add_apps: [:plug]
     ]
   end
 end
