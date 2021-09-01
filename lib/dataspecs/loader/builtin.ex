@@ -312,11 +312,6 @@ defmodule DataSpecs.Loader.Builtin do
     end
   end
 
-  defp load_list(value, _custom_type_loaders, []) do
-    # case for:  list() -> list(any())
-    {:ok, value}
-  end
-
   defp load_list(value, custom_type_loaders, [type_params_loader]) do
     value
     |> Enum.with_index()

@@ -181,6 +181,15 @@ defmodule DataSpecs.Typespecs do
     #   type_vars:
     #     []
 
+    type_params =
+      case type_params do
+        [] ->
+          [{:type, 0, :any, []}]
+
+        _ ->
+          type_params
+      end
+
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
       type_params_loaders = type_params_var_expansion(module, type_id, type_params, type_params_loaders, type_vars)
 
