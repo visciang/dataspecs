@@ -1,7 +1,7 @@
 defmodule DataSpecs do
   @moduledoc File.read!("README.md")
 
-  alias DataSpecs.{Types, Typespecs}
+  alias DataSpecs.{Loader, Types}
 
   @spec load(Types.value(), Types.type_ref(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, any()}
@@ -38,7 +38,7 @@ defmodule DataSpecs do
        }
   """
   def load(value, {module, type_id}, custom_type_loaders \\ %{}, type_params_loaders \\ []) do
-    loader = Typespecs.loader(module, type_id, length(type_params_loaders))
+    loader = Loader.get(module, type_id, length(type_params_loaders))
     loader.(value, custom_type_loaders, type_params_loaders)
   end
 end

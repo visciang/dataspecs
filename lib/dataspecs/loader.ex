@@ -1,12 +1,18 @@
-defmodule DataSpecs.Typespecs do
+defmodule DataSpecs.Loader do
   @moduledoc false
 
   alias DataSpecs.{Cache, Loader, Types}
-
   require Logger
 
-  @spec loader(module(), Types.type_id(), arity()) :: Types.type_loader_fun()
-  def loader(module, type_id, type_arity) do
+  @literal_types [:atom, :integer]
+
+  @zero_arity_builtin_types [:any, :pid, :reference, :atom, :boolean] ++
+                              [:binary, :bitstring] ++
+                              [:byte, :char, :arity] ++
+                              [:number, :float, :integer, :neg_integer, :non_neg_integer, :pos_integer]
+
+  @spec get(module(), Types.type_id(), arity()) :: Types.type_loader_fun()
+  def get(module, type_id, type_arity) do
     case Cache.get(module, type_id, type_arity) do
       nil ->
         type_loaders = compile(module)
@@ -67,8 +73,6 @@ defmodule DataSpecs.Typespecs do
     eatf_loader(module, type_id, {:type, lineno, :any, []}, [])
   end
 
-  @literal_types [:atom, :integer]
-
   defp eatf_loader(module, type_id, {literal_type, 0, literal}, []) when literal_type in @literal_types do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
       apply(Loader.Builtin, literal_type, [value, custom_type_loaders, type_params_loaders])
@@ -86,11 +90,6 @@ defmodule DataSpecs.Typespecs do
 
     maybe_custom_loader({module, type_id, 0}, default_loader)
   end
-
-  @zero_arity_builtin_types [:any, :pid, :reference, :atom, :boolean] ++
-                              [:binary, :bitstring] ++
-                              [:byte, :char, :arity] ++
-                              [:number, :float, :integer, :neg_integer, :non_neg_integer, :pos_integer]
 
   defp eatf_loader(module, type_id, {:type, _lineno, builtin_type, []}, [])
        when builtin_type in @zero_arity_builtin_types do
@@ -382,7 +381,7 @@ defmodule DataSpecs.Typespecs do
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
       type_params_loaders = type_params_var_expansion(module, user_type_id, type_params, type_params_loaders, type_vars)
 
-      type_loader = loader(module, user_type_id, length(type_params))
+      type_loader = get(module, user_type_id, length(type_params))
       type_loader.(value, custom_type_loaders, type_params_loaders)
     end
 
@@ -411,7 +410,7 @@ defmodule DataSpecs.Typespecs do
           type_vars
         )
 
-      type_loader = loader(remote_module, remote_type_id, length(remote_type_params))
+      type_loader = get(remote_module, remote_type_id, length(remote_type_params))
       type_loader.(value, custom_type_loaders, type_params_loaders)
     end
 
