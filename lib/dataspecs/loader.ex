@@ -74,6 +74,15 @@ defmodule DataSpecs.Loader do
   end
 
   defp eatf_loader(module, type_id, {literal_type, 0, literal}, []) when literal_type in @literal_types do
+    # Example:
+    #   @type t_literal_atom :: :a
+    #
+    #   erlang abstract type format:
+    #     {:atom, 0, :a}
+    #
+    #   type_vars:
+    #     []
+
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
       apply(Loader.Builtin, literal_type, [value, custom_type_loaders, type_params_loaders])
       |> case do
@@ -93,6 +102,15 @@ defmodule DataSpecs.Loader do
 
   defp eatf_loader(module, type_id, {:type, _lineno, builtin_type, []}, [])
        when builtin_type in @zero_arity_builtin_types do
+    # Example:
+    #   @type t_atom :: atom()
+    #
+    #   erlang abstract type format:
+    #     {:type, 7, :atom, []}
+    #
+    #   type_vars:
+    #     []
+
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
       apply(Loader.Builtin, builtin_type, [value, custom_type_loaders, type_params_loaders])
     end
@@ -101,6 +119,15 @@ defmodule DataSpecs.Loader do
   end
 
   defp eatf_loader(module, type_id, {:type, _lineno, :binary, [{:integer, _, size}, {:integer, _, unit}]}, []) do
+    # Example:
+    #   @type t_bitstring_2 :: <<_::16, _::_*4>>
+    #
+    #   erlang abstract type format:
+    #     {:type, 7, :binary, [{:integer, 0, 16}, {:integer, _, 4}]}
+    #
+    #   type_vars:
+    #     []
+
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
       Loader.Builtin.binary(value, size, unit, custom_type_loaders, type_params_loaders)
     end
@@ -109,6 +136,15 @@ defmodule DataSpecs.Loader do
   end
 
   defp eatf_loader(module, type_id, {:type, _lineno, :range, [{:integer, 0, lower}, {:integer, 0, upper}]}, []) do
+    # Example:
+    #   @type t_range :: 1..10
+    #
+    #   erlang abstract type format:
+    #     {:type, 7, :range, [{:integer, 0, 1}, {:integer, 0, 10}]}
+    #
+    #   type_vars:
+    #     []
+
     default_loader = fn value, custom_type_loaders, type_params_loaders ->
       Loader.Builtin.range(lower, upper, value, custom_type_loaders, type_params_loaders)
     end
