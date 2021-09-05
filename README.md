@@ -138,6 +138,8 @@ to the `DataSpecs.load` function
 
 ```elixir
 defmodule LogRow do
+  use DataSpecs
+
   @enforce_keys [:log, :timestamp]
   defstruct [:log, :timestamp]
 
@@ -160,10 +162,8 @@ def custom_isodatetime_loader(value, _custom_type_loaders, []) do
   end
 end
 
-DataSpecs.load(
-  %{"log" => "An error occurred", "timestamp" => "2021-07-14 20:22:49.653077Z"},
-  %{{DateTime, :t, 0} => &custom_isodatetime_loader/3}
-)
+custom_custom_type_loaders = %{{DateTime, :t, 0} => &custom_isodatetime_loader/3}
+LogRow.load(%{"log" => "An error occurred", "timestamp" => "2021-07-14 20:22:49.653077Z"}, custom_type_loaders)
 
 # => %LogRow{
 #      log: "An error occurred",
@@ -231,6 +231,8 @@ For example let's say than we want to validate a field of type string to be in u
 
 ```elixir
 defmodule AStruct do
+  use DataSpecs
+
   @enforce_keys [:field]
   defstruct [:field]
 
@@ -241,17 +243,21 @@ defmodule AStruct do
   @type upcase_string :: String.t()
 
   def custom_field_loader(value, custom_type_loaders, type_params_loaders) do
-    name = DataSpecs.Loader.Builtin.binary(value, custom_type_loaders, type_params_loaders)
-
-    if name == String.upcase(name) do
+    with {:ok, value} <- DataSpecs.Loader.Builtin.binary(value, custom_type_loaders, type_params_loaders)
+         ^name <- String.upcase(name) do
       {:ok, name}
     else
-      {:error, ["#{inspect(value)} is not an upcase string"]}
+      {:error, errors} ->
+        {:error, ["#{inspect(value)} is not an upcase string", errors]}
+
+      false ->
+        {:error, ["#{inspect(value)} is not an upcase string"]}
     end
   end
 end
 
-DataSpecs.load(%{field: "AAA"}, {AStruct, :t}, %{{AStruct, :upcase_string, 0} => &AStruct.custom_field_loader/3})
+custom_type_loaders = %{{AStruct, :upcase_string, 0} => &AStruct.custom_field_loader/3}
+AStruct.load(%{field: "AAA"}, custom_type_loaders)
 # => %AStruct{field: "AAA"}
 ```
 
