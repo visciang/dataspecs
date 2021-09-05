@@ -363,3 +363,7 @@ defmodule Api.Router.Something do
   end
 end
 ```
+
+## Ecto embedded schema validation comparison
+
+https://github.com/visciang/example_validation
