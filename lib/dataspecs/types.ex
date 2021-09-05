@@ -10,4 +10,5 @@ defmodule DataSpecs.Types do
   @type custom_type_ref :: {module(), type_id(), arity()}
   @type type_loader_fun :: (value(), custom_type_loaders(), [type_loader_fun] -> value())
   @type custom_type_loaders :: %{custom_type_ref() => type_loader_fun()}
+  @type load_result(t) :: {:error, reason()} | {:ok, t}
 end

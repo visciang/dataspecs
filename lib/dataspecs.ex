@@ -3,8 +3,19 @@ defmodule DataSpecs do
 
   alias DataSpecs.{Loader, Types}
 
+  defmacro __using__(_opts) do
+    quote do
+      @spec load(DataSpecs.Types.value(), DataSpecs.Types.custom_type_loaders()) ::
+              DataSpecs.Types.load_result(__MODULE__.t())
+
+      def load(data, custom_type_loaders \\ %{}) do
+        DataSpecs.load(data, {__MODULE__, :t}, custom_type_loaders)
+      end
+    end
+  end
+
   @spec load(Types.value(), Types.type_ref(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
-          {:error, Types.reason()} | {:ok, any()}
+          Types.load_result(any())
 
   @doc """
   Loads a value that should conform to a typespec

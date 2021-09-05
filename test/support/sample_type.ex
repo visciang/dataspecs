@@ -96,6 +96,8 @@ end
 defmodule Test.DataSpecs.SampleStructType do
   @moduledoc false
 
+  use DataSpecs
+
   @enforce_keys [:f_1]
   defstruct [:f_1, :f_2, :f_3]
 

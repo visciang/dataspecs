@@ -388,28 +388,28 @@ defmodule Test.DataSpecs do
   describe "struct type" do
     test "ok, load from map" do
       assert {:ok, %@types_struct_module{f_1: :a, f_2: 1, f_3: "s"}} ==
-               DataSpecs.load(%{f_1: :a, f_2: 1, f_3: "s"}, {@types_struct_module, :t})
+               @types_struct_module.load(%{f_1: :a, f_2: 1, f_3: "s"})
 
       assert {:ok, %@types_struct_module{f_1: :a, f_2: nil, f_3: nil}} ==
-               DataSpecs.load(%{f_1: :a}, {@types_struct_module, :t})
+               @types_struct_module.load(%{f_1: :a})
     end
 
     test "ok, load from struct" do
       assert {:ok, %@types_struct_module{f_1: :a, f_2: nil, f_3: nil}} ==
-               DataSpecs.load(%@types_struct_module{f_1: :a}, {@types_struct_module, :t})
+               @types_struct_module.load(%@types_struct_module{f_1: :a})
     end
 
     test "error" do
       reason = "the following keys must also be given when building struct #{inspect(@types_struct_module)}: [:f_1]"
 
-      assert {:error, [^reason]} = DataSpecs.load(%{}, {@types_struct_module, :t})
+      assert {:error, [^reason]} = @types_struct_module.load(%{})
 
       reason = [
         "can't convert %{f_1: \"not an atom\"} to a %#{inspect(@types_struct_module)}{} struct",
         ["can't convert %{f_1: \"not an atom\"} to a map, bad k/v pairs: %{f_1: \"not an atom\"}", []]
       ]
 
-      assert {:error, ^reason} = DataSpecs.load(%{f_1: "not an atom"}, {@types_struct_module, :t})
+      assert {:error, ^reason} = @types_struct_module.load(%{f_1: "not an atom"})
     end
   end
 

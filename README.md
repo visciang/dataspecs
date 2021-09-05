@@ -21,6 +21,8 @@ JSON representation (such as dates or sets) in your application.
 
 ```elixir
 defmodule Person do
+  use DataSpecs
+
   @enforce_keys [:name, :surname]
   defstruct [:name, :surname, :gender, :address]
 
@@ -46,7 +48,7 @@ defmodule Address do
   }
 end
 
-DataSpecs.load(%{
+raw = %{
   "name" => "Joe",
   "surname" => "Smith",
   "gender" => "male",
@@ -56,7 +58,12 @@ DataSpecs.load(%{
     "postcode" => "SO31 4NG",
     "town" => "Hedge End, Southampton"
   }]
-}, {Person, :t})
+}
+
+DataSpecs.load(raw, {Person, :t})
+
+# OR (if "use DataSpecs" is included in the struct module)
+Person.load(raw)
 
 # => %Person{
 #      address: [
