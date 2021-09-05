@@ -58,11 +58,11 @@ if Code.ensure_loaded?(Plug) do
     Declare the type the body of a route should conform
 
     For example:
-        post "/foo", typeref(Model.Foo, :t) do
+        post "/foo", typeref(Model.Foo) do
           ...
         end
     """
-    def typeref(module, type), do: [assigns: %{dataspec: %{type: {module, type}, value: nil}}]
+    def typeref(module, type \\ :t), do: [assigns: %{dataspec: %{type: {module, type}, value: nil}}]
 
     @spec value(Plug.Conn.t()) :: term()
 
