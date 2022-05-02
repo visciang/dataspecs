@@ -8,6 +8,9 @@ defmodule DataSpecs do
       @spec load(DataSpecs.Types.value(), DataSpecs.Types.custom_type_loaders()) ::
               DataSpecs.Types.load_result(__MODULE__.t())
 
+      @doc """
+      Loads a value that should conform to #{__MODULE__}.t() typespec.
+      """
       def load(data, custom_type_loaders \\ %{}) do
         DataSpecs.load(data, {__MODULE__, :t}, custom_type_loaders)
       end
