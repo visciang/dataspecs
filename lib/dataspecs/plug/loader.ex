@@ -67,27 +67,24 @@ if Code.ensure_loaded?(Plug) do
     @spec value(Plug.Conn.t()) :: term()
 
     @doc """
-    Get the value loaded.
+    Get the loaded value.
 
     For example:
-        mystruct = value(conn)
+      post "/foo", typeref(Api.Model.Foo, :t) do
+        %Api.Model.Foo{...} = value(conn)
+        ...
+      end
     """
     def value(conn), do: conn.assigns.dataspec.value
 
     @spec load(Plug.Conn.t(), Plug.opts()) :: Plug.Conn.t()
     defp load(conn, _opts) do
-      with {:conn_dataspec, {:ok, type_ref}} <- {:conn_dataspec, conn_dataspec(conn)},
+      with {:get_typeref, {:ok, type_ref}} <- {:get_typeref, get_typeref(conn)},
            {:load, {:ok, value}} <- {:load, DataSpecs.load(conn.body_params, type_ref)} do
         put_in(conn.assigns.dataspec.value, value)
       else
-        {:conn_dataspec, :error} ->
-          raise """
-          Probably you missed a typeref on this route.
-
-            post "/foo", #{__MODULE__}.typeref(Foo, :t) do
-              ...
-            end
-          """
+        {:get_typeref, :error} ->
+          raise_missing_typeref()
 
         {:load, {:error, reason}} ->
           conn
@@ -96,9 +93,20 @@ if Code.ensure_loaded?(Plug) do
       end
     end
 
-    @spec conn_dataspec(map()) :: {:ok, Types.type_ref()} | :error
-    defp conn_dataspec(%{assigns: %{dataspec: %{type: type_ref}}}), do: {:ok, type_ref}
-    defp conn_dataspec(_), do: :error
+    @spec get_typeref(map()) :: {:ok, Types.type_ref()} | :error
+    defp get_typeref(%{assigns: %{dataspec: %{type: type_ref}}}), do: {:ok, type_ref}
+    defp get_typeref(_), do: :error
+
+    @spec raise_missing_typeref :: no_return()
+    def raise_missing_typeref do
+      raise """
+      Probably you missed a typeref on this route.
+
+        post "/foo", #{__MODULE__}.typeref(Foo, :t) do
+          ...
+        end
+      """
+    end
   end
 end
 

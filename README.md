@@ -24,28 +24,28 @@ defmodule Person do
   use DataSpecs
 
   @enforce_keys [:name, :surname]
-  defstruct [:name, :surname, :gender, :address]
+  defstruct @enforce_keys ++ [:gender, :address]
 
   @type t :: %__MODULE__{
-    name: String.t(),
-    surname: String.t(),
-    gender: option(:male | :female | :other),
-    address: option(nonempty_list(Address.t()))
-  }
+               name: String.t(),
+               surname: String.t(),
+               gender: option(:male | :female | :other),
+               address: option(nonempty_list(Address.t()))
+             }
 
   @type option(x) :: nil | x
 end
 
 defmodule Address do
   @enforce_keys [:streetname, :streenumber, :postcode, :town]
-  defstruct [:streetname, :streenumber, :postcode, :town]
+  defstruct @enforce_keys
 
   @type t :: %__MODULE__{
-    streetname: String.t(),
-    streenumber: String.t(),
-    postcode: String.t(),
-    town: String.t()
-  }
+               streetname: String.t(),
+               streenumber: String.t(),
+               postcode: String.t(),
+               town: String.t()
+             }
 end
 
 raw = %{
@@ -141,7 +141,7 @@ defmodule LogRow do
   use DataSpecs
 
   @enforce_keys [:log, :timestamp]
-  defstruct [:log, :timestamp]
+  defstruct @enforce_keys
 
   type t :: %__MODULE__{
     log: String.t(),
@@ -151,7 +151,7 @@ end
 
 def custom_isodatetime_loader(value, _custom_type_loaders, []) do
   with {:is_binary, true} <- {:is_binary, is_binary(value)},
-        {:from_iso8601, {:ok, datetime, _}} <- {:from_iso8601, DateTime.from_iso8601(value)} do
+       {:from_iso8601, {:ok, datetime, _}} <- {:from_iso8601, DateTime.from_iso8601(value)} do
     {:ok, datetime}
   else
     {:is_binary, false} ->
@@ -162,7 +162,7 @@ def custom_isodatetime_loader(value, _custom_type_loaders, []) do
   end
 end
 
-custom_custom_type_loaders = %{{DateTime, :t, 0} => &custom_isodatetime_loader/3}
+custom_type_loaders = %{{DateTime, :t, 0} => &custom_isodatetime_loader/3}
 LogRow.load(%{"log" => "An error occurred", "timestamp" => "2021-07-14 20:22:49.653077Z"}, custom_type_loaders)
 
 # => %LogRow{
@@ -188,7 +188,7 @@ def custom_mapset_loader(value, custom_type_loaders, [type_loader_fun]) do
     _ ->
       value
       |> Enum.to_list()
-      |> Loader.list(custom_type_loaders, [type_loader_fun])
+      |> DataSpecs.Loader.Builtin.list(custom_type_loaders, [type_loader_fun])
       |> case do
         {:ok, loaded_value} ->
           {:ok, MapSet.new(loaded_value)}
@@ -223,6 +223,8 @@ then the custom type loader function will be called with
 custom_mapset_loader(1..10, custom_type_loaders, [&DataSpecs.Loader.Builtin.integer/3])
 ```
 
+For reference check the loaders available under `DataSpecs.Loader.{Builtin, Extra}`
+
 ## Validators
 
 Custom validation rules can be defined with a custom type loader.
@@ -234,11 +236,11 @@ defmodule AStruct do
   use DataSpecs
 
   @enforce_keys [:field]
-  defstruct [:field]
+  defstruct @enforce_keys
 
   @type t :: %__MODULE__{
-    field: upcase_string()
-  }
+               field: upcase_string()
+             }
 
   @type upcase_string :: String.t()
 
@@ -299,12 +301,12 @@ Example:
 
 ```elixir
 defmodule AStruct do
-  defstruct [:field]
+  defstruct [:a, :b]
 
   @type t :: %__MODULE__{
-    a: nil | binary(),
-    b: nil | binary()
-  }
+               a: nil | binary(),
+               b: nil | binary()
+             }
 
 # ---
 %{a: "1", b: "2"}
