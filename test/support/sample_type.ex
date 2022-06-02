@@ -72,6 +72,8 @@ defmodule Test.DataSpecs.SampleType do
   @type t_reference_to_private_type :: t_private()
   @typep t_private() :: atom()
 
+  @type nullable(t) :: nil | t
+
   @opaque t_opaque(x) :: {x, float()}
 
   # CURRENTLY NOT IMPLEMENTED TYPES
@@ -96,6 +98,8 @@ end
 defmodule Test.DataSpecs.SampleStructType do
   @moduledoc false
 
+  alias Test.DataSpecs.SampleType
+
   use DataSpecs
 
   @enforce_keys [:f_1]
@@ -103,7 +107,7 @@ defmodule Test.DataSpecs.SampleStructType do
 
   @type t :: %__MODULE__{
           f_1: atom(),
-          f_2: nil | integer(),
-          f_3: nil | String.t()
+          f_2: SampleType.nullable(integer()),
+          f_3: SampleType.nullable(String.t())
         }
 end
