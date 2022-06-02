@@ -497,8 +497,8 @@ defmodule DataSpecs.Loader do
       {type, _lineno, type_id, _type_params} = eatf when type in [:type, :typep, :user_type] ->
         eatf_loader(module, type_id, eatf, [])
 
-      {:remote_type, _lineno, [{:atom, _, remote_module}, {:atom, _, remote_type_id}, remote_type_params]} = eatf ->
-        eatf_loader(remote_module, remote_type_id, eatf, remote_type_params)
+      {:remote_type, _lineno, [{:atom, _, remote_module}, {:atom, _, remote_type_id}, _remote_type_params]} = eatf ->
+        eatf_loader(remote_module, remote_type_id, eatf, [])
     end)
   end
 
