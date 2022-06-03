@@ -5,6 +5,21 @@ defmodule DataSpecs.Loader.Extra do
 
   alias DataSpecs.{Loader, Types}
 
+  @spec type_loaders() :: Types.custom_type_loaders()
+
+  @doc """
+  All extra type loaders.
+
+  MyData.load(value, #{inspect(__MODULE__)}.type_loaders())
+  """
+  def type_loaders do
+    %{
+      {MapSet, :t, 1} => &mapset/3,
+      {DateTime, :t, 0} => &isodatetime/3,
+      {Date, :t, 0} => &isodate/3
+    }
+  end
+
   @spec mapset(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, MapSet.t()}
 
@@ -48,6 +63,26 @@ defmodule DataSpecs.Loader.Extra do
 
       {:from_iso8601, {:error, reason}} ->
         {:error, ["can't convert #{inspect(value)} to a DateTime.t/0 (#{inspect(reason)})"]}
+    end
+  end
+
+  @spec isodate(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+          {:error, Types.reason()} | {:ok, DateTime.t()}
+
+  @doc """
+  Type loader for Elixir Date.t().
+  Expect an iso8601 date string value, returns a Date.t().
+  """
+  def isodate(value, _custom_type_loaders, []) do
+    with {:is_binary, true} <- {:is_binary, is_binary(value)},
+         {:from_iso8601, {:ok, date}} <- {:from_iso8601, Date.from_iso8601(value)} do
+      {:ok, date}
+    else
+      {:is_binary, false} ->
+        {:error, ["can't convert #{inspect(value)} to a Date.t/0"]}
+
+      {:from_iso8601, {:error, reason}} ->
+        {:error, ["can't convert #{inspect(value)} to a Date.t/0 (#{inspect(reason)})"]}
     end
   end
 end

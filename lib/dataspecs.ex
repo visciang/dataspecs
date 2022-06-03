@@ -29,6 +29,7 @@ defmodule DataSpecs do
       "name" => "Joe",
       "surname" => "Smith",
       "gender" => "male",
+      "birth_date" => "1980-12-31",
       "address" => [%{
         "streetname" => "High Street",
         "streenumber" => "3a",
@@ -46,6 +47,7 @@ defmodule DataSpecs do
              town: "Hedge End, Southampton"
            }
          ],
+         birth_date: ~D[1980-12-31],
          gender: :male,
          name: "Joe",
          surname: "Smith"

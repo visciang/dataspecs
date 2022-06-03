@@ -66,6 +66,7 @@ defmodule Test.DataSpecs.SampleType do
   @type t_mapset :: MapSet.t(integer())
   @type t_mapset_1 :: MapSet.t(t_union_0(binary()))
   @type t_datetime :: DateTime.t()
+  @type t_date :: Date.t()
 
   @type t_recursive :: atom() | %{recursive: t_recursive()}
 

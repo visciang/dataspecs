@@ -1,5 +1,5 @@
 defmodule Test.DataSpecs do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias DataSpecs.Loader
   alias Test.DataSpecs.CustomLoader
@@ -9,7 +9,7 @@ defmodule Test.DataSpecs do
 
   describe "Unknown" do
     test "module" do
-      assert_raise RuntimeError, "Can't fetch type specifications for module :unknown_module", fn ->
+      assert_raise RuntimeError, ~r/Can't fetch type specifications for module :unknown_module/, fn ->
         DataSpecs.load(:a, {:unknown_module, :t})
       end
     end
@@ -453,66 +453,6 @@ defmodule Test.DataSpecs do
 
       assert {:ok, MapSet.new(["1", :a, 1])} ==
                DataSpecs.load(["1", :a, 1], {@types_module, :t_mapset_1}, custom_type_loaders)
-    end
-  end
-
-  describe "extra loaders" do
-    test "isodatetime" do
-      custom_type_loaders = %{
-        {DateTime, :t, 0} => &Loader.Extra.isodatetime/3
-      }
-
-      datetime = ~U[2021-07-14 20:22:49.653077Z]
-      iso_datetime_string = DateTime.to_iso8601(datetime)
-
-      assert {:ok, datetime} == DataSpecs.load(iso_datetime_string, {@types_module, :t_datetime}, custom_type_loaders)
-    end
-
-    test "isodatetime error" do
-      custom_type_loaders = %{
-        {DateTime, :t, 0} => &Loader.Extra.isodatetime/3
-      }
-
-      value = "not a datetime"
-
-      assert {:error, ["can't convert \"#{value}\" to a DateTime.t/0 (:invalid_format)"]} ==
-               DataSpecs.load(value, {@types_module, :t_datetime}, custom_type_loaders)
-
-      value = 123
-
-      assert {:error, ["can't convert #{value} to a DateTime.t/0"]} ==
-               DataSpecs.load(value, {@types_module, :t_datetime}, custom_type_loaders)
-    end
-
-    test "mapset" do
-      custom_type_loaders = %{
-        {MapSet, :t, 1} => &Loader.Extra.mapset/3
-      }
-
-      assert {:ok, MapSet.new(1..3)} == DataSpecs.load(1..3, {@types_module, :t_mapset}, custom_type_loaders)
-
-      assert {:ok, MapSet.new(["1", :a, 1])} ==
-               DataSpecs.load(["1", :a, 1], {@types_module, :t_mapset_1}, custom_type_loaders)
-    end
-
-    test "mapset error" do
-      custom_type_loaders = %{
-        {MapSet, :t, 1} => &Loader.Extra.mapset/3
-      }
-
-      value = 123
-
-      assert {:error, ["can't convert #{value} to a MapSet.t/1, value not enumerable"]} ==
-               DataSpecs.load(value, {@types_module, :t_mapset}, custom_type_loaders)
-
-      value = [%{}]
-
-      assert {:error,
-              [
-                "can't convert #{inspect(value)} to a MapSet.t/1",
-                ["can't convert #{inspect(value)} to a list, bad item at index=0", ["can't convert %{} to an integer"]]
-              ]} ==
-               DataSpecs.load(value, {@types_module, :t_mapset}, custom_type_loaders)
     end
   end
 

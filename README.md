@@ -7,30 +7,39 @@ Typespec based data loader and validator (inspired by [forma](https://github.com
 
 DataSpecs **validate and load** elixir data into a more structured form
 by trying to map it to conform to a [typespec](https://hexdocs.pm/elixir/typespecs.html).
-It support most typespec specification: **basic** types, **literal** types,
-**built-in** types, **union** type, **parametrized** types, **maps**, **remote** types
-and **user defined** types.
 
-It can be used to validate some elixir data against a typespec or it
-can be useful when interfacing with external data sources that provide
-you data as JSON or MessagePack, but that you wish to validate transform
-into either proper structs or richer data types without a native
-JSON representation (such as dates or sets) in your application.
+It support the following typespec type specifications:
+- basic
+- literal
+- built-in
+- union
+- parametrized
+- maps (and elixir struct)
+- remote
+- user defined
+
+The main use cases are about elixir data validatation against a typespec or
+interfacing with external data sources that provide you data as JSON or MessagePack,
+but that you wish to validate and transform into either proper structs or
+richer data types without a native JSON representation (such as dates or sets).
 
 ## Usage
+
+Given the following `Person` struct specification
 
 ```elixir
 defmodule Person do
   use DataSpecs
 
   @enforce_keys [:name, :surname]
-  defstruct @enforce_keys ++ [:gender, :address]
+  defstruct @enforce_keys ++ [:gender, :address, :birth_date]
 
   @type t :: %__MODULE__{
                name: String.t(),
                surname: String.t(),
                gender: option(:male | :female | :other),
-               address: option(nonempty_list(Address.t()))
+               address: option([Address.t(), ...]),
+               birth_date: option(Date.t())
              }
 
   @type option(x) :: nil | x
@@ -47,23 +56,29 @@ defmodule Address do
                town: String.t()
              }
 end
+```
 
-raw = %{
-  "name" => "Joe",
-  "surname" => "Smith",
-  "gender" => "male",
-  "address" => [%{
-    "streetname" => "High Street",
-    "streenumber" => "3a",
-    "postcode" => "SO31 4NG",
-    "town" => "Hedge End, Southampton"
+we can load a JSON object encoding an instance of a `Person` with:
+
+```elixir
+~s/{
+  "name": "Joe",
+  "surname": "Smith",
+  "gender": "male",
+  "birth_date": "1980-12-31",
+  "address": [{
+    "streetname": "High Street",
+    "streenumber": "3a",
+    "postcode": "SO31 4NG",
+    "town": "Hedge End, Southampton"
   }]
-}
+}/
+|> Jason.decode!()
+|> Person.load(DataSpecs.Loader.Extra.type_loaders())
 
-DataSpecs.load(raw, {Person, :t})
-
-# OR (if "use DataSpecs" is included in the struct module)
-Person.load(raw)
+# NOTE:
+# DataSpecs.Loader.Extra.type_loaders() is included here to support
+# the loading of isodates strings into Date.t() types.
 
 # => %Person{
 #      address: [
@@ -74,20 +89,21 @@ Person.load(raw)
 #          town: "Hedge End, Southampton"
 #        }
 #      ],
+#      birth_date: ~D[1980-12-31],
 #      gender: :male,
 #      name: "Joe",
 #      surname: "Smith"
 #    }
 ```
 
-DataSpecs tries to figure out how to translate its input to a typespec.
+DataSpecs tries to figure out how to translate its input to an elixir datatype using the typespec as "type schema".
 
 Scalar types (such as booleans, integers, etc.) and some composite types
 (such as lists, plain maps), can be simply mapped one to one after validation
 without any additional transformation. 
 
 However, not all Elixir types have natural representations in JSON-like data,
-for example dates, or don't want to expose their internals (opaque types).
+for example atoms, dates, or don't want to expose their internals (opaque types).
 
 Refer to the library test suite for more examples.
 
@@ -131,45 +147,20 @@ def project do
 end
 ```
 
-## Custom type loaders
+## Type loaders
 
-In these cases you can pass a set of custom type loaders along as an optional argument
-to the `DataSpecs.load` function
+### Builtin
 
-```elixir
-defmodule LogRow do
-  use DataSpecs
+For reference check the loaders available under `DataSpecs.Loader.{Builtin, Extra}`.
 
-  @enforce_keys [:log, :timestamp]
-  defstruct @enforce_keys
+The modules `DataSpecs.Loader.Extra` provides pre defined custom type loader for:
+- `DateTime.t`: load iso datetime strings (ie: `2001-12-31 06:54:02Z` -> `~U[2001-12-31 06:54:02Z]`)
+- `DateTime.t`: load iso datetime strings (ie: `2001-12-31` -> `~D[2022-06-03]`)
+- `MapSet.t`: load lists of T into a `MapSet.t(T)` (ie: `[1, 2]` -> `#MapSet<[1, 2]>`)
 
-  type t :: %__MODULE__{
-    log: String.t(),
-    timestamp: DateTime.t()
-  }
-end
+### Custom
 
-def custom_isodatetime_loader(value, _custom_type_loaders, []) do
-  with {:is_binary, true} <- {:is_binary, is_binary(value)},
-       {:from_iso8601, {:ok, datetime, _}} <- {:from_iso8601, DateTime.from_iso8601(value)} do
-    {:ok, datetime}
-  else
-    {:is_binary, false} ->
-      {:error, ["can't convert #{inspect(value)} to a DateTime.t/0"]}
-
-    {:from_iso8601, {:error, reason}} ->
-      {:error, ["can't convert #{inspect(value)} to a DateTime.t/0 (#{inspect(reason)})"]}
-  end
-end
-
-custom_type_loaders = %{{DateTime, :t, 0} => &custom_isodatetime_loader/3}
-LogRow.load(%{"log" => "An error occurred", "timestamp" => "2021-07-14 20:22:49.653077Z"}, custom_type_loaders)
-
-# => %LogRow{
-#      log: "An error occurred",
-#      timestamp: ~U[2021-07-14 20:22:49.653077Z]
-#    }
-```
+You can pass a set of custom type loaders along as an optional argument to the `DataSpecs.load` function
 
 The type of the custom loader function is
 
@@ -222,8 +213,6 @@ then the custom type loader function will be called with
 ```elixir
 custom_mapset_loader(1..10, custom_type_loaders, [&DataSpecs.Loader.Builtin.integer/3])
 ```
-
-For reference check the loaders available under `DataSpecs.Loader.{Builtin, Extra}`
 
 ## Validators
 

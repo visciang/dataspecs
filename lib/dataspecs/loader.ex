@@ -40,7 +40,15 @@ defmodule DataSpecs.Loader do
         eaf_types
 
       :error ->
-        raise "Can't fetch type specifications for module #{inspect(module)}"
+        raise """
+        Can't fetch type specifications for module #{inspect(module)}.
+
+        The dataspec library works leveraging the typespec of #{inspect(module)}.
+        To correctly introspec and retrieve the typespecs the module #{inspect(module)}
+        should be compiled with the option strip_beams=false.
+        Even more, the typespec cannot be retrieved if you define the module #{inspect(module)}
+        in an interactive iex shell session.
+        """
     end
   end
 
