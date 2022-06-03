@@ -112,3 +112,18 @@ defmodule Test.DataSpecs.SampleStructType do
           f_3: SampleType.nullable(String.t())
         }
 end
+
+defmodule Test.DataSpecs.CustomLoader do
+  @moduledoc false
+
+  def opaque(value, custom_type_loaders, [type_params_loader]) do
+    type_params_loader.(value, custom_type_loaders, [])
+    |> case do
+      {:ok, loaded_value} ->
+        {:ok, {:custom_opaque, loaded_value}}
+
+      {:error, _} = error ->
+        error
+    end
+  end
+end

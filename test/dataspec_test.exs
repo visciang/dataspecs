@@ -460,16 +460,3 @@ defmodule Test.DataSpecs do
     assert {:ok, :a} == DataSpecs.load(:a, {@types_module, :t_reference_to_private_type})
   end
 end
-
-defmodule Test.DataSpecs.CustomLoader do
-  def opaque(value, custom_type_loaders, [type_params_loader]) do
-    type_params_loader.(value, custom_type_loaders, [])
-    |> case do
-      {:ok, loaded_value} ->
-        {:ok, {:custom_opaque, loaded_value}}
-
-      {:error, _} = error ->
-        error
-    end
-  end
-end
