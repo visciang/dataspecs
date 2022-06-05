@@ -8,15 +8,15 @@ Typespec based data loader and validator (inspired by [forma](https://github.com
 DataSpecs **validate and load** elixir data into a more structured form
 by trying to map it to conform to a [typespec](https://hexdocs.pm/elixir/typespecs.html).
 
-It support the following typespec type specifications:
-- basic
-- literal
-- built-in
-- union
-- parametrized
-- maps (and elixir struct)
-- remote
-- user defined
+It support the following typespec specifications:
+- basic types
+- literal types
+- built-in types
+- union types
+- parametrized types
+- map (and elixir struct) types
+- remote types
+- user defined types
 
 The main use cases are about elixir data validatation against a typespec or
 interfacing with external data sources that provide you data as JSON or MessagePack,
@@ -79,6 +79,7 @@ we can load a JSON object encoding an instance of a `Person` with:
 # NOTE:
 # DataSpecs.Loader.Extra.type_loaders() is included here to support
 # the loading of isodates strings into Date.t() types.
+# Ref: "Type loaders" section
 
 # => %Person{
 #      address: [
@@ -160,7 +161,8 @@ The modules `DataSpecs.Loader.Extra` provides pre defined custom type loader for
 
 ### Custom
 
-You can pass a set of custom type loaders along as an optional argument to the `DataSpecs.load` function
+You can pass custom type loaders along as an optional argument to the `DataSpecs.load` function.
+```
 
 The type of the custom loader function is
 
