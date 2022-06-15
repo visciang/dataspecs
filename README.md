@@ -12,6 +12,7 @@ It support the following typespec specifications:
 - basic types
 - literal types
 - built-in types
+- range types
 - union types
 - parametrized types
 - map (and elixir struct) types
