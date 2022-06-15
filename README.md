@@ -157,7 +157,7 @@ For reference check the loaders available under `DataSpecs.Loader.{Builtin, Extr
 
 The modules `DataSpecs.Loader.Extra` provides pre defined custom type loader for:
 - `DateTime.t`: load iso datetime strings (ie: `2001-12-31 06:54:02Z` -> `~U[2001-12-31 06:54:02Z]`)
-- `DateTime.t`: load iso datetime strings (ie: `2001-12-31` -> `~D[2022-06-03]`)
+- `Date.t`: load iso date strings (ie: `2001-12-31` -> `~D[2022-06-03]`)
 - `MapSet.t`: load lists of T into a `MapSet.t(T)` (ie: `[1, 2]` -> `#MapSet<[1, 2]>`)
 
 ### Custom
