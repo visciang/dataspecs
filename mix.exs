@@ -48,7 +48,7 @@ defmodule DataSpecs.Mixfile do
 
   defp dialyzer do
     [
-      plt_file: {:no_warn, "deps/dialyzer.plt"},
+      plt_local_path: "_build/plts",
       plt_add_apps: [:plug]
     ]
   end
