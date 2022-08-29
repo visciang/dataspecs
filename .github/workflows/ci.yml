@@ -48,14 +48,15 @@ jobs:
 
       - name: Lint xref
         run: |
-          CYCLES=$(mix xref graph --format=cycles)
+          XREF_EXIT_CODE=0
+          CYCLES=$(mix xref graph --format=cycles --fail-above 0 2>/dev/null) || XREF_EXIT_CODE=$?
 
-          if echo "$CYCLES" | grep "No cycles found"; then
-            true
-          else
+          if [ $XREF_EXIT_CODE -ne 0 ]; then
             echo "Found module dependency cycle:"
             echo "$CYCLES"
             exit 1
+          else
+            echo "No cycle found"
           fi
 
       - name: Lint dialyzer
