@@ -1,6 +1,7 @@
 # DataSpecs
 
 ![CI](https://github.com/visciang/dataspecs/workflows/CI/badge.svg)
+[![Docs](https://img.shields.io/badge/docs-latest-green.svg)](https://visciang.github.io/dataspecs/readme.html)
 [![Coverage Status](https://coveralls.io/repos/github/visciang/dataspecs/badge.svg?branch=main)](https://coveralls.io/github/visciang/dataspecs?branch=main)
 
 Typespec based data cast and validator (inspired by [forma](https://github.com/soundtrackyourbrand/forma)).
