@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.28.5">
+    <meta name="project" content="dataspecs v1.0.0">
+
+    <title>DataSpecs.Cast.Builtin — dataspecs v1.0.0</title>
+    <link rel="stylesheet" href="dist/elixir-64c5e2b63575bddb1c5b.css" />
+
+    <script src="dist/sidebar_items-a4329bce5f.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-b5f3440501744dc8be3d.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+
+<section class="sidebar">
+  <button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
+    </button>
+    <label class="search-label">
+      <p class="sr-only">Search</p>
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+
+    <div class="sidebar-projectDetails">
+      <a href="api-reference.html" class="sidebar-projectName" translate="no">
+dataspecs
+      </a>
+      <strong class="sidebar-projectVersion" translate="no">
+        v1.0.0
+      </strong>
+    </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+
+    </ul>
+  </div>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <output role="status" id="toast"></output>
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
+
+    <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L1" title="View Source" class="view-source" rel="help">
+      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+      <span class="sr-only">View Source</span>
+    </a>
+
+  <span translate="no">DataSpecs.Cast.Builtin</span> 
+  <small class="app-vsn" translate="no">(dataspecs v1.0.0)</small>
+
+</h1>
+
+
+  <section id="moduledoc">
+<p>Erlang builtin types cast.</p>
+  </section>
+
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+    </h1>
+
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:map_field_res/0" translate="no">map_field_res()</a>
+
+        </div>
+
+      </div>
+
+  </div>
+
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#any/3" translate="no">any(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#arity/3" translate="no">arity(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#atom/3" translate="no">atom(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#binary/3" translate="no">binary(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#binary/5" translate="no">binary(value, size, unit, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#bitstring/3" translate="no">bitstring(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#boolean/3" translate="no">boolean(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#byte/3" translate="no">byte(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#char/3" translate="no">char(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#empty_list/3" translate="no">empty_list(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#empty_map/3" translate="no">empty_map(value, custom_type_casts, list)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#float/3" translate="no">float(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#integer/3" translate="no">integer(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#list/3" translate="no">list(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#map_field_optional/3" translate="no">map_field_optional(map, custom_type_casts, list)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#map_field_required/3" translate="no">map_field_required(map, custom_type_casts, list)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#neg_integer/3" translate="no">neg_integer(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#non_neg_integer/3" translate="no">non_neg_integer(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#nonempty_list/3" translate="no">nonempty_list(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#number/3" translate="no">number(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#pid/3" translate="no">pid(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#pos_integer/3" translate="no">pos_integer(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#range/5" translate="no">range(lower, upper, value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#reference/3" translate="no">reference(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#tuple/3" translate="no">tuple(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#tuple_any/3" translate="no">tuple_any(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#union/3" translate="no">union(value, custom_type_casts, type_params_casts)</a>
+
+        </div>
+
+      </div>
+
+  </div>
+
+  </section>
+
+
+  <section id="types" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+Types
+    </h1>
+    <div class="types-list">
+<section class="detail" id="t:map_field_res/0">
+
+  <div class="detail-header">
+    <a href="#t:map_field_res/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">map_field_res()</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L8" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> map_field_res() ::
+  {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()}
+  | {:ok, {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()}}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+
+    </div>
+  </section>
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+Functions
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="any/3">
+
+  <div class="detail-header">
+    <a href="#any/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">any(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L12" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> any(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="arity/3">
+
+  <div class="detail-header">
+    <a href="#arity/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">arity(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L118" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> arity(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">arity</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="atom/3">
+
+  <div class="detail-header">
+    <a href="#atom/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">atom(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L18" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> atom(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="binary/3">
+
+  <div class="detail-header">
+    <a href="#binary/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">binary(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L50" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> binary(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="binary/5">
+
+  <div class="detail-header">
+    <a href="#binary/5" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">binary(value, size, unit, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L62" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> binary(
+  <a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(),
+  <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(),
+  [
+    <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+  ]
+) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="bitstring/3">
+
+  <div class="detail-header">
+    <a href="#bitstring/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">bitstring(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L82" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> bitstring(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">bitstring</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="boolean/3">
+
+  <div class="detail-header">
+    <a href="#boolean/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">boolean(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L38" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> boolean(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="byte/3">
+
+  <div class="detail-header">
+    <a href="#byte/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">byte(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L94" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> byte(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">byte</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="char/3">
+
+  <div class="detail-header">
+    <a href="#char/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">char(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L106" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> char(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">char</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="empty_list/3">
+
+  <div class="detail-header">
+    <a href="#empty_list/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">empty_list(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L261" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> empty_list(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, []}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="empty_map/3">
+
+  <div class="detail-header">
+    <a href="#empty_map/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">empty_map(value, custom_type_casts, list)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L320" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> empty_map(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, %{}}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="float/3">
+
+  <div class="detail-header">
+    <a href="#float/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">float(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L166" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> float(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="integer/3">
+
+  <div class="detail-header">
+    <a href="#integer/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">integer(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L178" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> integer(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="list/3">
+
+  <div class="detail-header">
+    <a href="#list/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">list(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L285" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> list(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="map_field_optional/3">
+
+  <div class="detail-header">
+    <a href="#map_field_optional/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">map_field_optional(map, custom_type_casts, list)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L346" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> map_field_optional(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) ::
+  <a href="#t:map_field_res/0">map_field_res</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="map_field_required/3">
+
+  <div class="detail-header">
+    <a href="#map_field_required/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">map_field_required(map, custom_type_casts, list)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L331" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> map_field_required(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) ::
+  <a href="#t:map_field_res/0">map_field_res</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="neg_integer/3">
+
+  <div class="detail-header">
+    <a href="#neg_integer/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">neg_integer(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L190" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> neg_integer(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">neg_integer</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="non_neg_integer/3">
+
+  <div class="detail-header">
+    <a href="#non_neg_integer/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">non_neg_integer(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L202" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> non_neg_integer(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="nonempty_list/3">
+
+  <div class="detail-header">
+    <a href="#nonempty_list/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">nonempty_list(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L273" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> nonempty_list(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, [...]}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="number/3">
+
+  <div class="detail-header">
+    <a href="#number/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">number(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L154" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> number(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">number</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="pid/3">
+
+  <div class="detail-header">
+    <a href="#pid/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">pid(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L130" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> pid(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="pos_integer/3">
+
+  <div class="detail-header">
+    <a href="#pos_integer/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">pos_integer(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L214" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> pos_integer(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="range/5">
+
+  <div class="detail-header">
+    <a href="#range/5" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">range(lower, upper, value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L226" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> range(
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(),
+  <a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(),
+  <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(),
+  [
+    <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+  ]
+) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="reference/3">
+
+  <div class="detail-header">
+    <a href="#reference/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">reference(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L142" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> reference(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">reference</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="tuple/3">
+
+  <div class="detail-header">
+    <a href="#tuple/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">tuple(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L388" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> tuple(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">tuple</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="tuple_any/3">
+
+  <div class="detail-header">
+    <a href="#tuple_any/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">tuple_any(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L376" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> tuple_any(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">tuple</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="union/3">
+
+  <div class="detail-header">
+    <a href="#union/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">union(value, custom_type_casts, type_params_casts)</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L238" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> union(<a href="DataSpecs.Types.html#t:value/0">DataSpecs.Types.value</a>(), <a href="DataSpecs.Types.html#t:custom_type_casts/0">DataSpecs.Types.custom_type_casts</a>(), [
+  <a href="DataSpecs.Types.html#t:type_cast_fun/0">DataSpecs.Types.type_cast_fun</a>()
+]) :: {:error, <a href="DataSpecs.Types.html#t:reason/0">DataSpecs.Types.reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+
+    </div>
+  </section>
+
+      <footer class="footer">
+
+        <p>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.5) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

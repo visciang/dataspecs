@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.28.5">
+    <meta name="project" content="dataspecs v1.0.0">
+
+    <title>API Reference — dataspecs v1.0.0</title>
+    <link rel="stylesheet" href="dist/elixir-64c5e2b63575bddb1c5b.css" />
+
+    <script src="dist/sidebar_items-a4329bce5f.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-b5f3440501744dc8be3d.js"></script>
+
+
+  </head>
+  <body data-type="extras">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+
+<section class="sidebar">
+  <button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
+    </button>
+    <label class="search-label">
+      <p class="sr-only">Search</p>
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+
+    <div class="sidebar-projectDetails">
+      <a href="api-reference.html" class="sidebar-projectName" translate="no">
+dataspecs
+      </a>
+      <strong class="sidebar-projectVersion" translate="no">
+        v1.0.0
+      </strong>
+    </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+
+    </ul>
+  </div>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <output role="status" id="toast"></output>
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
+
+  <span>API Reference <small class="app-vsn">dataspecs v1.0.0</small></span>
+</h1>
+
+
+  <section class="details-list">
+    <h2 id="modules" class="section-heading">
+  <a href="#modules" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">modules</p>
+  </a>
+  Modules
+</h2>
+
+    <div class="summary">
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.html" translate="no">DataSpecs</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>DataSpecs.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Cast.Builtin.html" translate="no">DataSpecs.Cast.Builtin</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Erlang builtin types cast.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Cast.Extra.html" translate="no">DataSpecs.Cast.Extra</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Elixir types cast.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Plug.Cast.html" translate="no">DataSpecs.Plug.Cast</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>DataSpecs Plug.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Schema.html" translate="no">DataSpecs.Schema</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>DataSpec Schema.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Schema.Type.html" translate="no">DataSpecs.Schema.Type</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Type specifications' schema.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Schema.Type.Bitstring.html" translate="no">DataSpecs.Schema.Type.Bitstring</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Bit string.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Schema.Type.Builtin.html" translate="no">DataSpecs.Schema.Type.Builtin</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>A builtin type.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Schema.Type.List.html" translate="no">DataSpecs.Schema.Type.List</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>List.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Schema.Type.Literal.html" translate="no">DataSpecs.Schema.Type.Literal</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>A literal type.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Schema.Type.Literal.Atom.html" translate="no">DataSpecs.Schema.Type.Literal.Atom</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Literal atom.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Schema.Type.Literal.Integer.html" translate="no">DataSpecs.Schema.Type.Literal.Integer</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Literal integer.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Schema.Type.Map.html" translate="no">DataSpecs.Schema.Type.Map</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Map.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Schema.Type.Map.Key.html" translate="no">DataSpecs.Schema.Type.Map.Key</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>A map key.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Schema.Type.Range.html" translate="no">DataSpecs.Schema.Type.Range</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Range.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Schema.Type.Ref.html" translate="no">DataSpecs.Schema.Type.Ref</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Type reference (remote/user types).</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Schema.Type.Tuple.html" translate="no">DataSpecs.Schema.Type.Tuple</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Tuple.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Schema.Type.Union.html" translate="no">DataSpecs.Schema.Type.Union</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Union.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Schema.Type.Unsupported.html" translate="no">DataSpecs.Schema.Type.Unsupported</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Unsupported type specs.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Schema.Type.Var.html" translate="no">DataSpecs.Schema.Type.Var</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Type variable.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="DataSpecs.Types.html" translate="no">DataSpecs.Types</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Common types.</p></div>
+
+</div>
+
+    </div>
+  </section>
+
+
+  <section class="details-list">
+    <h2 id="mix-tasks" class="section-heading">
+  <a href="#mix-tasks" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">mix-tasks</p>
+  </a>
+  Mix Tasks
+</h2>
+
+    <div class="summary">
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Mix.Tasks.Dataspecs.Schema.Dump.html" translate="no">mix dataspecs.schema.dump</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Dump a type schema.</p></div>
+
+</div>
+
+    </div>
+  </section>
+
+<div class="bottom-actions">
+  <div class="bottom-actions-item">
+
+  </div>
+  <div class="bottom-actions-item">
+
+      <a href="readme.html" class="bottom-actions-button" rel="next">
+        <span class="subheader">
+          Next Page →
+        </span>
+        <span class="title">
+DataSpecs
+        </span>
+      </a>
+
+  </div>
+</div>
+
+      <footer class="footer">
+
+        <p>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.5) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>
