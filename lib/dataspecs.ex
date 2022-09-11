@@ -43,7 +43,7 @@ defmodule DataSpecs do
   defmacro __using__(_opts) do
     quote do
       @doc """
-      Cast a value that should conform to #{__MODULE__}.t() typespec.
+      Cast a value that should conform to #{inspect(__MODULE__)}.t() typespec.
       """
       @spec cast(DataSpecs.Types.value(), nil | DataSpecs.Types.custom_type_casts()) ::
               DataSpecs.Types.cast_result(__MODULE__.t())

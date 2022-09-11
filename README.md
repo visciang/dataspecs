@@ -188,7 +188,7 @@ end
 ```
 
 The custom cast take the input value, check it's enumerable and then builds a `MapSet`
-over the items of the input value. It takes as argument a list of `type_cast_fun()` associated
+over the items of the input value. It takes as argument a list of `t:DataSpecs.Types.type_cast_fun/0` associated
 with the type parameters.
 
 For example, let's say we have:
