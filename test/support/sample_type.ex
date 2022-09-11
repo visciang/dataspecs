@@ -128,14 +128,14 @@ defmodule Test.DataSpecs.SampleStructType do
         }
 end
 
-defmodule Test.DataSpecs.CustomLoader do
+defmodule Test.DataSpecs.CustomCast do
   @moduledoc false
 
-  def opaque(value, custom_type_loaders, [type_params_loader]) do
-    type_params_loader.(value, custom_type_loaders, [])
+  def opaque(value, custom_type_casts, [type_params_cast]) do
+    type_params_cast.(value, custom_type_casts, [])
     |> case do
-      {:ok, loaded_value} ->
-        {:ok, {:custom_opaque, loaded_value}}
+      {:ok, casted_value} ->
+        {:ok, {:custom_opaque, casted_value}}
 
       {:error, _} = error ->
         error

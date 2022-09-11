@@ -1,17 +1,17 @@
-defmodule DataSpecs.Loader.Extra do
+defmodule DataSpecs.Cast.Extra do
   @moduledoc """
-  Elixir types loaders.
+  Elixir types cast.
   """
 
-  alias DataSpecs.{Loader, Types}
+  alias DataSpecs.{Cast, Types}
 
   @doc """
-  All extra type loaders.
+  All extra types casts.
 
-  MyData.load(value, #{inspect(__MODULE__)}.type_loaders())
+  MyData.cast(value, #{inspect(__MODULE__)}.type_cast())
   """
-  @spec type_loaders() :: Types.custom_type_loaders()
-  def type_loaders do
+  @spec type_casts() :: Types.custom_type_casts()
+  def type_casts do
     %{
       {MapSet, :t, 1} => &mapset/3,
       {DateTime, :t, 0} => &isodatetime/3,
@@ -20,12 +20,12 @@ defmodule DataSpecs.Loader.Extra do
   end
 
   @doc """
-  Type loader for Elixir MapSet.t(T).
+  Type cast for Elixir MapSet.t(T).
   Expect an Enumarable value of type T, returns a MapSet.t(T).
   """
-  @spec mapset(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+  @spec mapset(Types.value(), Types.custom_type_casts(), [Types.type_cast_fun()]) ::
           {:error, Types.reason()} | {:ok, MapSet.t()}
-  def mapset(value, custom_type_loaders, [type_params_loader]) do
+  def mapset(value, custom_type_cast, [type_params_cast]) do
     case Enumerable.impl_for(value) do
       nil ->
         {:error, ["can't convert #{inspect(value)} to a MapSet.t/1, value not enumerable"]}
@@ -33,10 +33,10 @@ defmodule DataSpecs.Loader.Extra do
       _ ->
         value
         |> Enum.to_list()
-        |> Loader.Builtin.list(custom_type_loaders, [type_params_loader])
+        |> Cast.Builtin.list(custom_type_cast, [type_params_cast])
         |> case do
-          {:ok, loaded_value} ->
-            {:ok, MapSet.new(loaded_value)}
+          {:ok, casted_value} ->
+            {:ok, MapSet.new(casted_value)}
 
           {:error, errors} ->
             {:error, ["can't convert #{inspect(value)} to a MapSet.t/1", errors]}
@@ -45,12 +45,12 @@ defmodule DataSpecs.Loader.Extra do
   end
 
   @doc """
-  Type loader for Elixir DateTime.t().
+  Type cast for Elixir DateTime.t().
   Expect an iso8601 datetime string value, returns a DateTime.t().
   """
-  @spec isodatetime(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+  @spec isodatetime(Types.value(), Types.custom_type_casts(), [Types.type_cast_fun()]) ::
           {:error, Types.reason()} | {:ok, DateTime.t()}
-  def isodatetime(value, _custom_type_loaders, []) do
+  def isodatetime(value, _custom_type_casts, []) do
     with {:is_binary, true} <- {:is_binary, is_binary(value)},
          {:from_iso8601, {:ok, datetime, _}} <- {:from_iso8601, DateTime.from_iso8601(value)} do
       {:ok, datetime}
@@ -64,12 +64,12 @@ defmodule DataSpecs.Loader.Extra do
   end
 
   @doc """
-  Type loader for Elixir Date.t().
+  Type cast for Elixir Date.t().
   Expect an iso8601 date string value, returns a Date.t().
   """
-  @spec isodate(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
+  @spec isodate(Types.value(), Types.custom_type_casts(), [Types.type_cast_fun()]) ::
           {:error, Types.reason()} | {:ok, DateTime.t()}
-  def isodate(value, _custom_type_loaders, []) do
+  def isodate(value, _custom_type_casts, []) do
     with {:is_binary, true} <- {:is_binary, is_binary(value)},
          {:from_iso8601, {:ok, date}} <- {:from_iso8601, Date.from_iso8601(value)} do
       {:ok, date}

@@ -3,10 +3,10 @@ defmodule DataSpecs do
   DataSpecs.
   """
 
-  alias DataSpecs.{Loader, Types}
+  alias DataSpecs.{Cast, Types}
 
   @doc """
-  Defines a load helper function in a struct module.
+  Defines a cast helper function in a struct module.
 
   ```elixir
   defmodule Person do
@@ -24,7 +24,7 @@ defmodule DataSpecs do
   ```
 
   ```elixir
-  Person.load(%{"name" => "John", surname => "Smith", "birth_date": "1980-12-31"})
+  Person.cast(%{"name" => "John", surname => "Smith", "birth_date": "1980-12-31"})
 
   %Person{
     name: "John",
@@ -36,46 +36,45 @@ defmodule DataSpecs do
   equivalent to
 
   ```elixir
-  DataSpecs.load(%{"name" => "John", surname => "Smith"}, {Person, :t})
+  DataSpecs.cast(%{"name" => "John", surname => "Smith"}, {Person, :t})
   ```
   """
   @spec __using__(any()) :: Macro.t()
   defmacro __using__(_opts) do
     quote do
-      @spec load(DataSpecs.Types.value(), DataSpecs.Types.custom_type_loaders()) ::
-              DataSpecs.Types.load_result(__MODULE__.t())
-
       @doc """
-      Loads a value that should conform to #{__MODULE__}.t() typespec.
+      Cast a value that should conform to #{__MODULE__}.t() typespec.
       """
-      def load(data, custom_type_loaders \\ nil) do
-        if custom_type_loaders do
-          DataSpecs.load(data, {__MODULE__, :t}, custom_type_loaders)
+      @spec cast(DataSpecs.Types.value(), nil | DataSpecs.Types.custom_type_casts()) ::
+              DataSpecs.Types.cast_result(__MODULE__.t())
+      def cast(data, custom_type_casts \\ nil) do
+        if custom_type_casts do
+          DataSpecs.cast(data, {__MODULE__, :t}, custom_type_casts)
         else
-          DataSpecs.load(data, {__MODULE__, :t})
+          DataSpecs.cast(data, {__MODULE__, :t})
         end
       end
     end
   end
 
   @doc """
-  Loads a value that should conform to a typespec.
+  Cast a value that should conform to a typespec.
 
   > #### Info {: .info}
   >
-  > `custom_type_loaders` defaults to `DataSpecs.Loader.Extra.type_loaders/0`.
+  > `custom_type_casts` defaults to `DataSpecs.Cast.Extra.type_casts/0`.
   > This will by default map types such as `t:Date.t/0`, `t:DateTime.t/0`, `t:MapSet.t/0`, ...
   > as describer in the module documentation.
   """
-  @spec load(
+  @spec cast(
           data :: Types.value(),
           type_ref :: Types.type_ref(),
-          custom_type_loaders :: Types.custom_type_loaders(),
-          type_params_loaders :: [Types.type_loader_fun()]
+          custom_type_casts :: Types.custom_type_casts(),
+          type_params_casts :: [Types.type_cast_fun()]
         ) ::
-          Types.load_result(term())
-  def load(value, {module, type_id}, custom_type_loaders \\ Loader.Extra.type_loaders(), type_params_loaders \\ []) do
-    loader = Loader.get(module, type_id, length(type_params_loaders))
-    loader.(value, custom_type_loaders, type_params_loaders)
+          Types.cast_result(term())
+  def cast(value, {module, type_id}, custom_type_casts \\ Cast.Extra.type_casts(), type_params_casts \\ []) do
+    cast = Cast.get(module, type_id, length(type_params_casts))
+    cast.(value, custom_type_casts, type_params_casts)
   end
 end

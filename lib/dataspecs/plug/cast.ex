@@ -1,13 +1,13 @@
 # coveralls-ignore-start
 
 if Code.ensure_loaded?(Plug) do
-  defmodule DataSpecs.Plug.Loader do
+  defmodule DataSpecs.Plug.Cast do
     @moduledoc """
     DataSpecs Plug.
 
     NOTE: this module is available if you include the optional dependency `plug`.
 
-    This module can be used to plug a "Jason.decode! -> DataSpecs.load" pipeline in your routes.
+    This module can be used to plug a "Jason.decode! -> DataSpecs.cast" pipeline in your routes.
 
     For example:
 
@@ -52,7 +52,7 @@ if Code.ensure_loaded?(Plug) do
     alias DataSpecs.Types
 
     plug(Plug.Parsers, parsers: [:json], json_decoder: Jason)
-    plug(:load)
+    plug(:cast)
 
     @doc """
     Declare the type the body of a route should conform
@@ -69,7 +69,7 @@ if Code.ensure_loaded?(Plug) do
     def typeref(module, type \\ :t), do: [assigns: %{dataspec: %{type: {module, type}, value: nil}}]
 
     @doc """
-    Get the loaded value.
+    Get the casted value.
 
     For example:
 
@@ -83,16 +83,16 @@ if Code.ensure_loaded?(Plug) do
     @spec value(Plug.Conn.t()) :: term()
     def value(conn), do: conn.assigns.dataspec.value
 
-    @spec load(Plug.Conn.t(), Plug.opts()) :: Plug.Conn.t()
-    defp load(conn, _opts) do
+    @spec cast(Plug.Conn.t(), Plug.opts()) :: Plug.Conn.t()
+    defp cast(conn, _opts) do
       with {:get_typeref, {:ok, type_ref}} <- {:get_typeref, get_typeref(conn)},
-           {:load, {:ok, value}} <- {:load, DataSpecs.load(conn.body_params, type_ref)} do
+           {:cast, {:ok, value}} <- {:cast, DataSpecs.cast(conn.body_params, type_ref)} do
         put_in(conn.assigns.dataspec.value, value)
       else
         {:get_typeref, :error} ->
           raise_missing_typeref()
 
-        {:load, {:error, reason}} ->
+        {:cast, {:error, reason}} ->
           conn
           |> resp(:bad_request, inspect(reason))
           |> halt()
