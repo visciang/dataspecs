@@ -49,6 +49,7 @@ defmodule Test.DataSpecs.SampleType do
   @type t_map_2 :: %{required(integer()) => atom()}
   @type t_map_3 :: %{required(integer()) => atom(), optional(atom()) => integer()}
   @type t_map_4 :: %{integer() => %{atom() => boolean()}}
+  @type t_map_5 :: %{optional(integer()) => atom()}
   @type t_map_param(x) :: %{x => atom()}
 
   @type t_union_0(x) :: x | atom() | integer()
@@ -61,7 +62,7 @@ defmodule Test.DataSpecs.SampleType do
   @type t_type_arity :: atom()
   @type t_type_arity(x) :: x
 
-  @type t_remote_type(x) :: Test.DataSpecs.SampleRemoteModuleType.t_remote(x)
+  @type t_remote_type(x) :: Test.DataSpecs.SampleRemoteModuleType.t_remote(x, boolean())
   @type t_remote_type_string :: String.t()
   @type t_mapset :: MapSet.t(integer())
   @type t_mapset_1 :: MapSet.t(t_union_0(binary()))
@@ -76,6 +77,9 @@ defmodule Test.DataSpecs.SampleType do
   @type nullable(t) :: nil | t
 
   @opaque t_opaque(x) :: {x, float()}
+  @type t_remote_opaque :: Test.DataSpecs.SampleRemoteModuleType.t_opaque(1)
+
+  @type t_unsupported :: timeout()
 
   # CURRENTLY NOT IMPLEMENTED TYPES
   # @type t_fun :: (integer() -> integer())
@@ -93,7 +97,18 @@ end
 defmodule Test.DataSpecs.SampleRemoteModuleType do
   @moduledoc false
 
-  @type t_remote(x) :: x | atom()
+  @type t_remote(x, y) :: {x | list(y) | <<>> | 1..3 | mfa()}
+  @opaque t_opaque(x) :: list(x)
+end
+
+defmodule Test.DataSpecs.EmptyStructType do
+  @moduledoc false
+
+  use DataSpecs
+
+  defstruct []
+
+  @type t :: %__MODULE__{}
 end
 
 defmodule Test.DataSpecs.SampleStructType do
@@ -113,14 +128,14 @@ defmodule Test.DataSpecs.SampleStructType do
         }
 end
 
-defmodule Test.DataSpecs.CustomLoader do
+defmodule Test.DataSpecs.CustomCast do
   @moduledoc false
 
-  def opaque(value, custom_type_loaders, [type_params_loader]) do
-    type_params_loader.(value, custom_type_loaders, [])
+  def opaque(value, custom_type_casts, [type_params_cast]) do
+    type_params_cast.(value, custom_type_casts, [])
     |> case do
-      {:ok, loaded_value} ->
-        {:ok, {:custom_opaque, loaded_value}}
+      {:ok, casted_value} ->
+        {:ok, {:custom_opaque, casted_value}}
 
       {:error, _} = error ->
         error

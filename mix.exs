@@ -5,7 +5,7 @@ defmodule DataSpecs.Mixfile do
     [
       app: :dataspecs,
       name: "dataspecs",
-      version: "0.0.1",
+      version: "1.0.0",
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
@@ -13,7 +13,8 @@ defmodule DataSpecs.Mixfile do
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: preferred_cli_env(),
       description: "Provides structured parsing of data based on Typespecs.",
-      dialyzer: dialyzer()
+      dialyzer: dialyzer(),
+      docs: docs()
     ]
   end
 
@@ -30,9 +31,10 @@ defmodule DataSpecs.Mixfile do
   defp deps do
     [
       {:plug, "~> 1.7", optional: true},
-      {:excoveralls, "~> 0.12", only: :test},
+      {:excoveralls, "~> 0.12", only: [:test]},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
-      {:credo, "~> 1.0", only: [:dev], runtime: false}
+      {:credo, "~> 1.0", only: [:dev], runtime: false},
+      {:ex_doc, "~> 0.16", only: [:dev], runtime: false}
     ]
   end
 
@@ -49,7 +51,14 @@ defmodule DataSpecs.Mixfile do
   defp dialyzer do
     [
       plt_local_path: "_build/plts",
-      plt_add_apps: [:plug]
+      plt_add_apps: [:mix, :plug]
+    ]
+  end
+
+  defp docs do
+    [
+      source_url: "https://github.com/visciang/dataspecs",
+      extras: ["README.md"]
     ]
   end
 end

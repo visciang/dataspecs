@@ -1,11 +1,11 @@
-# dataspecs
+# DataSpecs
 
 ![CI](https://github.com/visciang/dataspecs/workflows/CI/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/visciang/dataspecs/badge.svg?branch=main)](https://coveralls.io/github/visciang/dataspecs?branch=main)
 
-Typespec based data loader and validator (inspired by [forma](https://github.com/soundtrackyourbrand/forma)).
+Typespec based data cast and validator (inspired by [forma](https://github.com/soundtrackyourbrand/forma)).
 
-DataSpecs **validate and load** elixir data into a more structured form
+DataSpecs **cast** elixir data into a more structured form
 by trying to map it to conform to a [typespec](https://hexdocs.pm/elixir/typespecs.html).
 
 It support the following typespec specifications:
@@ -59,7 +59,7 @@ defmodule Address do
 end
 ```
 
-we can load a JSON object encoding an instance of a `Person` with:
+we can cast a JSON object encoding an instance of a `Person` with:
 
 ```elixir
 ~s/{
@@ -75,12 +75,7 @@ we can load a JSON object encoding an instance of a `Person` with:
   }]
 }/
 |> Jason.decode!()
-|> Person.load(DataSpecs.Loader.Extra.type_loaders())
-
-# NOTE:
-# DataSpecs.Loader.Extra.type_loaders() is included here to support
-# the loading of isodates strings into Date.t() types.
-# Ref: "Type loaders" section
+|> Person.cast()
 
 # => %Person{
 #      address: [
@@ -104,8 +99,7 @@ Scalar types (such as booleans, integers, etc.) and some composite types
 (such as lists, plain maps), can be simply mapped one to one after validation
 without any additional transformation. 
 
-However, not all Elixir types have natural representations in JSON-like data,
-for example atoms, dates, or don't want to expose their internals (opaque types).
+However, not all Elixir types have natural representations in JSON-like data (for example atoms and dates) or don't want to expose their internals (opaque types).
 
 Refer to the library test suite for more examples.
 
@@ -149,32 +143,31 @@ def project do
 end
 ```
 
-## Type loaders
+## Type cast
 
 ### Builtin
 
-For reference check the loaders available under `DataSpecs.Loader.{Builtin, Extra}`.
+For reference check the cast available under `DataSpecs.Cast.{Builtin, Extra}`.
 
-The modules `DataSpecs.Loader.Extra` provides pre defined custom type loader for:
-- `DateTime.t`: load iso datetime strings (ie: `2001-12-31 06:54:02Z` -> `~U[2001-12-31 06:54:02Z]`)
-- `Date.t`: load iso date strings (ie: `2001-12-31` -> `~D[2022-06-03]`)
-- `MapSet.t`: load lists of T into a `MapSet.t(T)` (ie: `[1, 2]` -> `#MapSet<[1, 2]>`)
+The modules `DataSpecs.Cast.Extra` provides pre-defined custom type cast for:
+- `t:DateTime.t/0`: cast iso datetime strings (ie: `2001-12-31 06:54:02Z` -> `~U[2001-12-31 06:54:02Z]`)
+- `t:Date.t/0`: cast iso date strings (ie: `2001-12-31` -> `~D[2022-06-03]`)
+- `t:MapSet.t/1`: cast lists of `T` into a `MapSet.t(T)` (ie: `[1, 2]` -> `#MapSet<[1, 2]>`)
 
 ### Custom
 
-You can pass custom type loaders along as an optional argument to the `DataSpecs.load` function.
-```
+You can pass custom type casts along as an optional argument to the `DataSpecs.cast/4` function.
 
-The type of the custom loader function is
-
-```elixir
-(value(), custom_type_loaders(), [type_loader_fun()] -> value())
-```
-
-for example a custom `MapSet.t/1` loader could be implement as:
+The type of the custom cast function is
 
 ```elixir
-def custom_mapset_loader(value, custom_type_loaders, [type_loader_fun]) do
+@type custom_type_cast_fun :: (value(), custom_type_casts(), [type_cast_fun()] -> value())
+```
+
+for example a custom `t:MapSet.t/1` cast could be implement as:
+
+```elixir
+def custom_mapset_cast(value, custom_type_casts, [type_cast_fun]) do
   case Enumerable.impl_for(value) do
     nil ->
       {:error, ["can't convert #{inspect(value)} to a MapSet.t/1, value not enumerable"]}
@@ -182,10 +175,10 @@ def custom_mapset_loader(value, custom_type_loaders, [type_loader_fun]) do
     _ ->
       value
       |> Enum.to_list()
-      |> DataSpecs.Loader.Builtin.list(custom_type_loaders, [type_loader_fun])
+      |> DataSpecs.Cast.Builtin.list(custom_type_casts, [type_cast_fun])
       |> case do
-        {:ok, loaded_value} ->
-          {:ok, MapSet.new(loaded_value)}
+        {:ok, casted_value} ->
+          {:ok, MapSet.new(casted_value)}
 
         {:error, errors} ->
           {:error, ["can't convert #{inspect(value)} to a MapSet.t/1", errors]}
@@ -194,8 +187,8 @@ def custom_mapset_loader(value, custom_type_loaders, [type_loader_fun]) do
 end
 ```
 
-The custom loader take the input value, check it's enumerable and then builds a `MapSet`
-over the items of the input value. It takes as argument a list of `type_loader_fun()` associated
+The custom cast take the input value, check it's enumerable and then builds a `MapSet`
+over the items of the input value. It takes as argument a list of `t:DataSpecs.Types.type_cast_fun/0` associated
 with the type parameters.
 
 For example, let's say we have:
@@ -211,15 +204,15 @@ and an input value:
 1..10
 ```
 
-then the custom type loader function will be called with
+then the custom type cast function will be called with
 
 ```elixir
-custom_mapset_loader(1..10, custom_type_loaders, [&DataSpecs.Loader.Builtin.integer/3])
+custom_mapset_cast(1..10, custom_type_casts, [&DataSpecs.Cast.Builtin.integer/3])
 ```
 
 ## Validators
 
-Custom validation rules can be defined with a custom type loader.
+Custom validation rules can be defined with a custom type cast.
 
 For example let's say than we want to validate a field of type string to be in upcase form:
 
@@ -236,8 +229,8 @@ defmodule AStruct do
 
   @type upcase_string :: String.t()
 
-  def custom_field_loader(value, custom_type_loaders, type_params_loaders) do
-    with {:ok, value} <- DataSpecs.Loader.Builtin.binary(value, custom_type_loaders, type_params_loaders)
+  def custom_field_cast(value, custom_type_casts, type_params_casts) do
+    with {:ok, value} <- DataSpecs.Cast.Builtin.binary(value, custom_type_casts, type_params_casts)
          ^name <- String.upcase(name) do
       {:ok, name}
     else
@@ -250,8 +243,8 @@ defmodule AStruct do
   end
 end
 
-custom_type_loaders = %{{AStruct, :upcase_string, 0} => &AStruct.custom_field_loader/3}
-AStruct.load(%{field: "AAA"}, custom_type_loaders)
+custom_type_casts = %{{AStruct, :upcase_string, 0} => &AStruct.custom_field_cast/3}
+AStruct.cast(%{field: "AAA"}, custom_type_casts)
 # => %AStruct{field: "AAA"}
 ```
 
@@ -340,15 +333,15 @@ Example:
 
 ## Plug
 
-`DataSpecs.Plug.Loader` provides a plug to "Jason.decode! -> DataSpecs.load" in your routes:
+`DataSpecs.Plug.Cast` provides a plug to "Jason.decode! -> DataSpecs.cast" in your routes:
 
 ```elixir
 defmodule Api.Router.Something do
   use Plug.Router
-  import DataSpecs.Plug.Loader, only: [typeref: 2, value: 1]
+  import DataSpecs.Plug.Cast, only: [typeref: 2, value: 1]
 
   plug :match
-  plug DataSpecs.Plug.Loader
+  plug DataSpecs.Plug.Cast
   plug :dispatch
 
   post "/foo", typeref(Api.Model.Foo, :t) do

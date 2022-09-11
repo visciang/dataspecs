@@ -3,6 +3,7 @@
         "minimum_coverage": 100
     },
     "skip_files": [
-        "test"
+        "test",
+        "lib/mix"
     ]
 }

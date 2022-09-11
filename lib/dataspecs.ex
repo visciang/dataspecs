@@ -1,60 +1,80 @@
 defmodule DataSpecs do
-  @moduledoc File.read!("README.md")
+  @moduledoc """
+  DataSpecs.
+  """
 
-  alias DataSpecs.{Loader, Types}
+  alias DataSpecs.{Cast, Types}
 
+  @doc """
+  Defines a cast helper function in a struct module.
+
+  ```elixir
+  defmodule Person do
+    use DataSpecs
+
+    @enforce_keys [:name, :surname]
+    defstruct @enforce_keys ++ [:birth_date]
+
+    @type t :: %__MODULE__{
+                name: String.t(),
+                surname: String.t(),
+                birth_date: nil | Date.t(),
+              }
+  end
+  ```
+
+  ```elixir
+  Person.cast(%{"name" => "John", surname => "Smith", "birth_date": "1980-12-31"})
+
+  %Person{
+    name: "John",
+    surname: "Smith",
+    birth_date: ~D[1980-12-31]
+  }
+  ```
+
+  equivalent to
+
+  ```elixir
+  DataSpecs.cast(%{"name" => "John", surname => "Smith"}, {Person, :t})
+  ```
+  """
+  @spec __using__(any()) :: Macro.t()
   defmacro __using__(_opts) do
     quote do
-      @spec load(DataSpecs.Types.value(), DataSpecs.Types.custom_type_loaders()) ::
-              DataSpecs.Types.load_result(__MODULE__.t())
-
       @doc """
-      Loads a value that should conform to #{__MODULE__}.t() typespec.
+      Cast a value that should conform to #{inspect(__MODULE__)}.t() typespec.
       """
-      def load(data, custom_type_loaders \\ %{}) do
-        DataSpecs.load(data, {__MODULE__, :t}, custom_type_loaders)
+      @spec cast(DataSpecs.Types.value(), nil | DataSpecs.Types.custom_type_casts()) ::
+              DataSpecs.Types.cast_result(__MODULE__.t())
+      def cast(data, custom_type_casts \\ nil) do
+        if custom_type_casts do
+          DataSpecs.cast(data, {__MODULE__, :t}, custom_type_casts)
+        else
+          DataSpecs.cast(data, {__MODULE__, :t})
+        end
       end
     end
   end
 
-  @spec load(Types.value(), Types.type_ref(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
-          Types.load_result(any())
-
   @doc """
-  Loads a value that should conform to a typespec
+  Cast a value that should conform to a typespec.
 
-  Given a Person.t/1 typespec:
-
-    DataSpecs.load(%{
-      "name" => "Joe",
-      "surname" => "Smith",
-      "gender" => "male",
-      "birth_date" => "1980-12-31",
-      "address" => [%{
-        "streetname" => "High Street",
-        "streenumber" => "3a",
-        "postcode" => "SO31 4NG",
-        "town" => "Hedge End, Southampton"
-      }]
-    }, {Person, :t})
-
-    => %Person{
-         address: [
-           %Address{
-             postcode: "SO31 4NG",
-             streenumber: "3a",
-             streetname: "High Street",
-             town: "Hedge End, Southampton"
-           }
-         ],
-         birth_date: ~D[1980-12-31],
-         gender: :male,
-         name: "Joe",
-         surname: "Smith"
-       }
+  > #### Info {: .info}
+  >
+  > `custom_type_casts` defaults to `DataSpecs.Cast.Extra.type_casts/0`.
+  > This will by default map types such as `t:Date.t/0`, `t:DateTime.t/0`, `t:MapSet.t/0`, ...
+  > as describer in the module documentation.
   """
-  def load(value, {module, type_id}, custom_type_loaders \\ %{}, type_params_loaders \\ []) do
-    loader = Loader.get(module, type_id, length(type_params_loaders))
-    loader.(value, custom_type_loaders, type_params_loaders)
+  @spec cast(
+          data :: Types.value(),
+          type_ref :: Types.type_ref(),
+          custom_type_casts :: Types.custom_type_casts(),
+          type_params_casts :: [Types.type_cast_fun()]
+        ) ::
+          Types.cast_result(term())
+  def cast(value, {module, type_id}, custom_type_casts \\ Cast.Extra.type_casts(), type_params_casts \\ []) do
+    cast = Cast.get(module, type_id, length(type_params_casts))
+    cast.(value, custom_type_casts, type_params_casts)
   end
 end
