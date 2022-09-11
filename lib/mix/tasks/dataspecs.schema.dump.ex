@@ -16,7 +16,19 @@ defmodule Mix.Tasks.Dataspecs.Schema.Dump do
     "Elixir.#{module}"
     |> String.to_atom()
     |> DataSpecs.Schema.load()
-    |> inspect(pretty: true, syntax_colors: IO.ANSI.syntax_colors, limit: :infinity)
+    |> inspect_schema()
     |> Mix.shell().info()
+  end
+
+  defp inspect_schema(schema) do
+    syntax_colors =
+      if Version.compare(System.version(), "1.14.0") in [:eq, :gt] do
+        [syntax_colors: IO.ANSI.syntax_colors()]
+      else
+        []
+      end
+
+    schema
+    |> inspect([pretty: true, limit: :infinity] ++ syntax_colors)
   end
 end
