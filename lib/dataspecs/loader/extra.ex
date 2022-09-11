@@ -1,6 +1,6 @@
 defmodule DataSpecs.Loader.Extra do
   @moduledoc """
-  Elixir types loaders
+  Elixir types loaders.
   """
 
   alias DataSpecs.{Loader, Types}

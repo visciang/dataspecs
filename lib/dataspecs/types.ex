@@ -1,6 +1,6 @@
 defmodule DataSpecs.Types do
   @moduledoc """
-  Common types
+  Common types.
   """
 
   @type value() :: any()

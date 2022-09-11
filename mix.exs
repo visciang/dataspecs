@@ -5,7 +5,7 @@ defmodule DataSpecs.Mixfile do
     [
       app: :dataspecs,
       name: "dataspecs",
-      version: "0.0.1",
+      version: "1.0.0",
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
@@ -51,7 +51,7 @@ defmodule DataSpecs.Mixfile do
   defp dialyzer do
     [
       plt_local_path: "_build/plts",
-      plt_add_apps: [:plug]
+      plt_add_apps: [:mix, :plug]
     ]
   end
 

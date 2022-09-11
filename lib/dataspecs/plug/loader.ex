@@ -3,47 +3,49 @@
 if Code.ensure_loaded?(Plug) do
   defmodule DataSpecs.Plug.Loader do
     @moduledoc """
-    DataSpecs Plug
+    DataSpecs Plug.
 
-    NOTE: this module is available if you include the optional dependency ":plug".
+    NOTE: this module is available if you include the optional dependency `plug`.
 
     This module can be used to plug a "Jason.decode! -> DataSpecs.load" pipeline in your routes.
 
     For example:
 
-      defmodule Api.Router.Something do
-        use Plug.Router
-        import #{__MODULE__}, only: [typeref: 2, value: 1]
+    ```elixir
+    defmodule Api.Router.Something do
+      use Plug.Router
+      import #{inspect(__MODULE__)}, only: [typeref: 2, value: 1]
 
-        plug :match
-        plug #{__MODULE__}
-        plug :dispatch
+      plug :match
+      plug #{inspect(__MODULE__)}
+      plug :dispatch
 
-        post "/foo", typeref(Api.Model.Foo, :t) do
-          %Api.Model.Foo{...} = value(conn)
-          ...
-        end
+      post "/foo", typeref(Api.Model.Foo, :t) do
+        %Api.Model.Foo{...} = value(conn)
+        ...
       end
+    end
 
-      defmodule Api.Model.Foo do
-        defmodule Bar do
-          @enforce_keys [:b1, :b2]
-          defstruct [:b1, :b2]
-
-          @type t :: %__MODULE__{
-                  b1: nil | number(),
-                  b2: String.t()
-                }
-        end
-
-        @enforce_keys [:a]
-        defstruct [:a, :bars]
+    defmodule Api.Model.Foo do
+      defmodule Bar do
+        @enforce_keys [:b1]
+        defstruct @enforce_keys ++ [:b2]
 
         @type t :: %__MODULE__{
-                a: non_neg_integer(),
-                bars: [Bar.t()]
+                b1: number(),
+                b2: nil | String.t()
               }
       end
+
+      @enforce_keys [:a, :bars]
+      defstruct @enforce_keys
+
+      @type t :: %__MODULE__{
+              a: non_neg_integer(),
+              bars: [Bar.t()]
+            }
+    end
+    ```
     """
 
     use Plug.Builder
@@ -102,7 +104,7 @@ if Code.ensure_loaded?(Plug) do
     defp get_typeref(_), do: :error
 
     @spec raise_missing_typeref :: no_return()
-    def raise_missing_typeref do
+    defp raise_missing_typeref do
       raise """
       Probably you missed a typeref on this route.
 
