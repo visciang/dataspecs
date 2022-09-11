@@ -5,16 +5,16 @@ defmodule DataSpecs.Loader.Builtin do
 
   alias DataSpecs.Types
 
+  @type map_field_res :: {:error, Types.reason()} | {:ok, {map(), map(), Types.reason()}}
+
   @spec any(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, any()}
-
   def any(value, _custom_type_loaders, _type_params_loaders) do
     {:ok, value}
   end
 
   @spec atom(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, atom()}
-
   def atom(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_atom(value) ->
@@ -35,7 +35,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec boolean(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, boolean()}
-
   def boolean(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_boolean(value) ->
@@ -48,7 +47,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec binary(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, binary()}
-
   def binary(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_binary(value) ->
@@ -61,7 +59,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec binary(Types.value(), integer(), integer(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, binary()}
-
   def binary(value, 0, 0, _custom_type_loaders, _type_params_loaders) do
     case value do
       <<>> ->
@@ -82,7 +79,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec bitstring(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, bitstring()}
-
   def bitstring(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_bitstring(value) ->
@@ -95,7 +91,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec byte(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, byte()}
-
   def byte(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_integer(value) and 0 <= value and value <= 255 ->
@@ -108,7 +103,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec char(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, char()}
-
   def char(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_integer(value) and 0 <= value and value <= 0x10FFFF ->
@@ -121,7 +115,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec arity(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, arity()}
-
   def arity(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_integer(value) and 0 <= value and value <= 255 ->
@@ -134,7 +127,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec pid(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, pid()}
-
   def pid(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_pid(value) ->
@@ -147,7 +139,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec reference(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, reference()}
-
   def reference(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_reference(value) ->
@@ -160,7 +151,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec number(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, number()}
-
   def number(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_number(value) ->
@@ -173,7 +163,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec float(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, float()}
-
   def float(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_number(value) ->
@@ -186,7 +175,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec integer(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, integer()}
-
   def integer(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_integer(value) ->
@@ -199,7 +187,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec neg_integer(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, neg_integer()}
-
   def neg_integer(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_integer(value) and value < 0 ->
@@ -212,7 +199,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec non_neg_integer(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, non_neg_integer()}
-
   def non_neg_integer(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_integer(value) and value >= 0 ->
@@ -225,7 +211,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec pos_integer(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, pos_integer()}
-
   def pos_integer(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_integer(value) and value > 0 ->
@@ -238,7 +223,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec range(integer(), integer(), Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, integer()}
-
   def range(lower, upper, value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_integer(value) and lower <= value and value <= upper ->
@@ -251,7 +235,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec union(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, any()}
-
   def union(value, custom_type_loaders, type_params_loaders) do
     type_params_loaders
     |> Enum.reduce_while({:error, []}, fn loader, {:error, errors} ->
@@ -275,7 +258,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec empty_list(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, []}
-
   def empty_list(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       [] ->
@@ -288,7 +270,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec nonempty_list(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, nonempty_list()}
-
   def nonempty_list(value, custom_type_loaders, type_params_loaders) do
     case value do
       [_ | _] ->
@@ -301,7 +282,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec list(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, list()}
-
   def list(value, custom_type_loaders, type_params_loaders) do
     case value do
       value when is_list(value) ->
@@ -337,8 +317,9 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec empty_map(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, %{}}
-
   def empty_map(value, _custom_type_loaders, []) do
+    value = if is_struct(value), do: Map.from_struct(value), else: value
+
     if value == %{} do
       {:ok, value}
     else
@@ -346,9 +327,7 @@ defmodule DataSpecs.Loader.Builtin do
     end
   end
 
-  @spec map_field_required(map(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
-          {:error, Types.reason()} | {:ok, {map(), map(), Types.reason()}}
-
+  @spec map_field_required(map(), Types.custom_type_loaders(), [Types.type_loader_fun()]) :: map_field_res()
   def map_field_required(map, custom_type_loaders, [type_key_loader, type_value_loader]) do
     map_field_optional(map, custom_type_loaders, [type_key_loader, type_value_loader])
     |> case do
@@ -363,9 +342,7 @@ defmodule DataSpecs.Loader.Builtin do
     end
   end
 
-  @spec map_field_optional(map(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
-          {:error, Types.reason()} | {:ok, {map(), map(), Types.reason()}}
-
+  @spec map_field_optional(map(), Types.custom_type_loaders(), [Types.type_loader_fun()]) :: map_field_res()
   def map_field_optional(map, custom_type_loaders, [type_key_loader, type_value_loader]) do
     case map do
       map when is_struct(map) ->
@@ -396,7 +373,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec tuple_any(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, tuple()}
-
   def tuple_any(value, _custom_type_loaders, _type_params_loaders) do
     case value do
       value when is_tuple(value) ->
@@ -409,7 +385,6 @@ defmodule DataSpecs.Loader.Builtin do
 
   @spec tuple(Types.value(), Types.custom_type_loaders(), [Types.type_loader_fun()]) ::
           {:error, Types.reason()} | {:ok, tuple()}
-
   def tuple(value, custom_type_loaders, type_params_loaders) do
     tuple_type_size = length(type_params_loaders)
 

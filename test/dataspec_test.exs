@@ -6,6 +6,7 @@ defmodule Test.DataSpecs do
 
   @types_module Test.DataSpecs.SampleType
   @types_struct_module Test.DataSpecs.SampleStructType
+  @types_empty_struct_module Test.DataSpecs.EmptyStructType
 
   describe "Unknown" do
     test "module" do
@@ -337,6 +338,9 @@ defmodule Test.DataSpecs do
       reason = ["can't convert %{a: 1} to an empty map"]
       assert {:error, ^reason} = DataSpecs.load(%{a: 1}, {@types_module, :t_empty_map})
 
+      reason = ["can't convert :foo to a map"]
+      assert {:error, ^reason} = DataSpecs.load(:foo, {@types_module, :t_map_5})
+
       reason = ["can't convert :a to a map"]
       assert {:error, ^reason} = DataSpecs.load(:a, {@types_module, :t_map_0})
 
@@ -369,22 +373,6 @@ defmodule Test.DataSpecs do
     end
   end
 
-  test "user type parametrized" do
-    integer = &Loader.Builtin.integer/3
-    assert {:ok, {0, 1, 2}} == DataSpecs.load({0, 1, 2}, {@types_module, :t_user_type_param_0})
-
-    assert {:ok, {0, 1, 2}} ==
-             DataSpecs.load({0, 1, 2}, {@types_module, :t_user_type_param_1}, %{}, [integer, integer])
-
-    assert {:ok, 1} == DataSpecs.load(1, {@types_module, :t_user_type_param_2}, %{}, [integer])
-  end
-
-  test "same type name with different arities" do
-    atom = &Loader.Builtin.atom/3
-    assert {:ok, :test} == DataSpecs.load(:test, {@types_module, :t_type_arity})
-    assert {:ok, :test} == DataSpecs.load(:test, {@types_module, :t_type_arity}, %{}, [atom])
-  end
-
   describe "struct type" do
     test "ok, load from map" do
       assert {:ok, %@types_struct_module{f_1: :a, f_2: 1, f_3: "s"}} ==
@@ -397,6 +385,14 @@ defmodule Test.DataSpecs do
     test "ok, load from struct" do
       assert {:ok, %@types_struct_module{f_1: :a, f_2: nil, f_3: nil}} ==
                @types_struct_module.load(%@types_struct_module{f_1: :a})
+    end
+
+    test "ok, load empty struct" do
+      assert {:ok, %@types_empty_struct_module{}} ==
+               @types_empty_struct_module.load(%{})
+
+      assert {:ok, %@types_empty_struct_module{}} ==
+               @types_empty_struct_module.load(%@types_empty_struct_module{})
     end
 
     test "error" do
@@ -413,10 +409,26 @@ defmodule Test.DataSpecs do
     end
   end
 
+  test "user type parametrized" do
+    integer = &Loader.Builtin.integer/3
+    assert {:ok, {0, 1, 2}} == DataSpecs.load({0, 1, 2}, {@types_module, :t_user_type_param_0})
+
+    assert {:ok, {0, 1, 2}} ==
+             DataSpecs.load({0, 1, 2}, {@types_module, :t_user_type_param_1}, %{}, [integer, integer])
+
+    assert {:ok, 1} == DataSpecs.load(1, {@types_module, :t_user_type_param_2}, %{}, [integer])
+  end
+
+  test "same type name with different arities" do
+    atom = &Loader.Builtin.atom/3
+    assert {:ok, :test} == DataSpecs.load(:test, {@types_module, :t_type_arity})
+    assert {:ok, :test} == DataSpecs.load(:test, {@types_module, :t_type_arity}, %{}, [atom])
+  end
+
   test "remote type" do
     integer = &Loader.Builtin.integer/3
-    assert {:ok, 1} == DataSpecs.load(1, {@types_module, :t_remote_type}, %{}, [integer])
-    assert {:ok, :test} == DataSpecs.load(:test, {@types_module, :t_remote_type}, %{}, [integer])
+    assert {:ok, {1}} == DataSpecs.load({1}, {@types_module, :t_remote_type}, %{}, [integer])
+    assert {:ok, {[true, false]}} == DataSpecs.load({[true, false]}, {@types_module, :t_remote_type}, %{}, [integer])
     assert {:ok, "string"} == DataSpecs.load("string", {@types_module, :t_remote_type_string})
   end
 
@@ -435,8 +447,8 @@ defmodule Test.DataSpecs do
       reason = ["opaque type #{inspect(@types_module)}.t_opaque/1 has no custom type loader defined"]
       assert {:error, ^reason} = DataSpecs.load(:opaque, {@types_module, :t_opaque}, %{}, [integer])
 
-      reason = ["opaque type MapSet.t/1 has no custom type loader defined"]
-      assert {:error, ^reason} = DataSpecs.load(:opaque, {@types_module, :t_mapset})
+      reason = ["opaque type Test.DataSpecs.SampleRemoteModuleType.t_opaque/1 has no custom type loader defined"]
+      assert {:error, ^reason} = DataSpecs.load(:opaque, {@types_module, :t_remote_opaque})
     end
 
     test "with custom type loader" do

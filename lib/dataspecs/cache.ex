@@ -7,11 +7,10 @@ defmodule DataSpecs.Cache do
   @name __MODULE__
   @ets_name __MODULE__
 
-  @type cache_key :: {module(), Types.type_id(), arity()}
+  @type cache_key :: Types.custom_type_ref()
   @type cache_value :: Types.type_loader_fun()
 
   @spec get(module(), Types.type_id(), arity()) :: nil | cache_value()
-
   def get(module, type_id, type_arity) do
     type_ref = {module, type_id, type_arity}
 
@@ -25,14 +24,12 @@ defmodule DataSpecs.Cache do
   end
 
   @spec set([{cache_key(), cache_value()}]) :: :ok
-
   def set(type_loaders) do
     GenServer.call(@name, {:set, type_loaders}, :infinity)
     :ok
   end
 
   @spec start_link(any()) :: GenServer.on_start()
-
   def start_link(_args) do
     GenServer.start_link(@name, nil, name: @name)
   end

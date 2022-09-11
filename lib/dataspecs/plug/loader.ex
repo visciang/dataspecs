@@ -52,29 +52,33 @@ if Code.ensure_loaded?(Plug) do
     plug(Plug.Parsers, parsers: [:json], json_decoder: Jason)
     plug(:load)
 
-    @spec typeref(module(), Types.type_id()) :: [assigns: %{dataspec: %{type: Types.type_ref(), value: term()}}]
-
     @doc """
     Declare the type the body of a route should conform
 
     For example:
-        post "/foo", typeref(Model.Foo) do
-          ...
-        end
-    """
-    def typeref(module, type \\ :t), do: [assigns: %{dataspec: %{type: {module, type}, value: nil}}]
 
-    @spec value(Plug.Conn.t()) :: term()
+    ```elixir
+    post "/foo", typeref(Model.Foo) do
+      ...
+    end
+    ```
+    """
+    @spec typeref(module(), Types.type_id()) :: [assigns: %{dataspec: %{type: Types.type_ref(), value: term()}}]
+    def typeref(module, type \\ :t), do: [assigns: %{dataspec: %{type: {module, type}, value: nil}}]
 
     @doc """
     Get the loaded value.
 
     For example:
-      post "/foo", typeref(Api.Model.Foo, :t) do
-        %Api.Model.Foo{...} = value(conn)
-        ...
-      end
+
+    ```elixir
+    post "/foo", typeref(Api.Model.Foo, :t) do
+      %Api.Model.Foo{...} = value(conn)
+      ...
+    end
+    ```
     """
+    @spec value(Plug.Conn.t()) :: term()
     def value(conn), do: conn.assigns.dataspec.value
 
     @spec load(Plug.Conn.t(), Plug.opts()) :: Plug.Conn.t()
@@ -110,4 +114,4 @@ if Code.ensure_loaded?(Plug) do
   end
 end
 
-# coveralls-ignore-end
+# coveralls-ignore-stop

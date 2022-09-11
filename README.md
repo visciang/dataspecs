@@ -1,4 +1,4 @@
-# dataspecs
+# DataSpecs
 
 ![CI](https://github.com/visciang/dataspecs/workflows/CI/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/visciang/dataspecs/badge.svg?branch=main)](https://coveralls.io/github/visciang/dataspecs?branch=main)
@@ -75,12 +75,7 @@ we can load a JSON object encoding an instance of a `Person` with:
   }]
 }/
 |> Jason.decode!()
-|> Person.load(DataSpecs.Loader.Extra.type_loaders())
-
-# NOTE:
-# DataSpecs.Loader.Extra.type_loaders() is included here to support
-# the loading of isodates strings into Date.t() types.
-# Ref: "Type loaders" section
+|> Person.load()
 
 # => %Person{
 #      address: [
@@ -104,8 +99,7 @@ Scalar types (such as booleans, integers, etc.) and some composite types
 (such as lists, plain maps), can be simply mapped one to one after validation
 without any additional transformation. 
 
-However, not all Elixir types have natural representations in JSON-like data,
-for example atoms, dates, or don't want to expose their internals (opaque types).
+However, not all Elixir types have natural representations in JSON-like data (for example atoms and dates) or don't want to expose their internals (opaque types).
 
 Refer to the library test suite for more examples.
 
@@ -155,23 +149,22 @@ end
 
 For reference check the loaders available under `DataSpecs.Loader.{Builtin, Extra}`.
 
-The modules `DataSpecs.Loader.Extra` provides pre defined custom type loader for:
-- `DateTime.t`: load iso datetime strings (ie: `2001-12-31 06:54:02Z` -> `~U[2001-12-31 06:54:02Z]`)
-- `Date.t`: load iso date strings (ie: `2001-12-31` -> `~D[2022-06-03]`)
-- `MapSet.t`: load lists of T into a `MapSet.t(T)` (ie: `[1, 2]` -> `#MapSet<[1, 2]>`)
+The modules `DataSpecs.Loader.Extra` provides pre-defined custom type loader for:
+- `t:DateTime.t/0`: load iso datetime strings (ie: `2001-12-31 06:54:02Z` -> `~U[2001-12-31 06:54:02Z]`)
+- `t:Date.t/0`: load iso date strings (ie: `2001-12-31` -> `~D[2022-06-03]`)
+- `t:MapSet.t/1`: load lists of `T` into a `MapSet.t(T)` (ie: `[1, 2]` -> `#MapSet<[1, 2]>`)
 
 ### Custom
 
 You can pass custom type loaders along as an optional argument to the `DataSpecs.load` function.
-```
 
 The type of the custom loader function is
 
 ```elixir
-(value(), custom_type_loaders(), [type_loader_fun()] -> value())
+@type custom_type_loader_fun :: (value(), custom_type_loaders(), [type_loader_fun()] -> value())
 ```
 
-for example a custom `MapSet.t/1` loader could be implement as:
+for example a custom `t:MapSet.t/1` loader could be implement as:
 
 ```elixir
 def custom_mapset_loader(value, custom_type_loaders, [type_loader_fun]) do
