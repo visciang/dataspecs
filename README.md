@@ -147,7 +147,7 @@ end
 
 ### Builtin
 
-For reference check the casts available under `DataSpecs.Cast.{Builtin, Extra}`.
+For reference check the cast available under `DataSpecs.Cast.{Builtin, Extra}`.
 
 The modules `DataSpecs.Cast.Extra` provides pre-defined custom type cast for:
 - `t:DateTime.t/0`: cast iso datetime strings (ie: `2001-12-31 06:54:02Z` -> `~U[2001-12-31 06:54:02Z]`)

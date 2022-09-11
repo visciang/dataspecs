@@ -13,12 +13,10 @@ defmodule Mix.Tasks.Dataspecs.Schema.Dump do
 
   @impl Mix.Task
   def run([module]) do
-    module = String.to_atom("Elixir.#{module}")
-
-    Code.Typespec.fetch_types(module)
-
-    # schema = DataSpecs.Schema.load(module)
-
-    # Mix.shell().info(inspect(schema))
+    "Elixir.#{module}"
+    |> String.to_atom()
+    |> DataSpecs.Schema.load()
+    |> inspect(pretty: true, limit: :infinity)
+    |> Mix.shell().info()
   end
 end
