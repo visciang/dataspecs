@@ -7,7 +7,7 @@ defmodule Mix.Tasks.Dataspecs.Schema.Dump do
       mix dataspecs.schema.dump MyModule
   """
 
-  @requirements ["app.start"]
+  @requirements ["app.config"]
 
   use Mix.Task
 
@@ -28,7 +28,6 @@ defmodule Mix.Tasks.Dataspecs.Schema.Dump do
         []
       end
 
-    schema
-    |> inspect([pretty: true, limit: :infinity] ++ syntax_colors)
+    inspect(schema, [pretty: true, limit: :infinity] ++ syntax_colors)
   end
 end
