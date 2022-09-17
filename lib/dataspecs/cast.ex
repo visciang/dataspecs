@@ -21,7 +21,7 @@ defmodule DataSpecs.Cast do
     end
   end
 
-  @spec build(module()) :: [{Types.custom_type_ref(), Types.type_cast_fun()}]
+  @spec build(module()) :: [{Types.mta(), Types.type_cast_fun()}]
   defp build(module) do
     module
     |> Schema.load()

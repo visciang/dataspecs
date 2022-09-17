@@ -68,7 +68,7 @@ defmodule DataSpecs do
   """
   @spec cast(
           data :: Types.value(),
-          type_ref :: Types.type_ref(),
+          type_ref :: Types.mt(),
           custom_type_casts :: Types.custom_type_casts(),
           type_params_casts :: [Types.type_cast_fun()]
         ) ::
