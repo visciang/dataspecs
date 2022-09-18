@@ -33,7 +33,7 @@ defmodule DataSpecs.Cast do
   @spec cast(Type.t(), nil | [Types.type_cast_fun()]) :: Types.type_cast_fun()
   defp cast(type, force_type_params_casts \\ nil)
 
-  defp cast(%Type{visibility: :opaque} = t, _xxx_type_params_casts) do
+  defp cast(%Type{visibility: :opaque} = t, _force_type_params_casts) do
     err_type_ref = Type.format_typeref(t)
 
     default_cast = fn _value, _custom_type_casts, _type_params_casts ->
@@ -43,7 +43,7 @@ defmodule DataSpecs.Cast do
     maybe_custom_cast(t, default_cast)
   end
 
-  defp cast(%Type{type: %literal_type{value: literal}} = t, _xxx_type_params_casts)
+  defp cast(%Type{type: %literal_type{value: literal}} = t, _force_type_params_casts)
        when literal_type in [Type.Literal.Atom, Type.Literal.Integer] do
     cast_builtin_fun =
       case literal_type do
@@ -63,7 +63,7 @@ defmodule DataSpecs.Cast do
     maybe_custom_cast(t, default_cast)
   end
 
-  defp cast(%Type{type: %Type.Builtin{id: builtin_type}} = t, _xxx_type_params_casts) do
+  defp cast(%Type{type: %Type.Builtin{id: builtin_type}} = t, _force_type_params_casts) do
     default_cast = fn value, custom_type_casts, type_params_casts ->
       apply(Cast.Builtin, builtin_type, [value, custom_type_casts, type_params_casts])
     end
@@ -71,7 +71,7 @@ defmodule DataSpecs.Cast do
     maybe_custom_cast(t, default_cast)
   end
 
-  defp cast(%Type{type: %Type.Bitstring{size: size, unit: unit}} = t, _xxx_type_params_casts) do
+  defp cast(%Type{type: %Type.Bitstring{size: size, unit: unit}} = t, _force_type_params_casts) do
     default_cast = fn value, custom_type_casts, type_params_casts ->
       Cast.Builtin.binary(value, size, unit, custom_type_casts, type_params_casts)
     end
@@ -79,7 +79,7 @@ defmodule DataSpecs.Cast do
     maybe_custom_cast(t, default_cast)
   end
 
-  defp cast(%Type{type: %Type.Range{lower: lower, upper: upper}} = t, _xxx_type_params_casts) do
+  defp cast(%Type{type: %Type.Range{lower: lower, upper: upper}} = t, _force_type_params_casts) do
     default_cast = fn value, custom_type_casts, type_params_casts ->
       Cast.Builtin.range(lower, upper, value, custom_type_casts, type_params_casts)
     end
@@ -87,7 +87,7 @@ defmodule DataSpecs.Cast do
     maybe_custom_cast(t, default_cast)
   end
 
-  defp cast(%Type{type: %Type.Var{} = var, vars: [var]} = t, _xxx_type_params_casts) do
+  defp cast(%Type{type: %Type.Var{} = var, vars: [var]} = t, _force_type_params_casts) do
     default_cast = fn value, custom_type_casts, [_type_params_cast] = type_params_casts ->
       [type_cast] = type_params_var_expansion(t.module, [var], type_params_casts, t.vars)
 
@@ -154,7 +154,7 @@ defmodule DataSpecs.Cast do
     maybe_custom_cast(t, default_cast)
   end
 
-  defp cast(%Type{type: %Type.Unsupported{}}, _xxx_type_params_casts) do
+  defp cast(%Type{type: %Type.Unsupported{}}, _force_type_params_casts) do
     Logger.info("Unsupported type")
 
     fn _value, _custom_type_casts, _type_params_casts ->
@@ -162,7 +162,7 @@ defmodule DataSpecs.Cast do
     end
   end
 
-  defp cast(%Type{type: %Type.Map{struct: nil, of: []}} = t, _xxx_type_params_casts) do
+  defp cast(%Type{type: %Type.Map{struct: nil, of: []}} = t, _force_type_params_casts) do
     default_cast = fn value, custom_type_casts, type_params_casts ->
       Cast.Builtin.empty_map(value, custom_type_casts, type_params_casts)
     end
