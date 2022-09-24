@@ -65,7 +65,7 @@ if Code.ensure_loaded?(Plug) do
     end
     ```
     """
-    @spec typeref(module(), Types.type_id()) :: [assigns: %{dataspec: %{type: Types.type_ref(), value: term()}}]
+    @spec typeref(module(), Types.type_id()) :: [assigns: %{dataspec: %{type: Types.mt(), value: term()}}]
     def typeref(module, type \\ :t), do: [assigns: %{dataspec: %{type: {module, type}, value: nil}}]
 
     @doc """
@@ -99,7 +99,7 @@ if Code.ensure_loaded?(Plug) do
       end
     end
 
-    @spec get_typeref(map()) :: {:ok, Types.type_ref()} | :error
+    @spec get_typeref(map()) :: {:ok, Types.mt()} | :error
     defp get_typeref(%{assigns: %{dataspec: %{type: type_ref}}}), do: {:ok, type_ref}
     defp get_typeref(_), do: :error
 

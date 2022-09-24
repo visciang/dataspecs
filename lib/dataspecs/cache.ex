@@ -7,7 +7,7 @@ defmodule DataSpecs.Cache do
   @name __MODULE__
   @ets_name __MODULE__
 
-  @type cache_key :: Types.custom_type_ref()
+  @type cache_key :: Types.mta()
   @type cache_value :: Types.type_cast_fun()
 
   @spec get(module(), Types.type_id(), arity()) :: nil | cache_value()

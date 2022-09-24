@@ -2,7 +2,7 @@ defmodule DataSpecs.Schema.Type do
   @moduledoc """
   Type specifications' schema.
 
-  Ref [Elixir Typespecs](https://hexdocs.pm/elixir/1.14.0/typespecs.html)
+  Ref [Elixir Typespecs](https://hexdocs.pm/elixir/typespecs.html)
   """
 
   defmodule Literal do
