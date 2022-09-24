@@ -10,7 +10,7 @@
     <title>DataSpecs.Types — dataspecs v2.0.0</title>
     <link rel="stylesheet" href="dist/elixir-64c5e2b63575bddb1c5b.css" />
 
-    <script src="dist/sidebar_items-a4329bce5f.js"></script>
+    <script src="dist/sidebar_items-6e7b46aa97.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -144,7 +144,15 @@ dataspecs
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#t:custom_type_ref/0" translate="no">custom_type_ref()</a>
+          <a href="#t:mt/0" translate="no">mt()</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:mta/0" translate="no">mta()</a>
 
         </div>
 
@@ -169,14 +177,6 @@ dataspecs
       <div class="summary-row">
         <div class="summary-signature">
           <a href="#t:type_id/0" translate="no">type_id()</a>
-
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:type_ref/0" translate="no">type_ref()</a>
 
         </div>
 
@@ -253,21 +253,49 @@ Types
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> custom_type_casts() :: %{required(<a href="#t:custom_type_ref/0">custom_type_ref</a>()) =&gt; <a href="#t:type_cast_fun/0">type_cast_fun</a>()}</pre>
+          <pre translate="no"><span class="attribute">@type</span> custom_type_casts() :: %{required(<a href="#t:mta/0">mta</a>()) =&gt; <a href="#t:type_cast_fun/0">type_cast_fun</a>()}</pre>
 
       </div>
 
 
   </section>
 </section>
-<section class="detail" id="t:custom_type_ref/0">
+<section class="detail" id="t:mt/0">
 
   <div class="detail-header">
-    <a href="#t:custom_type_ref/0" class="detail-link" title="Link to this type">
+    <a href="#t:mt/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">custom_type_ref()</h1>
+    <h1 class="signature" translate="no">mt()</h1>
+
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/types.ex#L9" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> mt() :: {<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="#t:type_id/0">type_id</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="t:mta/0">
+
+  <div class="detail-header">
+    <a href="#t:mta/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">mta()</h1>
 
       <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/types.ex#L10" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
@@ -281,7 +309,7 @@ Types
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> custom_type_ref() :: {<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="#t:type_id/0">type_id</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">arity</a>()}</pre>
+          <pre translate="no"><span class="attribute">@type</span> mta() :: {<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="#t:type_id/0">type_id</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">arity</a>()}</pre>
 
       </div>
 
@@ -366,34 +394,6 @@ Types
       <div class="specs">
 
           <pre translate="no"><span class="attribute">@type</span> type_id() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()</pre>
-
-      </div>
-
-
-  </section>
-</section>
-<section class="detail" id="t:type_ref/0">
-
-  <div class="detail-header">
-    <a href="#t:type_ref/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">type_ref()</h1>
-
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/types.ex#L9" class="view-source" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> type_ref() :: {<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="#t:type_id/0">type_id</a>()}</pre>
 
       </div>
 
