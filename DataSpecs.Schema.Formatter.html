@@ -7,7 +7,7 @@
     <meta name="generator" content="ExDoc v0.28.5">
     <meta name="project" content="dataspecs v2.1.0">
 
-    <title>DataSpecs.Schema.Type.Unsupported — dataspecs v2.1.0</title>
+    <title>DataSpecs.Schema.Formatter — dataspecs v2.1.0</title>
     <link rel="stylesheet" href="dist/elixir-64c5e2b63575bddb1c5b.css" />
 
     <script src="dist/sidebar_items-debed7089b.js"></script>
@@ -96,19 +96,19 @@ dataspecs
 </button>
 
 
-    <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/schema/type.ex#L176" title="View Source" class="view-source" rel="help">
+    <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/schema/formatter.ex#L1" title="View Source" class="view-source" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
-  <span translate="no">DataSpecs.Schema.Type.Unsupported</span> 
+  <span translate="no">DataSpecs.Schema.Formatter</span> 
   <small class="app-vsn" translate="no">(dataspecs v2.1.0)</small>
 
 </h1>
 
 
   <section id="moduledoc">
-<p>Unsupported type specs.</p>
+<p>Formatter.</p>
   </section>
 
 
@@ -121,16 +121,18 @@ dataspecs
       Summary
     </h1>
 
-  <div class="summary-types summary">
+  <div class="summary-functions summary">
     <h2>
-      <a href="#types">Types</a>
+      <a href="#functions">Functions</a>
     </h2>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#t:t/0" translate="no">t()</a>
+          <a href="#to_typespec_string/2" translate="no">to_typespec_string(t, width \\ 80)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Convert a schema to its typespec representation.</p></div>
 
       </div>
 
@@ -139,25 +141,27 @@ dataspecs
   </section>
 
 
-  <section id="types" class="details-list">
+  <section id="functions" class="details-list">
     <h1 class="section-heading">
-      <a class="hover-link" href="#types">
+      <a class="hover-link" href="#functions">
         <i class="ri-link-m" aria-hidden="true"></i>
         <span class="sr-only">Link to this section</span>
       </a>
-Types
+Functions
     </h1>
-    <div class="types-list">
-<section class="detail" id="t:t/0">
+    <div class="functions-list">
+<section class="detail" id="to_typespec_string/2">
+
+    <span id="to_typespec_string/1"></span>
 
   <div class="detail-header">
-    <a href="#t:t/0" class="detail-link" title="Link to this type">
+    <a href="#to_typespec_string/2" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
+      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">t()</h1>
+    <h1 class="signature" translate="no">to_typespec_string(t, width \\ 80)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/schema/type.ex#L182" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/schema/formatter.ex#L13" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -169,11 +173,12 @@ Types
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> t() :: %DataSpecs.Schema.Type.Unsupported{}</pre>
+          <pre translate="no"><span class="attribute">@spec</span> to_typespec_string(<a href="DataSpecs.Schema.Type.html#t:t/0">DataSpecs.Schema.Type.t</a>(), width :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()) ::
+  <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
 
       </div>
 
-
+<p>Convert a schema to its typespec representation.</p>
   </section>
 </section>
 
