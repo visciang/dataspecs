@@ -1,7 +1,5 @@
 defmodule DataSpecs.Schema.Quoted do
-  @moduledoc """
-  Utilities to convert a schema type to a quoted form.
-  """
+  @moduledoc false
 
   alias DataSpecs.Schema.Type
 
