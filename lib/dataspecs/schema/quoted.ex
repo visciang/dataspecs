@@ -6,7 +6,7 @@ defmodule DataSpecs.Schema.Quoted do
   alias DataSpecs.Schema.Type
 
   @doc """
-  Covert a schema to a quoted representation.
+  Convert a schema to a quoted representation.
   """
   @spec from_schema(Type.t()) :: Macro.t()
   def from_schema(%Type{} = t) do

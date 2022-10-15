@@ -7,7 +7,7 @@ defmodule DataSpecs.Schema.Formatter do
   alias DataSpecs.Schema.Type
 
   @doc """
-  Covert a schema to its typespec representation.
+  Convert a schema to its typespec representation.
   """
   @spec to_typespec_string(Type.t(), width :: pos_integer()) :: String.t()
   def to_typespec_string(%Type{} = t, width \\ 80) do
