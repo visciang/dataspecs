@@ -4,19 +4,21 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.29.0">
+    <meta name="generator" content="ExDoc v0.31.1">
     <meta name="project" content="dataspecs v2.1.0">
 
+
     <title>DataSpecs.Cast.Builtin — dataspecs v2.1.0</title>
-    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
+    <link rel="stylesheet" href="dist/html-elixir-FM2CSD74.css" />
+
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
-    <script src="dist/sidebar_items-DEBED708.js"></script>
+    <script src="dist/handlebars.templates-43PMFBC7.js"></script>
+    <script src="dist/sidebar_items-86E88B75.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/html-XN2TSG4M.js"></script>
+    <script async src="dist/html-L4O5OK2K.js"></script>
 
 
   </head>
@@ -37,67 +39,95 @@
 
 <div class="main">
 
-<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
   <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
 </button>
 
-<section class="sidebar">
-  <form class="sidebar-search" action="search.html">
-    <button type="submit" class="search-button" aria-label="Submit Search">
-      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
-    </button>
-    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
-    </button>
-    <label class="search-label">
-      <p class="sr-only">Search</p>
-      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
-    </label>
-  </form>
+<div class="background-layer"></div>
 
-  <div class="autocomplete">
-    <div class="autocomplete-results">
-    </div>
-  </div>
+<nav id="sidebar" class="sidebar">
 
   <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
 
-    <div class="sidebar-projectDetails">
-      <a href="api-reference.html" class="sidebar-projectName" translate="no">
+      <div>
+        <a href="api-reference.html" class="sidebar-projectName" translate="no">
 dataspecs
-      </a>
-      <strong class="sidebar-projectVersion" translate="no">
-        v2.1.0
-      </strong>
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v2.1.0
+        </div>
+      </div>
     </div>
-    <ul class="sidebar-listNav">
-      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
 
-        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
 
 
-        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
 
     </ul>
   </div>
 
-  <div class="gradient"></div>
-  <ul id="full-list" class="sidebar-fullList"></ul>
-</section>
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
 
-<section class="content">
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
   <output role="status" id="toast"></output>
   <div class="content-outer">
     <div id="content" class="content-inner">
+      <div class="top-search">
+        <div class="search-settings">
+          <form class="search-bar" action="search.html">
+            <label class="search-label">
+              <span class="sr-only">Search documentation of dataspecs</span>
+              <input name="q" type="text" class="search-input" placeholder="Search Documentation (press /)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            </label>
+            <button type="submit" class="search-button" aria-label="Submit Search">
+              <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+            </button>
+            <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+              <i class="ri-close-line ri-lg" title="Cancel search"></i>
+            </button>
+          </form>
+          <div class="autocomplete">
+          </div>
+          <button class="icon-settings display-settings">
+            <i class="ri-settings-3-line"></i>
+            <span class="sr-only">Settings</span>
+          </button>
+        </div>
+
+      </div>
 
 <h1>
-<button class="settings display-settings">
-  <i class="ri-settings-3-line"></i>
-  <span class="sr-only">Settings</span>
-</button>
 
-
-    <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L1" title="View Source" class="view-source" rel="help">
+    <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L1" title="View Source" class="icon-action" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
@@ -117,248 +147,245 @@ dataspecs
     <h1 class="section-heading">
       <a class="hover-link" href="#summary">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
       </a>
-      Summary
+      <span class="text">Summary</span>
     </h1>
+<div class="summary-types summary">
+  <h2>
+    <a href="#types">Types</a>
+  </h2>
 
-  <div class="summary-types summary">
-    <h2>
-      <a href="#types">Types</a>
-    </h2>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:map_field_res/0" translate="no">map_field_res()</a>
-
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:map_field_res/0" translate="no">map_field_res()</a>
 
       </div>
 
-  </div>
+    </div>
 
-  <div class="summary-functions summary">
-    <h2>
-      <a href="#functions">Functions</a>
-    </h2>
+</div>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#any/3" translate="no">any(value, custom_type_casts, type_params_casts)</a>
-
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#arity/3" translate="no">arity(value, custom_type_casts, type_params_casts)</a>
-
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#any/3" translate="no">any(value, custom_type_casts, type_params_casts)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#atom/3" translate="no">atom(value, custom_type_casts, type_params_casts)</a>
+    </div>
 
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#binary/3" translate="no">binary(value, custom_type_casts, type_params_casts)</a>
-
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#arity/3" translate="no">arity(value, custom_type_casts, type_params_casts)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#binary/5" translate="no">binary(value, size, unit, custom_type_casts, type_params_casts)</a>
+    </div>
 
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#bitstring/3" translate="no">bitstring(value, custom_type_casts, type_params_casts)</a>
-
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#atom/3" translate="no">atom(value, custom_type_casts, type_params_casts)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#boolean/3" translate="no">boolean(value, custom_type_casts, type_params_casts)</a>
+    </div>
 
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#byte/3" translate="no">byte(value, custom_type_casts, type_params_casts)</a>
-
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#binary/3" translate="no">binary(value, custom_type_casts, type_params_casts)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#char/3" translate="no">char(value, custom_type_casts, type_params_casts)</a>
+    </div>
 
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#empty_list/3" translate="no">empty_list(value, custom_type_casts, type_params_casts)</a>
-
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#binary/5" translate="no">binary(value, size, unit, custom_type_casts, type_params_casts)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#empty_map/3" translate="no">empty_map(value, custom_type_casts, list)</a>
+    </div>
 
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#float/3" translate="no">float(value, custom_type_casts, type_params_casts)</a>
-
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#bitstring/3" translate="no">bitstring(value, custom_type_casts, type_params_casts)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#integer/3" translate="no">integer(value, custom_type_casts, type_params_casts)</a>
+    </div>
 
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#list/3" translate="no">list(value, custom_type_casts, type_params_casts)</a>
-
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#boolean/3" translate="no">boolean(value, custom_type_casts, type_params_casts)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#map_field_optional/3" translate="no">map_field_optional(map, custom_type_casts, list)</a>
+    </div>
 
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#map_field_required/3" translate="no">map_field_required(map, custom_type_casts, list)</a>
-
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#byte/3" translate="no">byte(value, custom_type_casts, type_params_casts)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#neg_integer/3" translate="no">neg_integer(value, custom_type_casts, type_params_casts)</a>
+    </div>
 
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#non_neg_integer/3" translate="no">non_neg_integer(value, custom_type_casts, type_params_casts)</a>
-
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#char/3" translate="no">char(value, custom_type_casts, type_params_casts)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#nonempty_list/3" translate="no">nonempty_list(value, custom_type_casts, type_params_casts)</a>
+    </div>
 
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#number/3" translate="no">number(value, custom_type_casts, type_params_casts)</a>
-
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#empty_list/3" translate="no">empty_list(value, custom_type_casts, type_params_casts)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#pid/3" translate="no">pid(value, custom_type_casts, type_params_casts)</a>
+    </div>
 
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#pos_integer/3" translate="no">pos_integer(value, custom_type_casts, type_params_casts)</a>
-
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#empty_map/3" translate="no">empty_map(value, custom_type_casts, list)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#range/5" translate="no">range(lower, upper, value, custom_type_casts, type_params_casts)</a>
+    </div>
 
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#reference/3" translate="no">reference(value, custom_type_casts, type_params_casts)</a>
-
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#float/3" translate="no">float(value, custom_type_casts, type_params_casts)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#tuple/3" translate="no">tuple(value, custom_type_casts, type_params_casts)</a>
+    </div>
 
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#tuple_any/3" translate="no">tuple_any(value, custom_type_casts, type_params_casts)</a>
-
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#integer/3" translate="no">integer(value, custom_type_casts, type_params_casts)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#union/3" translate="no">union(value, custom_type_casts, type_params_casts)</a>
+    </div>
 
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#list/3" translate="no">list(value, custom_type_casts, type_params_casts)</a>
 
       </div>
 
-  </div>
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#map_field_optional/3" translate="no">map_field_optional(map, custom_type_casts, list)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#map_field_required/3" translate="no">map_field_required(map, custom_type_casts, list)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#neg_integer/3" translate="no">neg_integer(value, custom_type_casts, type_params_casts)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#non_neg_integer/3" translate="no">non_neg_integer(value, custom_type_casts, type_params_casts)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#nonempty_list/3" translate="no">nonempty_list(value, custom_type_casts, type_params_casts)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#number/3" translate="no">number(value, custom_type_casts, type_params_casts)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#pid/3" translate="no">pid(value, custom_type_casts, type_params_casts)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#pos_integer/3" translate="no">pos_integer(value, custom_type_casts, type_params_casts)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#range/5" translate="no">range(lower, upper, value, custom_type_casts, type_params_casts)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#reference/3" translate="no">reference(value, custom_type_casts, type_params_casts)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#tuple/3" translate="no">tuple(value, custom_type_casts, type_params_casts)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#tuple_any/3" translate="no">tuple_any(value, custom_type_casts, type_params_casts)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#union/3" translate="no">union(value, custom_type_casts, type_params_casts)</a>
+
+      </div>
+
+    </div>
+
+</div>
 
   </section>
 
@@ -367,9 +394,8 @@ dataspecs
     <h1 class="section-heading">
       <a class="hover-link" href="#types">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
       </a>
-Types
+      <span class="text">Types</span>
     </h1>
     <div class="types-list">
 <section class="detail" id="t:map_field_res/0">
@@ -381,7 +407,7 @@ Types
     </a>
     <h1 class="signature" translate="no">map_field_res()</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L8" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L8" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -410,9 +436,8 @@ Types
     <h1 class="section-heading">
       <a class="hover-link" href="#functions">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
       </a>
-Functions
+      <span class="text">Functions</span>
     </h1>
     <div class="functions-list">
 <section class="detail" id="any/3">
@@ -424,7 +449,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">any(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L12" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L12" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -454,7 +479,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">arity(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L118" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L118" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -484,7 +509,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">atom(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L18" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L18" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -514,7 +539,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">binary(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L50" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L50" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -544,7 +569,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">binary(value, size, unit, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L62" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L62" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -580,7 +605,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">bitstring(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L82" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L82" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -610,7 +635,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">boolean(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L38" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L38" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -640,7 +665,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">byte(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L94" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L94" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -670,7 +695,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">char(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L106" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L106" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -700,7 +725,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">empty_list(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L261" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L261" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -730,7 +755,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">empty_map(value, custom_type_casts, list)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L320" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L320" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -760,7 +785,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">float(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L166" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L166" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -790,7 +815,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">integer(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L178" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L178" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -820,7 +845,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">list(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L285" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L285" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -850,7 +875,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">map_field_optional(map, custom_type_casts, list)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L346" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L346" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -881,7 +906,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">map_field_required(map, custom_type_casts, list)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L331" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L331" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -912,7 +937,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">neg_integer(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L190" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L190" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -942,7 +967,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">non_neg_integer(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L202" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L202" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -972,7 +997,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">nonempty_list(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L273" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L273" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1002,7 +1027,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">number(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L154" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L154" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1032,7 +1057,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">pid(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L130" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L130" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1062,7 +1087,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">pos_integer(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L214" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L214" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1092,7 +1117,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">range(lower, upper, value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L226" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L226" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1128,7 +1153,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">reference(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L142" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L142" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1158,7 +1183,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">tuple(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L388" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L388" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1188,7 +1213,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">tuple_any(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L376" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L376" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1218,7 +1243,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">union(value, custom_type_casts, type_params_casts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L238" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/cast/builtin.ex#L238" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1244,10 +1269,19 @@ Functions
   </section>
 
       <footer class="footer">
-
         <p>
+
+          <span class="line">
+            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+              Search HexDocs
+            </button>
+
+          </span>
+        </p>
+
+        <p class="built-using">
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.31.1) for the
 
             <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 
@@ -1255,7 +1289,7 @@ Functions
       </footer>
     </div>
   </div>
-</section>
+</main>
 </div>
 
 

@@ -4,19 +4,21 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.29.0">
+    <meta name="generator" content="ExDoc v0.31.1">
     <meta name="project" content="dataspecs v2.1.0">
 
+
     <title>DataSpecs.Plug.Cast — dataspecs v2.1.0</title>
-    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
+    <link rel="stylesheet" href="dist/html-elixir-FM2CSD74.css" />
+
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
-    <script src="dist/sidebar_items-DEBED708.js"></script>
+    <script src="dist/handlebars.templates-43PMFBC7.js"></script>
+    <script src="dist/sidebar_items-86E88B75.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/html-XN2TSG4M.js"></script>
+    <script async src="dist/html-L4O5OK2K.js"></script>
 
 
   </head>
@@ -37,67 +39,95 @@
 
 <div class="main">
 
-<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
   <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
 </button>
 
-<section class="sidebar">
-  <form class="sidebar-search" action="search.html">
-    <button type="submit" class="search-button" aria-label="Submit Search">
-      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
-    </button>
-    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
-    </button>
-    <label class="search-label">
-      <p class="sr-only">Search</p>
-      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
-    </label>
-  </form>
+<div class="background-layer"></div>
 
-  <div class="autocomplete">
-    <div class="autocomplete-results">
-    </div>
-  </div>
+<nav id="sidebar" class="sidebar">
 
   <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
 
-    <div class="sidebar-projectDetails">
-      <a href="api-reference.html" class="sidebar-projectName" translate="no">
+      <div>
+        <a href="api-reference.html" class="sidebar-projectName" translate="no">
 dataspecs
-      </a>
-      <strong class="sidebar-projectVersion" translate="no">
-        v2.1.0
-      </strong>
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v2.1.0
+        </div>
+      </div>
     </div>
-    <ul class="sidebar-listNav">
-      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
 
-        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
 
 
-        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
 
     </ul>
   </div>
 
-  <div class="gradient"></div>
-  <ul id="full-list" class="sidebar-fullList"></ul>
-</section>
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
 
-<section class="content">
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
   <output role="status" id="toast"></output>
   <div class="content-outer">
     <div id="content" class="content-inner">
+      <div class="top-search">
+        <div class="search-settings">
+          <form class="search-bar" action="search.html">
+            <label class="search-label">
+              <span class="sr-only">Search documentation of dataspecs</span>
+              <input name="q" type="text" class="search-input" placeholder="Search Documentation (press /)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            </label>
+            <button type="submit" class="search-button" aria-label="Submit Search">
+              <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+            </button>
+            <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+              <i class="ri-close-line ri-lg" title="Cancel search"></i>
+            </button>
+          </form>
+          <div class="autocomplete">
+          </div>
+          <button class="icon-settings display-settings">
+            <i class="ri-settings-3-line"></i>
+            <span class="sr-only">Settings</span>
+          </button>
+        </div>
+
+      </div>
 
 <h1>
-<button class="settings display-settings">
-  <i class="ri-settings-3-line"></i>
-  <span class="sr-only">Settings</span>
-</button>
 
-
-    <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/plug/cast.ex#L4" title="View Source" class="view-source" rel="help">
+    <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/plug/cast.ex#L4" title="View Source" class="icon-action" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
@@ -109,39 +139,39 @@ dataspecs
 
 
   <section id="moduledoc">
-<p>DataSpecs Plug.</p><p>NOTE: this module is available if you include the optional dependency <code class="inline">plug</code>.</p><p>This module can be used to plug a &quot;Jason.decode! -&gt; DataSpecs.cast&quot; pipeline in your routes.</p><p>For example:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">Api.Router.Something</span><span class="w"> </span><span class="k" data-group-id="0674619007-1">do</span><span class="w">
+<p>DataSpecs Plug.</p><p>NOTE: this module is available if you include the optional dependency <code class="inline">plug</code>.</p><p>This module can be used to plug a &quot;Jason.decode! -&gt; DataSpecs.cast&quot; pipeline in your routes.</p><p>For example:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">Api.Router.Something</span><span class="w"> </span><span class="k" data-group-id="0570795793-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">Plug.Router</span><span class="w">
-  </span><span class="kn">import</span><span class="w"> </span><span class="nc">DataSpecs.Plug.Cast</span><span class="p">,</span><span class="w"> </span><span class="ss">only</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0674619007-2">[</span><span class="ss">typeref</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="0674619007-2">]</span><span class="w">
+  </span><span class="kn">import</span><span class="w"> </span><span class="nc">DataSpecs.Plug.Cast</span><span class="p">,</span><span class="w"> </span><span class="ss">only</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0570795793-2">[</span><span class="ss">typeref</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="0570795793-2">]</span><span class="w">
 
   </span><span class="n">plug</span><span class="w"> </span><span class="ss">:match</span><span class="w">
   </span><span class="n">plug</span><span class="w"> </span><span class="nc">DataSpecs.Plug.Cast</span><span class="w">
   </span><span class="n">plug</span><span class="w"> </span><span class="ss">:dispatch</span><span class="w">
 
-  </span><span class="n">post</span><span class="w"> </span><span class="s">&quot;/foo&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">typeref</span><span class="p" data-group-id="0674619007-3">(</span><span class="nc">Api.Model.Foo</span><span class="p">,</span><span class="w"> </span><span class="ss">:t</span><span class="p" data-group-id="0674619007-3">)</span><span class="w"> </span><span class="k" data-group-id="0674619007-4">do</span><span class="w">
-    </span><span class="p" data-group-id="0674619007-5">%</span><span class="nc" data-group-id="0674619007-5">Api.Model.Foo</span><span class="p" data-group-id="0674619007-5">{</span><span class="n">...</span><span class="p" data-group-id="0674619007-5">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p" data-group-id="0674619007-6">(</span><span class="n">conn</span><span class="p" data-group-id="0674619007-6">)</span><span class="w">
+  </span><span class="n">post</span><span class="w"> </span><span class="s">&quot;/foo&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">typeref</span><span class="p" data-group-id="0570795793-3">(</span><span class="nc">Api.Model.Foo</span><span class="p">,</span><span class="w"> </span><span class="ss">:t</span><span class="p" data-group-id="0570795793-3">)</span><span class="w"> </span><span class="k" data-group-id="0570795793-4">do</span><span class="w">
+    </span><span class="p" data-group-id="0570795793-5">%</span><span class="nc" data-group-id="0570795793-5">Api.Model.Foo</span><span class="p" data-group-id="0570795793-5">{</span><span class="n">...</span><span class="p" data-group-id="0570795793-5">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p" data-group-id="0570795793-6">(</span><span class="n">conn</span><span class="p" data-group-id="0570795793-6">)</span><span class="w">
     </span><span class="n">...</span><span class="w">
-  </span><span class="k" data-group-id="0674619007-4">end</span><span class="w">
-</span><span class="k" data-group-id="0674619007-1">end</span><span class="w">
+  </span><span class="k" data-group-id="0570795793-4">end</span><span class="w">
+</span><span class="k" data-group-id="0570795793-1">end</span><span class="w">
 
-</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">Api.Model.Foo</span><span class="w"> </span><span class="k" data-group-id="0674619007-7">do</span><span class="w">
-  </span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">Bar</span><span class="w"> </span><span class="k" data-group-id="0674619007-8">do</span><span class="w">
-    </span><span class="na">@enforce_keys</span><span class="w"> </span><span class="p" data-group-id="0674619007-9">[</span><span class="ss">:b1</span><span class="p" data-group-id="0674619007-9">]</span><span class="w">
-    </span><span class="kd">defstruct</span><span class="w"> </span><span class="na">@enforce_keys</span><span class="w"> </span><span class="o">++</span><span class="w"> </span><span class="p" data-group-id="0674619007-10">[</span><span class="ss">:b2</span><span class="p" data-group-id="0674619007-10">]</span><span class="w">
+</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">Api.Model.Foo</span><span class="w"> </span><span class="k" data-group-id="0570795793-7">do</span><span class="w">
+  </span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">Bar</span><span class="w"> </span><span class="k" data-group-id="0570795793-8">do</span><span class="w">
+    </span><span class="na">@enforce_keys</span><span class="w"> </span><span class="p" data-group-id="0570795793-9">[</span><span class="ss">:b1</span><span class="p" data-group-id="0570795793-9">]</span><span class="w">
+    </span><span class="kd">defstruct</span><span class="w"> </span><span class="na">@enforce_keys</span><span class="w"> </span><span class="o">++</span><span class="w"> </span><span class="p" data-group-id="0570795793-10">[</span><span class="ss">:b2</span><span class="p" data-group-id="0570795793-10">]</span><span class="w">
 
-    </span><span class="na">@type</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="p">%</span><span class="bp">__MODULE__</span><span class="p" data-group-id="0674619007-11">{</span><span class="w">
-            </span><span class="ss">b1</span><span class="p">:</span><span class="w"> </span><span class="n">number</span><span class="p" data-group-id="0674619007-12">(</span><span class="p" data-group-id="0674619007-12">)</span><span class="p">,</span><span class="w">
-            </span><span class="ss">b2</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nc">String</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="0674619007-13">(</span><span class="p" data-group-id="0674619007-13">)</span><span class="w">
-          </span><span class="p" data-group-id="0674619007-11">}</span><span class="w">
-  </span><span class="k" data-group-id="0674619007-8">end</span><span class="w">
+    </span><span class="na">@type</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="p">%</span><span class="bp">__MODULE__</span><span class="p" data-group-id="0570795793-11">{</span><span class="w">
+            </span><span class="ss">b1</span><span class="p">:</span><span class="w"> </span><span class="n">number</span><span class="p" data-group-id="0570795793-12">(</span><span class="p" data-group-id="0570795793-12">)</span><span class="p">,</span><span class="w">
+            </span><span class="ss">b2</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nc">String</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="0570795793-13">(</span><span class="p" data-group-id="0570795793-13">)</span><span class="w">
+          </span><span class="p" data-group-id="0570795793-11">}</span><span class="w">
+  </span><span class="k" data-group-id="0570795793-8">end</span><span class="w">
 
-  </span><span class="na">@enforce_keys</span><span class="w"> </span><span class="p" data-group-id="0674619007-14">[</span><span class="ss">:a</span><span class="p">,</span><span class="w"> </span><span class="ss">:bars</span><span class="p" data-group-id="0674619007-14">]</span><span class="w">
+  </span><span class="na">@enforce_keys</span><span class="w"> </span><span class="p" data-group-id="0570795793-14">[</span><span class="ss">:a</span><span class="p">,</span><span class="w"> </span><span class="ss">:bars</span><span class="p" data-group-id="0570795793-14">]</span><span class="w">
   </span><span class="kd">defstruct</span><span class="w"> </span><span class="na">@enforce_keys</span><span class="w">
 
-  </span><span class="na">@type</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="p">%</span><span class="bp">__MODULE__</span><span class="p" data-group-id="0674619007-15">{</span><span class="w">
-          </span><span class="ss">a</span><span class="p">:</span><span class="w"> </span><span class="n">non_neg_integer</span><span class="p" data-group-id="0674619007-16">(</span><span class="p" data-group-id="0674619007-16">)</span><span class="p">,</span><span class="w">
-          </span><span class="ss">bars</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0674619007-17">[</span><span class="nc">Bar</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="0674619007-18">(</span><span class="p" data-group-id="0674619007-18">)</span><span class="p" data-group-id="0674619007-17">]</span><span class="w">
-        </span><span class="p" data-group-id="0674619007-15">}</span><span class="w">
-</span><span class="k" data-group-id="0674619007-7">end</span></code></pre>
+  </span><span class="na">@type</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="p">%</span><span class="bp">__MODULE__</span><span class="p" data-group-id="0570795793-15">{</span><span class="w">
+          </span><span class="ss">a</span><span class="p">:</span><span class="w"> </span><span class="n">non_neg_integer</span><span class="p" data-group-id="0570795793-16">(</span><span class="p" data-group-id="0570795793-16">)</span><span class="p">,</span><span class="w">
+          </span><span class="ss">bars</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0570795793-17">[</span><span class="nc">Bar</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="0570795793-18">(</span><span class="p" data-group-id="0570795793-18">)</span><span class="p" data-group-id="0570795793-17">]</span><span class="w">
+        </span><span class="p" data-group-id="0570795793-15">}</span><span class="w">
+</span><span class="k" data-group-id="0570795793-7">end</span></code></pre>
   </section>
 
 
@@ -149,57 +179,55 @@ dataspecs
     <h1 class="section-heading">
       <a class="hover-link" href="#summary">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
       </a>
-      Summary
+      <span class="text">Summary</span>
     </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
 
-  <div class="summary-functions summary">
-    <h2>
-      <a href="#functions">Functions</a>
-    </h2>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#call/2" translate="no">call(conn, opts)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/plug/1.14.0/Plug.html#c:call/2"><code class="inline">Plug.call/2</code></a>.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#call/2" translate="no">call(conn, opts)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#init/1" translate="no">init(opts)</a>
+        <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/plug/1.15.3/Plug.html#c:call/2"><code class="inline">Plug.call/2</code></a>.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/plug/1.14.0/Plug.html#c:init/1"><code class="inline">Plug.init/1</code></a>.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#typeref/2" translate="no">typeref(module, type \\ :t)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Declare the type the body of a route should conform</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#init/1" translate="no">init(opts)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#value/1" translate="no">value(conn)</a>
+        <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/plug/1.15.3/Plug.html#c:init/1"><code class="inline">Plug.init/1</code></a>.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Get the casted value.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#typeref/2" translate="no">typeref(module, type \\ :t)</a>
 
       </div>
 
-  </div>
+        <div class="summary-synopsis"><p>Declare the type the body of a route should conform</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#value/1" translate="no">value(conn)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Get the casted value.</p></div>
+
+    </div>
+
+</div>
 
   </section>
 
@@ -208,9 +236,8 @@ dataspecs
     <h1 class="section-heading">
       <a class="hover-link" href="#functions">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
       </a>
-Functions
+      <span class="text">Functions</span>
     </h1>
     <div class="functions-list">
 <section class="detail" id="call/2">
@@ -222,7 +249,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">call(conn, opts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/plug/cast.ex#L51" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/plug/cast.ex#L51" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -232,7 +259,7 @@ Functions
 
   <section class="docstring">
 
-<p>Callback implementation for <a href="https://hexdocs.pm/plug/1.14.0/Plug.html#c:call/2"><code class="inline">Plug.call/2</code></a>.</p>
+<p>Callback implementation for <a href="https://hexdocs.pm/plug/1.15.3/Plug.html#c:call/2"><code class="inline">Plug.call/2</code></a>.</p>
   </section>
 </section>
 <section class="detail" id="init/1">
@@ -244,7 +271,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">init(opts)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/plug/cast.ex#L51" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/plug/cast.ex#L51" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -254,7 +281,7 @@ Functions
 
   <section class="docstring">
 
-<p>Callback implementation for <a href="https://hexdocs.pm/plug/1.14.0/Plug.html#c:init/1"><code class="inline">Plug.init/1</code></a>.</p>
+<p>Callback implementation for <a href="https://hexdocs.pm/plug/1.15.3/Plug.html#c:init/1"><code class="inline">Plug.init/1</code></a>.</p>
   </section>
 </section>
 <section class="detail" id="typeref/2">
@@ -268,7 +295,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">typeref(module, type \\ :t)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/plug/cast.ex#L69" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/plug/cast.ex#L69" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -286,9 +313,9 @@ Functions
 
       </div>
 
-<p>Declare the type the body of a route should conform</p><p>For example:</p><pre><code class="makeup elixir" translate="no"><span class="n">post</span><span class="w"> </span><span class="s">&quot;/foo&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">typeref</span><span class="p" data-group-id="2877144459-1">(</span><span class="nc">Model.Foo</span><span class="p" data-group-id="2877144459-1">)</span><span class="w"> </span><span class="k" data-group-id="2877144459-2">do</span><span class="w">
+<p>Declare the type the body of a route should conform</p><p>For example:</p><pre><code class="makeup elixir" translate="no"><span class="n">post</span><span class="w"> </span><span class="s">&quot;/foo&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">typeref</span><span class="p" data-group-id="3641602945-1">(</span><span class="nc">Model.Foo</span><span class="p" data-group-id="3641602945-1">)</span><span class="w"> </span><span class="k" data-group-id="3641602945-2">do</span><span class="w">
   </span><span class="n">...</span><span class="w">
-</span><span class="k" data-group-id="2877144459-2">end</span></code></pre>
+</span><span class="k" data-group-id="3641602945-2">end</span></code></pre>
   </section>
 </section>
 <section class="detail" id="value/1">
@@ -300,7 +327,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">value(conn)</h1>
 
-      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/plug/cast.ex#L84" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/visciang/dataspecs/blob/main/lib/dataspecs/plug/cast.ex#L84" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -312,14 +339,14 @@ Functions
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> value(<a href="https://hexdocs.pm/plug/1.14.0/Plug.Conn.html#t:t/0">Plug.Conn.t</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> value(<a href="https://hexdocs.pm/plug/1.15.3/Plug.Conn.html#t:t/0">Plug.Conn.t</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
 
       </div>
 
-<p>Get the casted value.</p><p>For example:</p><pre><code class="makeup elixir" translate="no"><span class="n">post</span><span class="w"> </span><span class="s">&quot;/foo&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">typeref</span><span class="p" data-group-id="0137854149-1">(</span><span class="nc">Api.Model.Foo</span><span class="p">,</span><span class="w"> </span><span class="ss">:t</span><span class="p" data-group-id="0137854149-1">)</span><span class="w"> </span><span class="k" data-group-id="0137854149-2">do</span><span class="w">
-  </span><span class="p" data-group-id="0137854149-3">%</span><span class="nc" data-group-id="0137854149-3">Api.Model.Foo</span><span class="p" data-group-id="0137854149-3">{</span><span class="n">...</span><span class="p" data-group-id="0137854149-3">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p" data-group-id="0137854149-4">(</span><span class="n">conn</span><span class="p" data-group-id="0137854149-4">)</span><span class="w">
+<p>Get the casted value.</p><p>For example:</p><pre><code class="makeup elixir" translate="no"><span class="n">post</span><span class="w"> </span><span class="s">&quot;/foo&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">typeref</span><span class="p" data-group-id="6541250161-1">(</span><span class="nc">Api.Model.Foo</span><span class="p">,</span><span class="w"> </span><span class="ss">:t</span><span class="p" data-group-id="6541250161-1">)</span><span class="w"> </span><span class="k" data-group-id="6541250161-2">do</span><span class="w">
+  </span><span class="p" data-group-id="6541250161-3">%</span><span class="nc" data-group-id="6541250161-3">Api.Model.Foo</span><span class="p" data-group-id="6541250161-3">{</span><span class="n">...</span><span class="p" data-group-id="6541250161-3">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p" data-group-id="6541250161-4">(</span><span class="n">conn</span><span class="p" data-group-id="6541250161-4">)</span><span class="w">
   </span><span class="n">...</span><span class="w">
-</span><span class="k" data-group-id="0137854149-2">end</span></code></pre>
+</span><span class="k" data-group-id="6541250161-2">end</span></code></pre>
   </section>
 </section>
 
@@ -327,10 +354,19 @@ Functions
   </section>
 
       <footer class="footer">
-
         <p>
+
+          <span class="line">
+            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+              Search HexDocs
+            </button>
+
+          </span>
+        </p>
+
+        <p class="built-using">
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.31.1) for the
 
             <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 
@@ -338,7 +374,7 @@ Functions
       </footer>
     </div>
   </div>
-</section>
+</main>
 </div>
 
 
