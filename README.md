@@ -1,6 +1,6 @@
 # DataSpecs
 
-![CI](https://github.com/visciang/dataspecs/workflows/CI/badge.svg)
+[![.github/workflows/ci.yml](https://github.com/visciang/dataspecs/actions/workflows/ci.yml/badge.svg)](https://github.com/visciang/dataspecs/actions/workflows/ci.yml)
 [![Docs](https://img.shields.io/badge/docs-latest-green.svg)](https://visciang.github.io/dataspecs/readme.html)
 [![Coverage Status](https://coveralls.io/repos/github/visciang/dataspecs/badge.svg?branch=main)](https://coveralls.io/github/visciang/dataspecs?branch=main)
 
