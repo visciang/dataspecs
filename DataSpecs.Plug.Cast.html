@@ -139,39 +139,39 @@ Pages
 
 
   <section id="moduledoc">
-<p>DataSpecs Plug.</p><p>NOTE: this module is available if you include the optional dependency <code class="inline">plug</code>.</p><p>This module can be used to plug a &quot;Jason.decode! -&gt; DataSpecs.cast&quot; pipeline in your routes.</p><p>For example:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">Api.Router.Something</span><span class="w"> </span><span class="k" data-group-id="0570795793-1">do</span><span class="w">
+<p>DataSpecs Plug.</p><p>NOTE: this module is available if you include the optional dependency <code class="inline">plug</code>.</p><p>This module can be used to plug a &quot;Jason.decode! -&gt; DataSpecs.cast&quot; pipeline in your routes.</p><p>For example:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">Api.Router.Something</span><span class="w"> </span><span class="k" data-group-id="9218663618-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">Plug.Router</span><span class="w">
-  </span><span class="kn">import</span><span class="w"> </span><span class="nc">DataSpecs.Plug.Cast</span><span class="p">,</span><span class="w"> </span><span class="ss">only</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0570795793-2">[</span><span class="ss">typeref</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="0570795793-2">]</span><span class="w">
+  </span><span class="kn">import</span><span class="w"> </span><span class="nc">DataSpecs.Plug.Cast</span><span class="p">,</span><span class="w"> </span><span class="ss">only</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9218663618-2">[</span><span class="ss">typeref</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="9218663618-2">]</span><span class="w">
 
   </span><span class="n">plug</span><span class="w"> </span><span class="ss">:match</span><span class="w">
   </span><span class="n">plug</span><span class="w"> </span><span class="nc">DataSpecs.Plug.Cast</span><span class="w">
   </span><span class="n">plug</span><span class="w"> </span><span class="ss">:dispatch</span><span class="w">
 
-  </span><span class="n">post</span><span class="w"> </span><span class="s">&quot;/foo&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">typeref</span><span class="p" data-group-id="0570795793-3">(</span><span class="nc">Api.Model.Foo</span><span class="p">,</span><span class="w"> </span><span class="ss">:t</span><span class="p" data-group-id="0570795793-3">)</span><span class="w"> </span><span class="k" data-group-id="0570795793-4">do</span><span class="w">
-    </span><span class="p" data-group-id="0570795793-5">%</span><span class="nc" data-group-id="0570795793-5">Api.Model.Foo</span><span class="p" data-group-id="0570795793-5">{</span><span class="n">...</span><span class="p" data-group-id="0570795793-5">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p" data-group-id="0570795793-6">(</span><span class="n">conn</span><span class="p" data-group-id="0570795793-6">)</span><span class="w">
+  </span><span class="n">post</span><span class="w"> </span><span class="s">&quot;/foo&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">typeref</span><span class="p" data-group-id="9218663618-3">(</span><span class="nc">Api.Model.Foo</span><span class="p">,</span><span class="w"> </span><span class="ss">:t</span><span class="p" data-group-id="9218663618-3">)</span><span class="w"> </span><span class="k" data-group-id="9218663618-4">do</span><span class="w">
+    </span><span class="p" data-group-id="9218663618-5">%</span><span class="nc" data-group-id="9218663618-5">Api.Model.Foo</span><span class="p" data-group-id="9218663618-5">{</span><span class="n">...</span><span class="p" data-group-id="9218663618-5">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p" data-group-id="9218663618-6">(</span><span class="n">conn</span><span class="p" data-group-id="9218663618-6">)</span><span class="w">
     </span><span class="n">...</span><span class="w">
-  </span><span class="k" data-group-id="0570795793-4">end</span><span class="w">
-</span><span class="k" data-group-id="0570795793-1">end</span><span class="w">
+  </span><span class="k" data-group-id="9218663618-4">end</span><span class="w">
+</span><span class="k" data-group-id="9218663618-1">end</span><span class="w">
 
-</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">Api.Model.Foo</span><span class="w"> </span><span class="k" data-group-id="0570795793-7">do</span><span class="w">
-  </span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">Bar</span><span class="w"> </span><span class="k" data-group-id="0570795793-8">do</span><span class="w">
-    </span><span class="na">@enforce_keys</span><span class="w"> </span><span class="p" data-group-id="0570795793-9">[</span><span class="ss">:b1</span><span class="p" data-group-id="0570795793-9">]</span><span class="w">
-    </span><span class="kd">defstruct</span><span class="w"> </span><span class="na">@enforce_keys</span><span class="w"> </span><span class="o">++</span><span class="w"> </span><span class="p" data-group-id="0570795793-10">[</span><span class="ss">:b2</span><span class="p" data-group-id="0570795793-10">]</span><span class="w">
+</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">Api.Model.Foo</span><span class="w"> </span><span class="k" data-group-id="9218663618-7">do</span><span class="w">
+  </span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">Bar</span><span class="w"> </span><span class="k" data-group-id="9218663618-8">do</span><span class="w">
+    </span><span class="na">@enforce_keys</span><span class="w"> </span><span class="p" data-group-id="9218663618-9">[</span><span class="ss">:b1</span><span class="p" data-group-id="9218663618-9">]</span><span class="w">
+    </span><span class="kd">defstruct</span><span class="w"> </span><span class="na">@enforce_keys</span><span class="w"> </span><span class="o">++</span><span class="w"> </span><span class="p" data-group-id="9218663618-10">[</span><span class="ss">:b2</span><span class="p" data-group-id="9218663618-10">]</span><span class="w">
 
-    </span><span class="na">@type</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="p">%</span><span class="bp">__MODULE__</span><span class="p" data-group-id="0570795793-11">{</span><span class="w">
-            </span><span class="ss">b1</span><span class="p">:</span><span class="w"> </span><span class="n">number</span><span class="p" data-group-id="0570795793-12">(</span><span class="p" data-group-id="0570795793-12">)</span><span class="p">,</span><span class="w">
-            </span><span class="ss">b2</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nc">String</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="0570795793-13">(</span><span class="p" data-group-id="0570795793-13">)</span><span class="w">
-          </span><span class="p" data-group-id="0570795793-11">}</span><span class="w">
-  </span><span class="k" data-group-id="0570795793-8">end</span><span class="w">
+    </span><span class="na">@type</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="p">%</span><span class="bp">__MODULE__</span><span class="p" data-group-id="9218663618-11">{</span><span class="w">
+            </span><span class="ss">b1</span><span class="p">:</span><span class="w"> </span><span class="n">number</span><span class="p" data-group-id="9218663618-12">(</span><span class="p" data-group-id="9218663618-12">)</span><span class="p">,</span><span class="w">
+            </span><span class="ss">b2</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nc">String</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="9218663618-13">(</span><span class="p" data-group-id="9218663618-13">)</span><span class="w">
+          </span><span class="p" data-group-id="9218663618-11">}</span><span class="w">
+  </span><span class="k" data-group-id="9218663618-8">end</span><span class="w">
 
-  </span><span class="na">@enforce_keys</span><span class="w"> </span><span class="p" data-group-id="0570795793-14">[</span><span class="ss">:a</span><span class="p">,</span><span class="w"> </span><span class="ss">:bars</span><span class="p" data-group-id="0570795793-14">]</span><span class="w">
+  </span><span class="na">@enforce_keys</span><span class="w"> </span><span class="p" data-group-id="9218663618-14">[</span><span class="ss">:a</span><span class="p">,</span><span class="w"> </span><span class="ss">:bars</span><span class="p" data-group-id="9218663618-14">]</span><span class="w">
   </span><span class="kd">defstruct</span><span class="w"> </span><span class="na">@enforce_keys</span><span class="w">
 
-  </span><span class="na">@type</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="p">%</span><span class="bp">__MODULE__</span><span class="p" data-group-id="0570795793-15">{</span><span class="w">
-          </span><span class="ss">a</span><span class="p">:</span><span class="w"> </span><span class="n">non_neg_integer</span><span class="p" data-group-id="0570795793-16">(</span><span class="p" data-group-id="0570795793-16">)</span><span class="p">,</span><span class="w">
-          </span><span class="ss">bars</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0570795793-17">[</span><span class="nc">Bar</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="0570795793-18">(</span><span class="p" data-group-id="0570795793-18">)</span><span class="p" data-group-id="0570795793-17">]</span><span class="w">
-        </span><span class="p" data-group-id="0570795793-15">}</span><span class="w">
-</span><span class="k" data-group-id="0570795793-7">end</span></code></pre>
+  </span><span class="na">@type</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="p">%</span><span class="bp">__MODULE__</span><span class="p" data-group-id="9218663618-15">{</span><span class="w">
+          </span><span class="ss">a</span><span class="p">:</span><span class="w"> </span><span class="n">non_neg_integer</span><span class="p" data-group-id="9218663618-16">(</span><span class="p" data-group-id="9218663618-16">)</span><span class="p">,</span><span class="w">
+          </span><span class="ss">bars</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9218663618-17">[</span><span class="nc">Bar</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="9218663618-18">(</span><span class="p" data-group-id="9218663618-18">)</span><span class="p" data-group-id="9218663618-17">]</span><span class="w">
+        </span><span class="p" data-group-id="9218663618-15">}</span><span class="w">
+</span><span class="k" data-group-id="9218663618-7">end</span></code></pre>
   </section>
 
 
@@ -313,9 +313,9 @@ Pages
 
       </div>
 
-<p>Declare the type the body of a route should conform</p><p>For example:</p><pre><code class="makeup elixir" translate="no"><span class="n">post</span><span class="w"> </span><span class="s">&quot;/foo&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">typeref</span><span class="p" data-group-id="3641602945-1">(</span><span class="nc">Model.Foo</span><span class="p" data-group-id="3641602945-1">)</span><span class="w"> </span><span class="k" data-group-id="3641602945-2">do</span><span class="w">
+<p>Declare the type the body of a route should conform</p><p>For example:</p><pre><code class="makeup elixir" translate="no"><span class="n">post</span><span class="w"> </span><span class="s">&quot;/foo&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">typeref</span><span class="p" data-group-id="4774373030-1">(</span><span class="nc">Model.Foo</span><span class="p" data-group-id="4774373030-1">)</span><span class="w"> </span><span class="k" data-group-id="4774373030-2">do</span><span class="w">
   </span><span class="n">...</span><span class="w">
-</span><span class="k" data-group-id="3641602945-2">end</span></code></pre>
+</span><span class="k" data-group-id="4774373030-2">end</span></code></pre>
   </section>
 </section>
 <section class="detail" id="value/1">
@@ -343,10 +343,10 @@ Pages
 
       </div>
 
-<p>Get the casted value.</p><p>For example:</p><pre><code class="makeup elixir" translate="no"><span class="n">post</span><span class="w"> </span><span class="s">&quot;/foo&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">typeref</span><span class="p" data-group-id="6541250161-1">(</span><span class="nc">Api.Model.Foo</span><span class="p">,</span><span class="w"> </span><span class="ss">:t</span><span class="p" data-group-id="6541250161-1">)</span><span class="w"> </span><span class="k" data-group-id="6541250161-2">do</span><span class="w">
-  </span><span class="p" data-group-id="6541250161-3">%</span><span class="nc" data-group-id="6541250161-3">Api.Model.Foo</span><span class="p" data-group-id="6541250161-3">{</span><span class="n">...</span><span class="p" data-group-id="6541250161-3">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p" data-group-id="6541250161-4">(</span><span class="n">conn</span><span class="p" data-group-id="6541250161-4">)</span><span class="w">
+<p>Get the casted value.</p><p>For example:</p><pre><code class="makeup elixir" translate="no"><span class="n">post</span><span class="w"> </span><span class="s">&quot;/foo&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">typeref</span><span class="p" data-group-id="8131424897-1">(</span><span class="nc">Api.Model.Foo</span><span class="p">,</span><span class="w"> </span><span class="ss">:t</span><span class="p" data-group-id="8131424897-1">)</span><span class="w"> </span><span class="k" data-group-id="8131424897-2">do</span><span class="w">
+  </span><span class="p" data-group-id="8131424897-3">%</span><span class="nc" data-group-id="8131424897-3">Api.Model.Foo</span><span class="p" data-group-id="8131424897-3">{</span><span class="n">...</span><span class="p" data-group-id="8131424897-3">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p" data-group-id="8131424897-4">(</span><span class="n">conn</span><span class="p" data-group-id="8131424897-4">)</span><span class="w">
   </span><span class="n">...</span><span class="w">
-</span><span class="k" data-group-id="6541250161-2">end</span></code></pre>
+</span><span class="k" data-group-id="8131424897-2">end</span></code></pre>
   </section>
 </section>
 
